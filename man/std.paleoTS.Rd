@@ -19,7 +19,7 @@ std.paleoTS(y, zero = "start")
 \value{
   the converted \code{paleoTS} object.
 }
-\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}, in press. 
+\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. 
 }
 
 \author{ Gene Hunt } 

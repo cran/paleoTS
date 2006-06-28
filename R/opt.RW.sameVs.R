@@ -1,4 +1,4 @@
-"opt.RW.sameVs" <-
+`opt.RW.sameVs` <-
 function (y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
 # estimates shared Vs model across multiple sequences
 {
@@ -17,7 +17,7 @@ function (y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
   	 
 
   # optimize logL
-  ll<- c(NA,0)
+  ll<- c(rep(NA,nseq),0)
   if (meth=="L-BFGS-B")
     w<- try(optim(p0, fn=logL.sameVs, method="L-BFGS-B", lower=ll, control=cl, hessian=hess, y=y, pool=pool), silent=TRUE)
   else if (meth=="BFGS")
@@ -42,6 +42,7 @@ function (y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
   w$se<- se
   w$p0<- p0
   K<- nseq+1
+  names(w$par)<- c(paste("mstep", 1:nseq, sep=""), "vstep")
      
   # calculate AIC, and AICc (corrected for low n/K)
   n<-0
@@ -50,6 +51,7 @@ function (y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
   #n<- n-length(y)   # this line shouldn't be there!
   w$AIC<- -2*w$value + 2*K
   w$AICc<- w$AIC + (2*K*(K+1))/(n-K-1)  #n is considered to be the number of evolutionary transitions
+  w$BIC<- -2*w$value + K*log(n)
 
   return (w)
 }

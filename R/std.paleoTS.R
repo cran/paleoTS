@@ -1,4 +1,4 @@
-"std.paleoTS" <-
+`std.paleoTS` <-
 function (y, zero="start")
 # returns paleoTS, converted in phenotypic SD units
 # mm -> (mm - mean(mm) )/sqrt(vp); vv -> vv/vp

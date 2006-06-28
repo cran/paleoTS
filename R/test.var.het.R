@@ -1,4 +1,4 @@
-"test.var.het" <-
+`test.var.het` <-
 function (y, method="Bartlett")
 # test for variance heterogeneity among samples in a paleoTS object
 {

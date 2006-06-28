@@ -1,4 +1,4 @@
-"akaike.wts" <-
+`akaike.wts` <-
 function(aa)
 ## aa is a vector of AIC or AICc values
 {

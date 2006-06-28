@@ -1,4 +1,4 @@
-\name{simulate}
+\name{sim.rw}
 \alias{sim.rw}
 \alias{sim.stasis}
 
@@ -31,7 +31,7 @@ sim.stasis(ns=20, theta=0, omega=0, vp=1, nn=rep(20,ns), tt=1:ns)
 \value{
   A \code{paleoTS} object.
 }
-\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}, in press. 
+\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. 
 \cr
 Sheets, H. D., and C. E. Mitchell. 2001. Why the null matters: statistical tests, random walks and evolution. \emph{Genetica} \bold{112-113}:105-125.
 }

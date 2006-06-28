@@ -1,4 +1,4 @@
-"sim.rw" <-
+`sim.rw` <-
 function (ns, sm, sv, vp=1, nn=rep(20,ns), tt=1:ns)
 # returns random walk with sampling, based on normal expectation at each time step
 #  ns= number of samples, sm=mean and sv=variance of the step distribution,
@@ -20,8 +20,11 @@ function (ns, sm, sv, vp=1, nn=rep(20,ns), tt=1:ns)
     mm[i]<- mean(x)
     vv[i]<- var(x)
  }
+ gp<- c(sm, sv)
+ names(gp)<- c("mstep", "vstep")
  
- res<- as.paleoTS(mm=mm, vv=vv, nn=nn, tt=tt, MM=MM, genpars=c(sm,sv), label="Created by sim.rw()") 
+ 
+ res<- as.paleoTS(mm=mm, vv=vv, nn=nn, tt=tt, MM=MM, genpars=gp, label="Created by sim.rw()") 
  return(res)
 }
 

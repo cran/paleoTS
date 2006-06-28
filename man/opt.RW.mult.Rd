@@ -22,7 +22,7 @@ opt.RW.sameVs(y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
 
 \arguments{
   \item{p}{ a vector of parameter values }
-  \item{y}{ a \code{paleoTS} object }
+  \item{y}{ a emph{list} of \code{paleoTS} objects. }
   \item{model}{ \code{RW} for general random walk, \code{RWu} for unbiased random walk }
   \item{pool}{ logical, if TRUE variances are pooled across samples }
   \item{cl}{optimization option, passed to \code{optim} }
@@ -37,7 +37,7 @@ opt.RW.sameVs(y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
 Varies by function, see corresponding functions for the analysis of single sequences for more information.
 }
 
-\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}, in press. }
+\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. }
 \author{ Gene Hunt }
 
 \seealso{  \code{\link{logL.RW}}, \code{\link{opt.RW}}, \code{\link{fit3models}} }

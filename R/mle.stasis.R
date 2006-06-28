@@ -1,4 +1,4 @@
-"mle.stasis" <-
+`mle.stasis` <-
 function (x)
 # analytical solution to stasis model
 {

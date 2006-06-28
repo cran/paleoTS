@@ -1,4 +1,4 @@
-"logL.stasis" <-
+`logL.stasis` <-
 function(p, y, pool=TRUE)
 ## logL of stasis, same white noise as stasis1, but based on differences in mean
 ## to be comparable to the other models. 

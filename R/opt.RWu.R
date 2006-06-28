@@ -1,4 +1,4 @@
-"opt.RWu" <-
+`opt.RWu` <-
 function (y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
 # optimize estimates of step mean and variance for unbiased RW (mu=0)
 {
@@ -33,12 +33,14 @@ function (y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
   w$p0<- p0
 
   # calculate AIC, and AICc (corrected for low n/K)
+    names(w$par)<- "vstep"
   K<-1
   w$K<- K
   n<-length(y$mm)-1
   w$AIC<- -2*w$value + 2*K
   w$AICc<- w$AIC + (2*K*(K+1))/(n-K-1)  #n is considered to be the number of evolutionary transitions
-
+  w$BIC<- -2*w$value + K*log(n)
+  
   return (w)
 }
 

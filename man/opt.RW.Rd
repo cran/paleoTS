@@ -41,16 +41,17 @@ opt.stasis(y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
   \item{K}{ number of parameters in the model}
   \item{AIC}{ Akaike information criterion}
   \item{AICc}{ modified Akaike information criterion}
+  \item{BIC}{ Bayes (or Schwarz) information criterion}
 }
 
-\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}, in press. }
+\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. }
 \author{ Gene Hunt }
 
 \note{
   Standard errors computed from the Hessian matrix are reasonably accurate for \code{mstep} and \code{theta}, but not useful for the vstep and omega because of the asymmetry of the log-likelihood surfaces. 
 }
 
-\seealso{\code{\link{logL.RW}}, \code{\link{fit3models}}, \code{\link{opt.RW.mult}}, \code{\link{simulate}} }
+\seealso{\code{\link{logL.RW}}, \code{\link{fit3models}}, \code{\link{opt.RW.mult}}, \code{\link{sim.rw}} }
 
 \examples{
  ## generate data for a directional sequence

@@ -1,4 +1,4 @@
-"logL.RWu" <-
+`logL.RWu` <-
 function(p,y, pool=TRUE)
 # function to return log-likelihood of step mean and variance (V)=p
 # constrained to be unbiased RW (M=0)

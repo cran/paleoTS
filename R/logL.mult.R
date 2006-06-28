@@ -1,4 +1,4 @@
-"logL.mult" <-
+`logL.mult` <-
 function (p, y, model=c("RW", "RWu"), pool=TRUE)
 # calculate logL over multiple sequences
 #  here, y is a list of paleoTS sequences

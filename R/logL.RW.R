@@ -1,4 +1,4 @@
-"logL.RW" <-
+`logL.RW` <-
 function(p,y, pool=TRUE)
 # function to return log-likelihood of step mean and variance (M,V)= p,
 # given a paleoTS object

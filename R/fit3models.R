@@ -1,4 +1,4 @@
-"fit3models" <-
+`fit3models` <-
 function (y, pool=TRUE, silent=FALSE, wts="AICc")
 ## fit stasis, GRW, URW models to a paleoTS
 {

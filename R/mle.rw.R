@@ -1,4 +1,4 @@
-"mle.rw" <-
+`mle.rw` <-
 function(x)
 # Gives analytical parameter estimates, assuming:
 #   evenly spaced samples (constant dt)
@@ -15,7 +15,6 @@ function(x)
  vhat<- (1/tt)*( (1/nn)*sum(dx^2) - mx^2 - eps)
  
  w<- c(mhat, vhat)
- names(w)<- c("ms.hat", "vs.hat") 
  return(w)
 }
 

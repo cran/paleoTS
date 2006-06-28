@@ -1,4 +1,4 @@
-"plot.paleoTS" <-
+`plot.paleoTS` <-
 function (x, nse=1, yl=NULL, pch=19, true.means=FALSE, start.time=NULL, add=FALSE, ...)
 # plots paleoTS object, with nse*se error bars
 {

@@ -37,7 +37,7 @@ read.paleoTS(file=NULL, hh=FALSE, oldest="first", ...)
   \item{genpars}{ generating parameters (for simulated time series) }
   \item{label}{ optional label describing time series data }
 }
-\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}, in press. }
+\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. }
 \author{ Gene Hunt }
 
 
