@@ -19,7 +19,7 @@ function (y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
  # calculate AIC, and AICc (corrected for low n/K)
  names(w$par)<- c("theta", "omega")
  w$K<- K
- n<-length(y$mm)
+ n<-length(y$mm) - 1
  w$AIC<- -2*w$value + 2*K
  w$AICc<- w$AIC + (2*K*(K+1))/(n-K-1)  #n is considered to be the number of evolutionary transitions
  w$BIC<- -2*w$value + K*log(n)

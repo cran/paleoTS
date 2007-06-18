@@ -24,7 +24,7 @@ opt.stasis(y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
   \item{hess}{ logical, indicating whether to calculate standard errors from the Hessian matrix }
 }
 \details{
-  These functions numerically search a log-likelihood surface for its optimum--they are a convenient wrapper to \code{optim}.  Arguments \code{meth}, \code{cl}, and \code{hess} are passed to \code{optim}; see that function's help for details.  These are included to allow sophisticated users greater control over the optimization; most users will just use the defaults. For \code{meth}, only \code{meth="L-BFGS-B"} and \code{meth="BFGS"} are implemented.  The former constrains estimates of the step variance to be non-negative, which can be useful paramters which cannot truly be negative, such as vstep (random walk) and omega (stasis model). \cr
+  These functions numerically search a log-likelihood surface for its optimum--they are a convenient wrapper to \code{optim}.  Arguments \code{meth}, \code{cl}, and \code{hess} are passed to \code{optim}; see that function's help for details.  These are included to allow sophisticated users greater control over the optimization; most users will just use the defaults. For \code{meth}, only \code{meth="L-BFGS-B"} and \code{meth="BFGS"} are implemented.  The former constrains estimates of the step variance to be non-negative, which can be useful paramters which cannot truly be negative, such as \code{vstep} (random walk) and \code{omega} (stasis model). \cr
 
   Initial estimates to start the optimization come from analytical solutions based on assuming equal sampling error across samples and evenly spaced samples in time (functions \code{mle.rw} and \code{mle.stasis}). 
   

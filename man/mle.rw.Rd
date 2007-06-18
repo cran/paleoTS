@@ -16,7 +16,7 @@ mle.stasis(x)
   \item{x}{ a \code{paleoTS} object }
 }
 \details{
-  These functions return maximum likelihood estimators for the general random walk \code{mle.rw} and stasis \code{mle.stasis} models, but \strong{only under a restriced set of circumstances are these valid!}.  For these estimators to be valid, the sampling error must be the same in all samples, which generally means equal sample size and variances in all samples.  For the general random walk model, it is also assumed that samples are evenly spaced in time.  Because these assumptions usually do not hold for paleontological data, almost all users should instead use the numerical optimization functions (see \code{\link{opt.RW}}).  The main purpose for the present functions is to provide starting estimates for numerical optimization. 
+  These functions return maximum likelihood estimators for the general random walk \code{mle.rw} and stasis \code{mle.stasis} models, but \strong{only under a restriced set of circumstances are these valid!}  For these estimators to be valid, the sampling error must be the same in all samples, which generally means equal sample size and variances in all samples.  For the general random walk model, it is also assumed that samples are evenly spaced in time.  Because these assumptions usually do not hold for paleontological data, almost all users should instead use the numerical optimization functions (see \code{\link{opt.RW}}).  The main purpose for the present functions is to provide starting estimates for numerical optimization. 
 
 }
 \value{
