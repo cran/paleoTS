@@ -1,16 +1,13 @@
-`logL.sameMs` <-
-function (p, y, pool=TRUE)
+`logL.SameMs` <-
+function (p, y)
 # computes logL over >1 sequence, of model in which all sequences have the 
 # same directionality (Mstep), with different step variances
-# y is list of K paleoTS objects, p is array of K+1 parameters {m, v1,..vk}
+# y is list of nseq paleoTS objects, p is array of K+1 parameters {m, v-1,..v-nseq}
 {
-  if (class(y)=="paleoTS")
-  	stop("Function logL.sameMs() is only meaningful for multiple sequences.\n")
-  	
   Sm<-0
-  K<- length(y)
-  for (i in 1:K)
-   	 Sm<- Sm + logL.RW(p=c(p[1],p[i+1]), y[[i]], pool=pool)
+  nseq<- length(y)
+  for (i in 1:nseq)
+   	 Sm<- Sm + logL.GRW(p=c(p[1],p[i+1]), y[[i]])
    	
   return(Sm) 	
 }

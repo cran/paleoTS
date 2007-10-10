@@ -19,7 +19,7 @@ std.paleoTS(y, zero = "start")
 \value{
   the converted \code{paleoTS} object.
 }
-\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. 
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. 
 }
 
 \author{ Gene Hunt } 
@@ -27,7 +27,7 @@ std.paleoTS(y, zero = "start")
 \seealso{ \code{\link{ln.paleoTS}} }
 
 \examples{
- y<- sim.rw(20, 0, 1, vp=10)
+ y<- sim.GRW(20, 0, 1, vp=10)
  ys<- std.paleoTS(y)
  fit3models(y)
  fit3models(ys)  # note Akaike weights do not change from standardization

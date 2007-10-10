@@ -1,6 +1,5 @@
 \name{fit3models}
 \alias{fit3models}
-\alias{akaike.wts}
 
 \title{Do model fits for three evolutionary models}
 
@@ -10,7 +9,6 @@
 
 \usage{
 fit3models(y, pool = TRUE, silent = FALSE, wts = "AICc")
-akaike.wts(aa)
 }
 
 \arguments{
@@ -18,14 +16,12 @@ akaike.wts(aa)
   \item{pool}{ logical, if TRUE, variances are pooled across samples }
   \item{silent}{ logical, if TRUE, results are not printed }
   \item{wts}{ what version of AIC to use for calculation of Akaike weights; either \code{AIC} or \code{AICc} }
-  \item{aa}{ vector of AIC or AICc values used to compute Akaike weights }
 }
 
 \details{
   
 }
 \value{
-  Function \code{akaike.wts} returns a vector of weights. \cr
   If \code{silent=FALSE}, function \code{fit3models} returns a vector of parameter estimates; if \code{silent=TRUE}, a list with the following components is returned, with models listed in the order of general random walk, unbiased random walk, and stasis: 
   \item{aic }{Akaike information criterion}
   \item{aicc }{AIC modified for low sample sizes}
@@ -34,15 +30,15 @@ akaike.wts(aa)
   \item{ak.wts}{vector of Akaike weights}
 }
 
-\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. }
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. }
 \author{ Gene Hunt }
 
-\seealso{ \code{\link{opt.RW}} }
+\seealso{ \code{\link{opt.GRW}} }
 
 \examples{
- y<- sim.rw(30, 0.5, 0.2)
+ y<- sim.GRW(ns=30, ms=0.5, vs=0.2)
  fit3models(y)
- y<- sim.stasis(30, 0, 0)
+ y<- sim.Stasis(ns=30, theta=0, omega=0)
  fit3models(y)
 }
 \keyword{models}

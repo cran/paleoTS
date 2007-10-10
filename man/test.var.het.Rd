@@ -29,7 +29,7 @@ Function \code{test.var.het} returns a list with the following elements relevant
   \item{p.value }{ P-vlaue for statistical test}
   \item{df}{ degrees of freedom, equal to one fewer than the number of samples}
 }
-\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. 
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. 
 \cr
 Sokal, R. and F. J. Rohlf 1995.  Biometry, 3rd Ed.  }
 
@@ -38,13 +38,10 @@ Sokal, R. and F. J. Rohlf 1995.  Biometry, 3rd Ed.  }
 
 \examples{
 # generate simulated data with no real variance heterogeneity
-y <- sim.rw(20, 0, 1)
+y <- sim.GRW(20, 0, 1)
 bart <- test.var.het(y)   # nonsignificant 95% of the time!
-vpool<- pool.var(y)
-
-# create new time series, replacing observed with pooled variance
-yp<- y
-yp$vv <- rep(vpool, times=length(yp$vv))
+ys<- pool.var(y, ret.paleoTS=TRUE)
+cat (ys$vv)		# note all variances now the same
 }
 \keyword{models}
 \keyword{ts}

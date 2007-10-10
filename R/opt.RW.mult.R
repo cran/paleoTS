@@ -1,53 +1,57 @@
-`opt.RW.mult` <-
-function (y, cl=list(fnscale=-1), model=c("RW", "RWu"), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
+`opt.RW.Mult` <-
+function (y, cl=list(fnscale=-1), model=c("GRW", "URW"), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
 # estimates single model across multiple sequences
+# pool=TRUE will pool variances _within_ sequences
 {
-  model<- match.arg(model)
-  p0<- mle.rw(y[[1]])
+  if (class(y)=="paleoTS")
+     stop("opt.RW.mult is onlt for multiple paleoTS sequences\n")
+  nseq<- length(y)
+     
+  # pool variances if needed
+  if (pool){
+  	for (i in 1:nseq)	y[[i]]<- pool.var(y[[i]], ret.paleoTS=TRUE)  }
 
-  if (model=="RW")
-     ll<- c(NA,0)
-  else if (model=="RWu")
+  model<- match.arg(model)
+  if (model=="GRW"){
+     	ll<- c(NA,0)
+     	p0<- mle.GRW(y[[1]])	
+     	K<- 2	 	}
+  else if (model=="URW")
      { ll<- 0
-       p0<- p0[2]  }
+       p0<- mle.URW(y[[1]])
+       K<- 1	  	}
+  
+  if (is.null(cl$ndeps))	cl$ndeps<- abs(p0/1e4)
 
   if (meth=="L-BFGS-B")
-    w<- try(optim(p0, fn=logL.mult, method="L-BFGS-B", lower=ll, control=cl, hessian=hess, y=y, pool=pool, model=model), silent=TRUE)
+    w<- try(optim(p0, fn=logL.Mult, method=meth, lower=ll, control=cl, hessian=hess, y=y, model=model), silent=TRUE)
   else if (meth=="BFGS")
-    w<- try(optim(p0, fn=logL.mult, method="BFGS", control=cl, hessian=hess, y=y, pool=pool, model=model), silent=TRUE)
+    w<- try(optim(p0, fn=logL.Mult, method=meth, control=cl, hessian=hess, y=y, model=model), silent=TRUE)
 
   # if optim fails, set ndeps based on p0
   if (class(w)=="try-error")
   {
-    cl$ndeps<- p0/1000
+    cl$ndeps<- p0/10000
     if (meth=="L-BFGS-B")
-      w<- try(optim(p0, fn=logL.mult, method="L-BFGS-B", lower=ll, control=cl, hessian=hess, y=y, pool=pool, model=model), silent=TRUE)
-    else if (meth=="BFGS")
-      w<- try(optim(p0, fn=logL.mult, method="BFGS", control=cl, hessian=hess, y=y, pool=pool, model=model), silent=TRUE)
+      w<- try(optim(p0, fn=logL.Mult, method=meth, lower=ll, control=cl, hessian=hess, y=y, model=model), silent=TRUE)
+    else 
+      w<- try(optim(p0, fn=logL.Mult, method=meth, control=cl, hessian=hess, y=y, model=model), silent=TRUE)
 	if (class(w)=="try-error")  # if still doesn't work
-	  	{   cat ("*")
+	  	{   warning("opt.RW.Mult failed ", immediate.=TRUE)
 		    w$par<- NA
 		    w$value<- NA }
   }
   
-  sv<- -1/diag(w$hessian)
-  se<- sqrt(sv)
-  w$se<- se
+  # add more information to results (p0, SE, K, n, IC scores)
+  if (hess)		w$se<- sqrt(-1/diag(w$hessian))
   w$p0<- p0
-  if (model=="RW")
-     {K<- 2;   names(w$par)<- c("mstep", "vstep")}
-  else if (model=="RWu")
-     {K<- 1;   names(w$par)<- "vstep"}
-     
-  # calculate AIC, and AICc (corrected for low n/K)
   w$K<- K
   n<-0
-  for (j in 1:length(y))
-  	n<-n+ length(y[[j]]$mm)-1
-  n<- n-length(y)
-  w$AIC<- -2*w$value + 2*K
-  w$AICc<- w$AIC + (2*K*(K+1))/(n-K-1)  #n is considered to be the number of evolutionary transitions
-  w$BIC<- -2*w$value + K*log(n)
+  for (i in 1:nseq)	n<- n + (length(y[[i]]$mm)-1)
+  w$n<- n
+  w$AIC<- IC(w, meth="AIC")
+  w$AICc<- IC(w, meth="AICc")
+  w$BIC<- IC(w, meth="BIC")
 
   return (w)
 }

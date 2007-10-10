@@ -32,8 +32,9 @@ function (file=NULL, hh=FALSE, oldest="first", ...)
       xr$tt <- xr$tt[oo]	
     }
   
-  if (xr$tt[1]>xr$tt[2])	# ages are in Ka/Ma etc
-  	xr$tt<- max(xr$tt)-xr$tt			# change ages so oldest is 0
+  if (xr$tt[1]>xr$tt[2])	# ages are in Ka/Ma etc, so numbers decrease
+  	{   xr$start.age<- xr$tt[1]
+  		xr$tt<- max(xr$tt)-xr$tt }			# change ages so oldest is 0
   		
   return (xr)
 }

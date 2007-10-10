@@ -1,6 +1,6 @@
-\name{sim.rw}
-\alias{sim.rw}
-\alias{sim.stasis}
+\name{sim.GRW}
+\alias{sim.GRW}
+\alias{sim.Stasis}
 
 \title{ Simulate evolutionary time-series }
 \description{
@@ -8,15 +8,14 @@
 }
 
 \usage{
-sim.rw(ns, sm, sv, vp = 1, nn = rep(20, ns), tt = 1:ns)
-sim.stasis(ns=20, theta=0, omega=0, vp=1, nn=rep(20,ns), tt=1:ns)
+sim.GRW(ns = 20, ms = 0, vs = 0.1, vp = 1, nn = rep(20, ns), tt = 1:ns)
+sim.Stasis(ns = 20, theta = 0, omega = 0, vp = 1, nn = rep(20,ns), tt = 1:ns)
 }
-
 
 \arguments{
   \item{ns}{ number of samples in time-series }
-  \item{sm}{ mean of the step distribution, random walk model }
-  \item{sv}{ variance of the step distribution, random walk model }
+  \item{ms}{ mean of the step distribution, random walk model }
+  \item{vs}{ variance of the step distribution, random walk model }
   \item{vp}{ within-population trait variance }
   \item{nn}{ vector of the number of individuals in each sample }
   \item{tt}{ vector of sample ages, increases from oldest to youngest }
@@ -31,17 +30,17 @@ sim.stasis(ns=20, theta=0, omega=0, vp=1, nn=rep(20,ns), tt=1:ns)
 \value{
   A \code{paleoTS} object.
 }
-\references{ Hunt, G. 2007. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. 
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. 
 \cr
 Sheets, H. D., and C. E. Mitchell. 2001. Why the null matters: statistical tests, random walks and evolution. \emph{Genetica} \bold{112-113}:105-125.
 }
 \author{ Gene Hunt }
 
-\seealso{ \code{\link{opt.RW}} }
+\seealso{ \code{\link{opt.GRW}} }
 \examples{
  ## generate and plot two paleoTS objects
- y.rw <- sim.rw(ns=20, sm=0.5, sv=0.1)  
- y.st <- sim.stasis(ns=20)
+ y.rw <- sim.GRW(ns=20, ms=0.5, vs=0.1)  
+ y.st <- sim.Stasis(ns=20)
  layout(1:2)
  plot(y.rw, col="red")
  plot(y.st, col="blue")
