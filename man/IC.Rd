@@ -17,13 +17,17 @@ akaike.wts(aa)
   \item{w}{ output from an optimization such as \code{opt.GRW} }
   \item{logL}{ log-likelihood }
   \item{K}{ the number of free parameters }
-  \item{n}{ sample size for AICc and BIC calculations (= the number of evolutionary transisitons) }
+  \item{n}{ sample size for AICc and BIC calculations }
   \item{meth}{ which information criterion to compute; one of AIC, AICc, or BIC }
   \item{aa}{ vector of AIC or AICc values used to compute Akaike weights }
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+Function \code{IC} can take two kinds of arguments.  The easiest is to send it the output of any of the \code{paleoTS} 
+optimizations, in which case the function will automaically extract the necessary information.  Alternatively, the 
+log-likelihoods, number of parameters and sample size can be passed explicitly.  \cr
+Function \code{akaike.wts} takes a vector of AIC or AICc values and computes corresponding Akaike weights.
 }
+  
 \value{
  the computed information criterion, or a vector of Akaike weights
 }
@@ -38,7 +42,7 @@ akaike.wts(aa)
  m1<- opt.GRW(x)	
  m2<- opt.URW(x)
  m3<- opt.Stasis(x)
- akaike.wts(c(m1$AICc, m2$AICc, m3$AICc))  # note easier to use fit3models()
+ akaike.wts(c(m1$AICc, m2$AICc, m3$AICc))  # it is easier to use fit3models()
 	
 }
 

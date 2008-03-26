@@ -15,7 +15,7 @@ opt.URW(y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", hess = FALSE)
 opt.Stasis(y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", hess = FALSE)
 }
 
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{y}{ a \code{paleoTS} object }
   \item{cl}{ control list, passed to function \code{optim} }

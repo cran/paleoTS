@@ -1,14 +1,16 @@
 \name{fit3models}
 \alias{fit3models}
+\alias{fit3models.joint}
 
-\title{Do model fits for three evolutionary models}
+\title{Do model fits for three standard evolutionary models}
 
 \description{
-  Function fits three models to an evolutionary time series: (1) general random walk, (2) unbiased random walk, and (3) stasis. 
+  Functions fits three models to an evolutionary time series: (1) general random walk (=directional evolution), (2) unbiased random walk, and (3) stasis. 
 }
 
 \usage{
 fit3models(y, pool = TRUE, silent = FALSE, wts = "AICc")
+fit3models.joint(y, pool = TRUE, silent = FALSE, wts = "AICc")
 }
 
 \arguments{
@@ -19,7 +21,10 @@ fit3models(y, pool = TRUE, silent = FALSE, wts = "AICc")
 }
 
 \details{
-  
+The two versions refer to different parameterizations of the model.  The plain version, \code{fit3models}, works from evolutionary differences between 
+adjacent samples, and calls the functions \code{opt.GRW}, \code{opt.URW} and \code{opt.Stasis}.  The joint version, \code{fit3models.joint}, considers all samples jointly rather than 
+working with the differences between samples, and calls the functions \code{opt.joint.GRW}, \code{opt.joint.URW} and \code{opt.joint.Stasis}. \cr
+See the documentation under \code{\link{opt.joint.GRW}} for more information about the differences between these parameterizations.  
 }
 \value{
   If \code{silent=FALSE}, function \code{fit3models} returns a vector of parameter estimates; if \code{silent=TRUE}, a list with the following components is returned, with models listed in the order of general random walk, unbiased random walk, and stasis: 
@@ -30,16 +35,41 @@ fit3models(y, pool = TRUE, silent = FALSE, wts = "AICc")
   \item{ak.wts}{vector of Akaike weights}
 }
 
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. }
+\references{ 
+	Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. \cr
+	Hunt, G., M. Bell & M. Travis. 2008.  Evolution towards a new adaptive optimum: phenotypic evolution in a fossil stickleback lineage. \emph{Evolution} \bold{62}:700--710. \cr   
+	}
+
+
 \author{ Gene Hunt }
 
-\seealso{ \code{\link{opt.GRW}} }
+\seealso{ \code{\link{opt.GRW}}, \code{\link{opt.joint.GRW}} }
 
 \examples{
- y<- sim.GRW(ns=30, ms=0.5, vs=0.2)
- fit3models(y)
- y<- sim.Stasis(ns=30, theta=0, omega=0)
- fit3models(y)
+ ## show difference in parameterizations
+ ### example 1, sequence with a strong trend ###
+ # two parameterizations usually yield similar Akaike weights under these conditions
+ x1<- sim.GRW(ns=10, ms=1, vs=0.5)
+ plot(x1, nse=2)
+ res1<- fit3models(x1, silent=TRUE)
+ res1a<- fit3models.joint(x1, silent=TRUE)
+ res1.tab<- rbind(res1$ak.wts, res1a$ak.wts)
+ row.names(res1.tab)<- c("fit3models", "fit3models.joint")
+ cat ("\n-- Akaike Weights from different parameterizations --\n")
+ print (res1.tab)
+
+ ## example 2, longer & noisy random walk
+ ## joint parameterization often is better at correctly favoring URW under these conditions
+ x2<- sim.GRW(ns=20, ms=0, vs=0.1)  # step variance relatively low compared to sampling error == Noisy
+ plot(x2, nse=2)
+ res2<- fit3models(x2, silent=TRUE)
+ res2a<- fit3models.joint(x2, silent=TRUE)
+ res2.tab<- rbind(res2$ak.wts, res2a$ak.wts)
+ row.names(res2.tab)<- c("fit3models", "fit3models.joint")
+ cat ("\n-- Akaike Weights from different parameterizations --\n")
+ print (res2.tab)
+
+
 }
 \keyword{models}
 \keyword{ts}

@@ -15,7 +15,8 @@ function(p,y)
   svD<- sv[2:(nd+1)]
   svAD<- svA + svD
 
-  S<- -0.5*log(2*pi*(V*dt+svAD)) - ((dy-(M*dt))^2)/(2*(V*dt + svAD))
+  #S<- -0.5*log(2*pi*(V*dt+svAD)) - ((dy-(M*dt))^2)/(2*(V*dt + svAD))
+  S<- dnorm(x=dy, mean=M*dt, sd=sqrt(V*dt + svAD), log=TRUE)
   return(sum(S))
 }
 

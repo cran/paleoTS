@@ -43,7 +43,7 @@ function (y, cl=list(fnscale=-1), model=c("GRW", "URW"), pool=TRUE, meth="L-BFGS
   }
   
   # add more information to results (p0, SE, K, n, IC scores)
-  if (hess)		w$se<- sqrt(-1/diag(w$hessian))
+  if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   w$p0<- p0
   w$K<- K
   n<-0

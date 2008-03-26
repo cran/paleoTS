@@ -9,10 +9,11 @@ function(p, y)
  nd<- length(dy)
  
  sv<- y$vv/y$nn
- svD<- sv[2:(nd+1)]  # only need sampling varian descendant
+ svD<- sv[2:(nd+1)]  # only need sampling variance of descendant
  anc<- y$mm[1:nd]
 
- S<- -0.5*log(2*pi*(V+svD)) - ((dy-(M-anc))^2)/(2*(V+svD))
+ #S<- -0.5*log(2*pi*(V+svD)) - ((dy-(M-anc))^2)/(2*(V+svD))
+ S<- dnorm(x=dy, mean=M-anc, sd=sqrt(V + svD), log=TRUE)
  return(sum(S))
 }
 
