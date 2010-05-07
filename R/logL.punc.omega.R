@@ -1,4 +1,4 @@
-`logL.punc.omega` <-
+logL.punc.omega <-
 function(p,y,gg)
 # logL of punctuation, assuming omega is same over all sections
 {

@@ -1,4 +1,4 @@
-`logL.joint.Stasis` <-
+logL.joint.Stasis <-
 function (p,x)
 # returns logL of Stasis model for paleoTS object x
 # p is vector of parameters: theta, omega

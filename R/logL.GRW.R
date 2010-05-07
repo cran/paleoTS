@@ -1,4 +1,4 @@
-`logL.GRW` <-
+logL.GRW <-
 function(p,y)
 # function to return log-likelihood of step mean and variance (M,V)= p,
 # given a paleoTS object

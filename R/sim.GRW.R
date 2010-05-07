@@ -1,4 +1,4 @@
-`sim.GRW` <-
+sim.GRW <-
 function (ns=20, ms=0, vs=0.1, vp=1, nn=rep(20,ns), tt=1:ns)
 # simulates GRW; ns= number of samples, ms=mean and vs=variance of the step distribution,
 #  vp=population variance, tt=ages of the samples

@@ -1,4 +1,4 @@
-`mle.URW` <-
+mle.URW <-
 function(y)
 # Gives analytical parameter estimates (URW), assuming:
 #   evenly spaced samples (constant dt)

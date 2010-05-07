@@ -1,4 +1,4 @@
-`logL.joint.URW` <-
+logL.joint.URW <-
 function(p,x)
 # returns logL of URW model for paleoTS object x
 # p is vector of parameters: alpha, vs

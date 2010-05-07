@@ -1,4 +1,4 @@
-`logL.Stasis` <-
+logL.Stasis <-
 function(p, y)
 ## logL of stasis model
 {

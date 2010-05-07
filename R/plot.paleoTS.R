@@ -1,4 +1,4 @@
-`plot.paleoTS` <-
+plot.paleoTS <-
 function (x, nse=1, pt.ch=19, yl=NULL, pool=TRUE, true.means=FALSE, add=FALSE, ...)
 # plots paleoTS object, with nse*se error bars
 {
@@ -10,7 +10,7 @@ function (x, nse=1, pt.ch=19, yl=NULL, pool=TRUE, true.means=FALSE, add=FALSE, .
      yl<-range(c(lci, uci))
 
   if (!is.null(x$start.age))
-     x$tt<- x$tt-x$start.age
+     x$tt<- x$start.age-x$tt
   
   if (add)
    {
@@ -19,7 +19,7 @@ function (x, nse=1, pt.ch=19, yl=NULL, pool=TRUE, true.means=FALSE, add=FALSE, .
    }
   else
    {
-    plot (x$tt, x$mm, type="o", pch=pt.ch, xlab="Time", ylab="Trait Mean", ylim=yl, ...)
+    plot (x$tt, x$mm, type="o", pch=pt.ch, xlab="Time", ylab="Trait Mean", ylim=yl, xlim=rev(range(x$tt)), ...)
    }
   segments (x$tt, lci, x$tt, uci, lty=1, ...)
   

@@ -1,4 +1,4 @@
-`opt.GRW.shift` <-
+opt.GRW.shift <-
 function(y, ng=2, minb=5, model=1, pool=TRUE, silent=FALSE)
 ## optimize for shifted GRW dynamics (with some min n per section)
 ## models:	1  grw (same Vs, diff Ms)

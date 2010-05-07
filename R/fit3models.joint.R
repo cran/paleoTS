@@ -1,4 +1,4 @@
-`fit3models.joint` <-
+fit3models.joint <-
 function (y, pool = TRUE, silent = FALSE, wts = "AICc") 
 {
     mn<- c("GRW", "URW", "Stasis")
@@ -9,6 +9,7 @@ function (y, pool = TRUE, silent = FALSE, wts = "AICc")
     aicc <- c(m.grw$AICc, m.urw$AICc, m.st$AICc)
     logl <- c(m.grw$value, m.urw$value, m.st$value)
     hats <- c(m.grw$par, m.urw$par, m.st$par)
+    names(hats)<- c('anc.GRW', 'mstep.GRW', 'vstep.GRW', 'anc.URW', 'vstep.URW', 'theta.Stasis', 'omega.Stasis')
     if (wts == "AICc") 
         ak.wts <- akaike.wts(aicc)
     else ak.wts <- akaike.wts(aic)

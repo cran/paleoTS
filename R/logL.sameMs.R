@@ -1,4 +1,4 @@
-`logL.SameMs` <-
+logL.SameMs <-
 function (p, y)
 # computes logL over >1 sequence, of model in which all sequences have the 
 # same directionality (Mstep), with different step variances

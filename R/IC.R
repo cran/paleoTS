@@ -1,4 +1,4 @@
-`IC` <-
+IC <-
 function(w, logL=NULL, K=NULL, n=NULL, meth=c("AICc", "AIC", "BIC"))
 # compute Information Criteria from log-likelihood, # parameters (K), and 
 # sample size (n), if needed.

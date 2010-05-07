@@ -1,4 +1,4 @@
-`opt.RW.SameMs` <-
+opt.RW.SameMs <-
 function (y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
 # estimates shared Ms model across multiple sequences
 {

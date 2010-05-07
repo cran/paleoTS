@@ -32,7 +32,7 @@ Function \code{akaike.wts} takes a vector of AIC or AICc values and computes cor
  the computed information criterion, or a vector of Akaike weights
 }
 
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601. }
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. }
 \author{ Gene Hunt }
 
 \seealso{ \code{\link{opt.GRW}} } 

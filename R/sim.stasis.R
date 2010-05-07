@@ -1,4 +1,4 @@
-`sim.Stasis` <-
+sim.Stasis <-
 function(ns=20, theta=0, omega=0, vp=1, nn=rep(20,ns), tt=1:ns)
 # simulate stasis
 {

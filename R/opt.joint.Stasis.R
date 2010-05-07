@@ -1,4 +1,4 @@
-`opt.joint.Stasis` <-
+opt.joint.Stasis <-
 function (x, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE)
 # optimize Stasis model using alternate formulation
 {

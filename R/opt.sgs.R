@@ -1,4 +1,4 @@
-`opt.sgs` <-
+opt.sgs <-
 function(y,gg,cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE, oshare=TRUE, model="GRW")
 # do optimization for sgs model
 {

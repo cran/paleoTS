@@ -1,4 +1,4 @@
-`sim.sgs` <-
+sim.sgs <-
 function (ns=c(20,20,20), theta=0, omega=1, ms=1, vs=0.1, nn=rep(30, times=sum(ns)), tt=1:sum(ns), vp=1)
 # simulate stasis-grw-stasis sequence, take theta2 to be final value after grw part
 {

@@ -1,4 +1,4 @@
-`opt.punc` <-
+opt.punc <-
 function(y, gg, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE, oshare) 
 {
   if (pool) {y<- pool.var(y, ret.paleoTS=TRUE) } # pool variances in sequences

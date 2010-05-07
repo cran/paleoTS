@@ -1,4 +1,4 @@
-`sim.OU` <-
+sim.OU <-
 function (ns=20, anc=0, theta=10, alpha=0.3, vs=0.1, vp=1, nn=rep(20, ns), tt=1:ns)
 ## generate a paleoTS sequence according to an OU model
 {

@@ -1,18 +1,22 @@
 \name{Stickleback data}
 \alias{dorsal.spines}
+\alias{pterygiophores}
+\alias{pelvic.score}
 
 \docType{data}
 
 \title{ Stickleback data from Bell et al. (2006) }
 
 \description{
- Data of dorsal spine data from a fossil stickleback lineage. 
+Dorsal spine, pterygiophore, and pelvic score data from a fossil stickleback lineage. 
 }
 
 \usage{data(dorsal.spines)}
+\usage{data(ptreygiophores)}
+\usage{data(pelvic.score)}
 
 \format{
-a \code{paleoTS} object for the time-series of dorsal spine counts
+ \code{paleoTS} objects for time-series of stickleback data.
 }
 
 \details{

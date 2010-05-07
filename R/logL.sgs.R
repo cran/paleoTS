@@ -1,4 +1,4 @@
-`logL.sgs` <-
+logL.sgs <-
 function(p, y, gg, model="GRW")
 ## log-likelihood of sgs model
 {

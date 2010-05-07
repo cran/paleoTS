@@ -1,4 +1,4 @@
-`shifts` <-
+shifts <-
 function (ns, ng, minb=5)
 ## returns matrix of all allowable shift points for 
 ## dividing ns samples into ng groups of at least minb samples each

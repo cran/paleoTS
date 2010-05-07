@@ -1,4 +1,4 @@
-`logL.joint.GRW` <-
+logL.joint.GRW <-
 function (p, x)
 # returns logL of GRW model for paleoTS object x
 # p is vector of parameters: alpha, ms, vs

@@ -1,4 +1,4 @@
-`sim.GRW.shift` <-
+sim.GRW.shift <-
 function (ns=c(10,10), ms=c(0,1), vs=c(0.5,0.5), nn=rep(30,sum(ns)), tt=1:sum(ns), vp=1)
 # simulate sequence of GRW with different parameter values in different segments
 # ns is vector of ns in each sub-sequence, similar for other parameters

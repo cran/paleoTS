@@ -1,4 +1,4 @@
-`split4punc` <-
+split4punc <-
 function (y, gg, overlap=TRUE)
 # divides a paleoTS object (y) into a several paleoTS objects, according to vector 'gg'
 # gg is a vectors of 1,2,3.. indicating groupings

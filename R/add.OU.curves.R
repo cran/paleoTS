@@ -1,4 +1,4 @@
-`add.OU.curves` <-
+add.OU.curves <-
 function(w, x, what=c("lines", "polygon"), tt.offset=0, ...)
 # add expected OU trajectory to a plot
 # w is output from opt, x is paleoTS

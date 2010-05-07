@@ -1,4 +1,4 @@
-`fit.sgs` <-
+fit.sgs <-
 function(y, minb=5, oshare=TRUE, pool=TRUE, silent=FALSE, hess=FALSE, meth="L-BFGS-B", model="GRW")
 ## optimize for stasis-GRW-stasis dynamics (with some min n per section)
 {

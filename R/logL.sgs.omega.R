@@ -1,4 +1,4 @@
-`logL.sgs.omega` <-
+logL.sgs.omega <-
 function(p, y, gg, model="GRW")
 ## log-likelihood of sgs model, omega shared over stasis segments
 {

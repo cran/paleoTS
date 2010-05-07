@@ -1,4 +1,4 @@
-`opt.joint.OU` <-
+opt.joint.OU <-
 function (x, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE)
 # optimize OU model using tree methods
 {

@@ -25,7 +25,7 @@ lynchD(y, gen.per.t = 1e+06, pool = TRUE, ...)
   \item{D}{  value of rate metric }
   \item{pooled.var}{ value of pooled within-sample variance }
   \item{gen.per.t}{ number of generations per unit time }
-  \item{vstep} { computed \code{Vstep}, at the original time scale of \code{y}}
+  \item{vstep}{ computed \code{Vstep}, at the original time scale of \code{y}}
   \item{drift.range}{ exepcted minimum and maximum values of \code{D} consistent with neutral evoltuion }
   \item{result}{ conclusion reached about the plausibility of neutral evolution }
 }

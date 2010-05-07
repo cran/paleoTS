@@ -1,4 +1,4 @@
-`pool.var` <-
+pool.var <-
 function(y,nn=NULL, ret.paleoTS=FALSE)
 # calc pooled variance
 # y is either a paleoTS object, or an array of variances

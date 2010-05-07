@@ -1,4 +1,4 @@
-`read.paleoTS` <-
+read.paleoTS <-
 function (file=NULL, hh=FALSE, oldest="first", ...)
 # read in paleoTS data from a file
 # samples should be listed from oldest (first) to youngest (last)

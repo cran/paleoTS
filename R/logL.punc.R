@@ -1,4 +1,4 @@
-`logL.punc` <-
+logL.punc <-
 function (p, y, gg)
 # logL of punctuation, with shifts 
 {

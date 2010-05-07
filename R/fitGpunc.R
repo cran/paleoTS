@@ -1,7 +1,14 @@
-`fitGpunc` <-
+fitGpunc <-
 function(y, ng=2, minb=5, pool=TRUE, oshare=TRUE, silent=FALSE, hess=FALSE, ...)
 ## optimize punctuation models (with some min n per section)
 {
+ if(ng==1)  # if only one grouping, same as stasis model
+ {
+   warning('Fitting stasis model (because ng=1)')
+   ww<- opt.Stasis(y, pool=pool, hess=hess, ...)
+   return(ww)	
+ }
+ 
  ns<- length(y$mm)
  GG<- shifts(ns, ng, minb=minb)
 

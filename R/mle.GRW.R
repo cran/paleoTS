@@ -1,4 +1,4 @@
-`mle.GRW` <-
+mle.GRW <-
 function(y)
 # Gives analytical parameter estimates (GRW), assuming:
 #   evenly spaced samples (constant dt)

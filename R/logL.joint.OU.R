@@ -1,4 +1,4 @@
-`logL.joint.OU` <-
+logL.joint.OU <-
 function(p,x)
 # returns logL of OU model for paleoTS object x
 # 

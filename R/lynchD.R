@@ -1,4 +1,4 @@
-`lynchD` <-
+lynchD <-
 function (y, gen.per.t=1e6, pool=TRUE, ...)
 # compute Lynch's rate metric, Delta
 # gen.per.t is the number of generations per unit tt
@@ -6,7 +6,7 @@ function (y, gen.per.t=1e6, pool=TRUE, ...)
 {
   w<- opt.URW(y, pool=TRUE, ...)
   vp<- pool.var(y)
-  D<- (unname(w$par)/vp)/gen.per.t
+  D<- 0.5*(unname(w$par)/vp)/gen.per.t
   
   drift.min<- 5e-5
   drift.max<- 5e-3

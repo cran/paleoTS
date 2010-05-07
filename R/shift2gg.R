@@ -1,4 +1,4 @@
-`shift2gg` <-
+shift2gg <-
 function (ss, ns)
 # ss is vector of shift points, ns is # samples
 {

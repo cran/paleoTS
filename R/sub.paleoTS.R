@@ -1,4 +1,4 @@
-`sub.paleoTS` <-
+sub.paleoTS <-
 function (y, ok=NULL, k=0.1)
 # subsample a paleoTS, either from steps given by T/F vector 'ok'
 #  proportion 'k' of samples, chosen randomly

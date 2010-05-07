@@ -1,4 +1,4 @@
-`opt.RW.Mult` <-
+opt.RW.Mult <-
 function (y, cl=list(fnscale=-1), model=c("GRW", "URW"), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
 # estimates single model across multiple sequences
 # pool=TRUE will pool variances _within_ sequences

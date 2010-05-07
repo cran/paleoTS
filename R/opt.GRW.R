@@ -1,4 +1,4 @@
-`opt.GRW` <-
+opt.GRW <-
 function (y, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE)
 # optimize estimates of step mean and variance for GRW model
 # y is an paleoTS object

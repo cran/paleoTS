@@ -1,4 +1,4 @@
-`opt.joint.GRW` <-
+opt.joint.GRW <-
 function (x, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE)
 # optimize GRW model using alternate formulation
 {

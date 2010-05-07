@@ -1,4 +1,4 @@
-`cat.paleoTS` <-
+cat.paleoTS <-
 function (y)
 # concatenates multiple paleoTS objects, with y a list of paleoTS objects
 {

@@ -1,4 +1,4 @@
-`logL.SameVs` <-
+logL.SameVs <-
 function (p, y)
 # computes logL over >1 sequence, of model in which all sequences have the 
 # same step variance, with different steo means

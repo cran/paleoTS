@@ -1,4 +1,4 @@
-`sim.punc` <-
+sim.punc <-
 function (ns=c(10,10), theta=c(0,1), omega=rep(0,length(theta)), nn=rep(30,sum(ns)), tt=1:sum(ns), vp=1)
 # simulate punctuated sequence; theta and omega are vectors of paramters
 # ns is vector of ns in each sub-sequence

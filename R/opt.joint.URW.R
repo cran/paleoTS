@@ -1,4 +1,4 @@
-`opt.joint.URW` <-
+opt.joint.URW <-
 function (x, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE)
 # optimize URW model using alternate formulation
 {
