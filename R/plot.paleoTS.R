@@ -19,7 +19,7 @@ function (x, nse=1, pt.ch=19, yl=NULL, pool=TRUE, true.means=FALSE, add=FALSE, .
    }
   else
    {
-    plot (x$tt, x$mm, type="o", pch=pt.ch, xlab="Time", ylab="Trait Mean", ylim=yl, xlim=rev(range(x$tt)), ...)
+    plot (x$tt, x$mm, type="o", pch=pt.ch, xlab="Time", ylab="Trait Mean", ylim=yl, ...)
    }
   segments (x$tt, lci, x$tt, uci, lty=1, ...)
   

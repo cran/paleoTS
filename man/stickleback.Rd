@@ -11,9 +11,11 @@
 Dorsal spine, pterygiophore, and pelvic score data from a fossil stickleback lineage. 
 }
 
-\usage{data(dorsal.spines)}
-\usage{data(ptreygiophores)}
-\usage{data(pelvic.score)}
+\usage{
+data(dorsal.spines)
+data(pterygiophores)
+data(pelvic.score)
+	 }
 
 \format{
  \code{paleoTS} objects for time-series of stickleback data.
