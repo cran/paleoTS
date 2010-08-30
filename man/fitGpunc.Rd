@@ -1,8 +1,11 @@
 \name{fitGpunc}
 \alias{fitGpunc}
 \alias{opt.punc}
+\alias{opt.joint.punc}
 \alias{logL.punc}
 \alias{logL.punc.omega}
+\alias{logL.joint.punc}
+\alias{logL.joint.punc.omega}
 
 
 \title{ Analyze evolutionary models with unsampled punctuations }
@@ -13,10 +16,13 @@
 }
 
 \usage{
-fitGpunc(y, ng = 2, minb = 5, pool = TRUE, oshare = TRUE, silent = FALSE, hess=FALSE, ...)
+fitGpunc(y, ng = 2, minb = 5, pool = TRUE, oshare = TRUE, method=c('AD', 'Joint'), silent = FALSE, hess=FALSE, ...)
 opt.punc(y, gg, cl = list(fnscale = -1), pool = TRUE, meth = "L-BFGS-B", hess = FALSE, oshare)
+opt.joint.punc(y, gg, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE, oshare)
 logL.punc(p, y, gg)
 logL.punc.omega(p, y, gg)
+logL.joint.punc(p, y, gg)
+logL.joint.punc.omega(p, y, gg)
 }
 
 \arguments{
@@ -24,7 +30,8 @@ logL.punc.omega(p, y, gg)
   \item{ng}{ the number of separate segments in the sequence }
   \item{minb}{ the minimum number of samples within a segment to consider }
   \item{pool}{ logical indicating whether to pool variances across samples }
-  \item{oshare}{ logical, if \code{TRUE}, the same variance (\code{omega}) is assumed across all segments.  If \code{FAlSE}, separate variances are assumd for each segment  }
+  \item{oshare}{ logical, if \code{TRUE}, the same variance (\code{omega}) is assumed across all segments.  If \code{FALSE}, separate variances are assumd for each segment  }
+  \item{method}{ parameterization to use: based on ancestor-descendant (AD) differences, or on Joint consideration of all samples}
   \item{silent}{ if \code{TRUE}, less information is printed to the screen as the model is fit }
   \item{hess}{ if \code{TRUE}, standard errors are computed from the Hessian matrix}
   \item{\dots}{ other arguments to send to \code{opt.punc}}
@@ -35,7 +42,7 @@ logL.punc.omega(p, y, gg)
 }
 \details{
   These functions are used to fit a model with an unsampled punctuation.
-  It is equivalent to a Stasis model in which the optimum instantaneously shifts at one or more points in time; see refereces below for details.
+  It is equivalent to a Stasis model in which the optimum instantaneously shifts at one or more points in time; see references below for details.
   Users are likely only to use \code{fitGpunc}, which will calls the other functions in order to find the best parameter
   estimates and shift points for the segments.  
 }
@@ -65,8 +72,8 @@ In addition, function \code{fitGpunc} also returns the following elements:
 }
 
 \references{ 
-Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601.  \cr
-Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanations be preferred?  \emph{Paleobiology} \bold{34}:360--377.  \cr
+Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601.  \cr
+Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanations be preferred?  \emph{Paleobiology} \bold{ 34}:360--377.  \cr
 }
 
 \author{ Gene Hunt }
@@ -74,13 +81,13 @@ Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanatio
 \seealso{ \code{\link{sim.punc}}, \code{\link{opt.GRW}}, \code{\link{fit.sgs}} }
 
 \examples{
-x<- sim.punc(theta=c(0,5), ns=c(20,20), omega=c(1,1), vp=c(0.2,0.2))
+x<- sim.punc(theta=c(0,5), ns=c(20,20), omega=c(0.5,0.5), vp=c(0.2,0.2))
 plot(x)
 w<- fitGpunc(x, ng=2, minb=7, pool=TRUE, oshare=TRUE)
-print (w$par)
+print (w$parameters)
 ## add lines to show the solution
-segments(x$tt[1], w$par[1], x$tt[w$shift.start-1], w$par[1], lty=3, col="red", lwd=5)
-segments(x$tt[w$shift.start], w$par[2], x$tt[length(x$tt)], w$par[2], lty=3, col="red", lwd=5)
+segments(x$tt[1], w$parameters[1], x$tt[w$parameters[4]-1], w$parameters[1], lty=1, col="red", lwd=5)
+segments(x$tt[w$parameters[4]], w$parameters[2], x$tt[length(x$tt)], w$parameters[2], lty=1, col="red", lwd=5)
 }
 
 \keyword{models}

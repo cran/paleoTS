@@ -15,14 +15,15 @@
 logL.Mult(p, y, model = c("GRW", "URW"))
 logL.SameMs(p, y)
 logL.SameVs(p, y)
-opt.RW.Mult(y, cl=list(fnscale=-1), model=c("GRW", "URW"), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
-opt.RW.SameMs(y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
-opt.RW.SameVs(y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
+opt.RW.Mult(yl, cl=list(fnscale=-1), model=c("GRW", "URW"), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
+opt.RW.SameMs(yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
+opt.RW.SameVs(yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
 }
 
 \arguments{
   \item{p}{ a vector of parameter values }
   \item{y}{ a \emph{list} of \code{paleoTS} objects. }
+  \item{yl}{ a \emph{list} of \code{paleoTS} objects. }
   \item{model}{ \code{RW} for general random walk, \code{RWu} for unbiased random walk }
   \item{pool}{ logical, if TRUE variances are pooled across samples }
   \item{cl}{ optimization option, passed to \code{optim} }
@@ -37,7 +38,7 @@ opt.RW.SameVs(y, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
 Varies by function, see corresponding functions for the analysis of single sequences for more information.
 }
 
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. }
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. }
 \author{ Gene Hunt }
 
 \seealso{  \code{\link{logL.GRW}}, \code{\link{opt.GRW}}, \code{\link{fit3models}} }
@@ -53,20 +54,7 @@ Varies by function, see corresponding functions for the analysis of single seque
  m3<- opt.RW.SameVs(list(y1,y2))
 
  ## fit separate models to each sequence
- msep1<- opt.GRW(y1)
- msep2<- opt.GRW(y2)
- sep.logL<- msep1$value + msep2$value   # total logL sums across two solutions
- sep.aic <- -2*sep.logL + 2*4     # AIC of separate solutions
-
- ## check out resulting log-likelihoods and AIC values
- mres<- array(dim=c(4,2))
- row.names(mres)<- c("m1", "m2", "m3", "msep")
- colnames(mres)<- c("logL", "AIC")
- mres[1,]<- c(m1$value, m1$AIC)
- mres[2,]<- c(m2$value, m2$AIC)
- mres[3,]<- c(m3$value, m3$AIC)
- mres[4,]<- c(sep.logL, sep.aic)
- print (mres)
+ compareModels(m1, m2, m3)
 }
 
 \keyword{models}

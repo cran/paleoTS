@@ -40,7 +40,7 @@ read.paleoTS(file = NULL, hh = FALSE, oldest = "first", ...)
   \item{label}{ optional label describing time series data }
   \item{start.age}{ optional, indicating age of oldest sample (e.g., in millions of years ago) }
 }
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. }
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. }
 \author{ Gene Hunt }
 
 \seealso{ \code{\link{plot.paleoTS}}  }

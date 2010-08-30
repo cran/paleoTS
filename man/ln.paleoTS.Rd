@@ -17,9 +17,9 @@ ln.paleoTS(y)
 \value{
   the converted \code{paleoTS} object.
 }
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. 
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. 
 \cr
-Lewontin, R. 1966. On the measurement of relative variability.  \emph{Systematic Zoology} \bold{15}:141--142.
+Lewontin, R. 1966. On the measurement of relative variability.  \emph{Systematic Zoology} \bold{ 15}:141--142.
 }
 
 \author{ Gene Hunt } 

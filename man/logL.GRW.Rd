@@ -26,7 +26,7 @@ logL.Stasis(p, y)
   The log-likelihood of the parameter estimates (\code{p}), given the data (\code{y}).
 }
 
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. }
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. }
 \author{ Gene Hunt }
 
 

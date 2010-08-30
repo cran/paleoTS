@@ -31,30 +31,17 @@ opt.Stasis(y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", hess = FALS
 }
 
 \value{
-  A list including:
-  \item{par }{ parameter estimates}
-  \item{value }{ the log-likelihood of the optimal solution}
-  \item{counts}{ returned by \code{optim} }
-  \item{convergence}{ returned by \code{optim} }
-  \item{message}{ returned by \code{optim} }
-  \item{p0}{ initial guess for parameter values at start of optimization}
-  \item{K}{ number of parameters in the model}
-  \item{n}{ the number of observations, equal to the number of evoltuionary transistions}
-  \item{AIC}{ Akaike information criterion}
-  \item{AICc}{ modified Akaike information criterion}
-  \item{BIC}{ Bayes (or Schwarz) information criterion}
-  \item{se}{ standard errors for parameter estimates, computed from the curvature of the log-likelihood surface (only if \code{hess = TRUE})}
-  \item{\dots}{ other output from call to \code{optim}}
+  A \code{paleoTSfit} object.
 }
 
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. }
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. }
 \author{ Gene Hunt }
 
 \note{
   Standard errors computed from the Hessian matrix are reasonably accurate for \code{mstep} and \code{theta}, but not as useful for the vstep and omega because of the asymmetry of the log-likelihood surfaces. 
 }
 
-\seealso{\code{\link{logL.GRW}}, \code{\link{fit3models}}, \code{\link{opt.RW.Mult}}, \code{\link{sim.GRW}} }
+\seealso{\code{\link{logL.GRW}}, \code{\link{fit3models}}, \code{\link{opt.RW.Mult}}, \code{\link{sim.GRW}} , \code{\link{as.paleoTSfit}}}
 
 \examples{
  ## generate data for a directional sequence
@@ -65,7 +52,7 @@ opt.Stasis(y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", hess = FALS
  m.sta<- opt.Stasis(y)
 
  ## print log-likelihoods; easier to use function fit3models()
- cat(m.rw$value, m.rwu$value, m.sta$value, "\n")
+ compareModels(m.rw, m.rwu, m.sta)
 }
 
 \keyword{models}

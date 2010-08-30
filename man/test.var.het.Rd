@@ -29,7 +29,7 @@ Function \code{test.var.het} returns a list with the following elements relevant
   \item{p.value }{ P-vlaue for statistical test}
   \item{df}{ degrees of freedom, equal to one fewer than the number of samples}
 }
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. 
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. 
 \cr
 Sokal, R. and F. J. Rohlf 1995.  Biometry, 3rd Ed.  }
 

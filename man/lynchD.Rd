@@ -8,16 +8,18 @@
  approximately between 5e-5 and 5e-3. 
 }
 \usage{
-lynchD(y, gen.per.t = 1e+06, pool = TRUE, ...)
+lynchD(y, gen.per.t = 1e+06, pool = TRUE, method=c('AD', 'Joint'), ...)
 }
 \arguments{
   \item{y}{ a \code{paleoTS} object }
   \item{gen.per.t}{ the number of generations per unit time }
   \item{pool}{ logical, if the variance should be pooled across samples in estimating \code{Vstep} }
-  \item{\dots}{ further arguments, passed to \code{opt.URW}}
+  \item{method}{ parameterization to use: based on ancestor-descendant (AD) differences, or on Joint consideration of all samples}
+  \item{\dots}{ further arguments, passed to \code{opt.URW} or \code{opt.joint.URW}}
 }
 \details{
  The \code{gen.per.t} argument indicates the number of organismal generations for each unit of time with which the time-series \code{y} was measured.  For example, is \code{y$tt} is measured in millions of years, and the species has annual generations, \code{gen.per.t} would be 1e6.
+ For difference between the \code{method} choices, see Hunt (2008).
 \cr
  Estimation of \code{Vstep} is done on the original time scale of \code{y}, and then the values are converted to generational time scales using \code{gen.per.t}.  This is for numerical reasons, as it avoids computations on possible very low numbers. 
 }
@@ -30,7 +32,9 @@ lynchD(y, gen.per.t = 1e+06, pool = TRUE, ...)
   \item{result}{ conclusion reached about the plausibility of neutral evolution }
 }
 
-\references{ Lynch, M. 1990. The rate of morphological evolution in mammals from the standpoint of the neutral expectation. \emph{The American Naturalist} \bold{136}:727--741. }
+\references{ 
+	Lynch, M. 1990. The rate of morphological evolution in mammals from the standpoint of the neutral expectation. \emph{The American Naturalist} \bold{ 136}:727--741. 
+	Hunt, G. 2008. Evolutionary patterns within fossil lineages: model-based assessment of modes, rates, punctuations and process..  \emph{In} R.K. Bambach and P.H. Kelley, eds.  From Evolution to Geobiology: Research Questions Driving Paleontology at the Start of a New Century:578--601. \cr}
 
 \author{ Gene Hunt }
 

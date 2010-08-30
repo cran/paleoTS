@@ -8,7 +8,7 @@
 Generates an evolutionary time-series according to an Orstein-Uhlenbeck (OU) model. }
 
 \usage{
-sim.OU(ns = 20, anc = 0, theta = 10, alpha = 0.3, vs = 0.1, vp = 1, nn = rep(20, ns), tt = 1:ns)
+sim.OU(ns = 20, anc = 0, theta = 10, alpha = 0.3, vs = 0.1, vp = 1, nn = rep(20, ns), tt = 0:(ns-1))
 ou.M(anc, theta, aa, tt)
 ou.V(vs, aa, tt)
 }
@@ -38,11 +38,11 @@ respectively, are generated.
 }
 
 \references{ 
-Lande, R. 1976. Natural selection and random genetic drift in phenotypic evolution. \emph{Evolution} \bold{30}:314-334. \cr
-Hansen, T. 1997.  Stabilizing selection and the comparative analysis of adaptation. \emph{Evolution} \bold{51}:1341-1351. \cr
+Lande, R. 1976. Natural selection and random genetic drift in phenotypic evolution. \emph{Evolution} \bold{ 30}:314-334. \cr
+Hansen, T. 1997.  Stabilizing selection and the comparative analysis of adaptation. \emph{Evolution} \bold{ 51}:1341-1351. \cr
 Estes, S. & Arnold, S. J. 2007.  Resolving the paradox of stasis: models of stabilizing selection explain evolutionary divergence 
-on all timescales. \emph{American Naturalist} \bold{169}:227-244. \cr
-Hunt, G., M. Bell & M. Travis. 2008.  Evolution towards a new adaptive optimum: phenotypic evolution in a fossil stickleback lineage. \emph{Evolution} \bold{62}:700--710. \cr  
+on all timescales. \emph{American Naturalist} \bold{ 169}:227-244. \cr
+Hunt, G., M. Bell & M. Travis. 2008.  Evolution towards a new adaptive optimum: phenotypic evolution in a fossil stickleback lineage. \emph{Evolution} \bold{ 62}:700--710. \cr  
  }
 \author{ Gene Hunt }
 

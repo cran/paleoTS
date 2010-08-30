@@ -20,7 +20,7 @@ sub.paleoTS(y, ok = NULL, k = 0.1)
 \value{
  the subetted \code{paleoTS} object
 }
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601.  }
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601.  }
 
 \author{ Gene Hunt }
 
@@ -28,13 +28,13 @@ sub.paleoTS(y, ok = NULL, k = 0.1)
 
 \examples{
  y <- sim.GRW(ns=100, ms=0, vs=0.3)
- plot(y)
+ plot(y, col='grey')
  ys1<- sub.paleoTS(y, ok=y$mm > mean(y$mm))  # subsetting with logical ok
  ys2<- sub.paleoTS(y, ok=1:10)				 # subsetting with numeric ok
  ys3<- sub.paleoTS(y, k=0.1)				 # subsetting random 10%
  plot(ys1, add=TRUE, col="red")
  plot(ys2, add=TRUE, col="blue")
- plot(ys3, add=TRUE, col="grey", cex=2, pt.ch=1)
+ plot(ys3, add=TRUE, cex=2, pt.ch=1)
 }
 
 \keyword{models}

@@ -37,24 +37,12 @@ opt.joint.OU(x, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = 
 
 }
 \value{
-  \item{par }{ parameter estimates}
-  \item{value }{ the log-likelihood of the optimal solution}
-  \item{counts}{ returned by \code{optim} }
-  \item{convergence}{ returned by \code{optim} }
-  \item{message}{ returned by \code{optim} }
-  \item{p0}{ initial guess for parameter values at start of optimization}
-  \item{K}{ number of parameters in the model}
-  \item{n}{ the number of observations, equal to the number of samples}
-  \item{AIC}{ Akaike information criterion}
-  \item{AICc}{ bias-corrected Akaike information criterion}
-  \item{BIC}{ Bayes (or Schwarz) information criterion}
-  \item{se}{ standard errors for parameter estimates, computed from the curvature of the log-likelihood surface (only if \code{hess = TRUE})}
-  \item{\dots}{ other output from call to \code{optim}}
+  An object of class \code{paleoTSfit}
 }
 
 \references{ 
-	Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. \cr
-	Hunt, G., M. Bell & M. Travis. 2008.  Evolution towards a new adaptive optimum: phenotypic evolution in a fossil stickleback lineage. \emph{Evolution} \bold{62}:700-710. \cr   
+	Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. \cr
+	Hunt, G., M. Bell & M. Travis. 2008.  Evolution towards a new adaptive optimum: phenotypic evolution in a fossil stickleback lineage. \emph{Evolution} \bold{ 62}:700-710. \cr   
 	Hunt, G. 2008. Evolutionary patterns within fossil lineages: model-based assessment of modes, rates, punctuations and process..  \emph{In} R.K. Bambach and P.H. Kelley, eds.  From Evolution to Geobiology: Research Questions Driving Paleontology at the Start of a New Century:578--601. \cr
 	}
 \author{ Gene Hunt }
@@ -83,17 +71,16 @@ figure into the likelihood calculations (which are comletely determined by the p
 Measures of model fit (log-likelihoods, AIC scores, etc) are not comparable between the two parameterizations.
 }
 
-\seealso{ \code{\link{logL.joint.GRW}}, \code{\link[paleoTS]{opt.GRW}} }
+\seealso{ \code{\link{logL.joint.GRW}}, \code{\link[paleoTS]{opt.GRW}}, \code{\link{as.paleoTSfit}} }
 
 \examples{
  x<- sim.GRW(ns=30, ms=1, vs=1)
  plot(x)
  
- # easier to use  fit3models.joint() 
+ # easier to use  fit3models(, method='Joint') 
  m.urw<- opt.joint.URW(x)
  m.grw<- opt.joint.GRW(x)
  m.sta<- opt.joint.Stasis(x)
- 
  cat(m.urw$AICc, m.grw$AICc, m.sta$AICc, "\n")	# print AICc scores
 
 }

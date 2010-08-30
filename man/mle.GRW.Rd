@@ -25,15 +25,15 @@ mle.Stasis(y)
   a vector of parameter estimates, either \code{c(mstep, vstep)}, or \code{c(theta, omega)}
 }
 
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\ bold{32}:578--601. }
+\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\ bold{ 32}:578--601. }
 \author{ Gene Hunt }
 
 \seealso{ \code{\link{opt.GRW}}, \code{\link{logL.GRW}}  }
 
 \examples{
-  ## Warning: better to use opt.RW() for real data
+  ## Warning: better to use opt.GRW() for real data
   y <- sim.GRW(ns=20, ms=0, vs=1)
-  w <- mle.GRW(y)
+  mle.GRW(y)
 }
 \keyword{models}
 \keyword{ts}

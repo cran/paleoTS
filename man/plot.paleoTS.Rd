@@ -5,7 +5,7 @@
   Plots paleontological time series, showing trait means (with error bars) over time. 
 }
 \usage{
-\method{plot}{paleoTS}(x, nse = 1, pt.ch = 19, yl = NULL, pool = TRUE, true.means = FALSE, add = FALSE, ...)
+\method{plot}{paleoTS}(x, nse = 1, pt.ch = 19, yl = NULL, pool = FALSE, true.means = FALSE, add = FALSE, ...)
 }
 \arguments{
   \item{x}{ a \code{paleoTS} object }
@@ -23,7 +23,7 @@
 \value{
  No values are returned, the results are plotted. 
 }
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{32}:578--601. }
+
 \author{ Gene Hunt }
 
 \seealso{ \code{\link{as.paleoTS}} }

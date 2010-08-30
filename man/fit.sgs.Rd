@@ -33,7 +33,7 @@ logL.sgs.omega(p, y, gg, model = "GRW")
 }
 
 \details{
-  These functions are used to fit a model with an sampled punctuation.
+  These functions are used to fit a model with a sampled punctuation.
   Formally, this is a three-segment model that starts as Stasis, transitions to a punctuation of directional evolution (general random walk) or
   unconstrained (unbiased random walk). The name comes from an abbreviation of the three modes in the segments: \emph{S}tasis - \emph{G}eneral Random Walk - \emph{S}tasis,
   bearing in mind that the general random walk can be changed to an unbiased random walk.
@@ -44,47 +44,32 @@ logL.sgs.omega(p, y, gg, model = "GRW")
  The log-likelihood functions return the log-likelihood of the model for a given set of parameter values (\code{p}), 
  assuming that the periods of Stasis have the same variance (\code{logL.punc.omega}) or different variances (\code{logL.punc}).
  
- Functions \code{fitGpunc} and \code{opt.punc} return a list with the following elements:
-  \item{par }{ parameter estimates}
-  \item{value }{ the log-likelihood of the optimal solution}
-  \item{counts}{ returned by \code{optim} }
-  \item{convergence}{ returned by \code{optim} }
-  \item{message}{ returned by \code{optim} }
-  \item{p0}{ initial guess for parameter values at start of optimization}
-  \item{K}{ number of parameters in the model}
-  \item{n}{ the number of observations, equal to the number of evoltuionary transistions}
-  \item{AIC}{ Akaike information criterion}
-  \item{AICc}{ modified Akaike information criterion}
-  \item{BIC}{ Bayes (or Schwarz) information criterion}
-  \item{se}{ standard errors for parameter estimates, computed from the curvature of the log-likelihood surface (only if \code{hess = TRUE})}
-  \item{\dots}{ other output from call to \code{optim}}
-
-In addition, function \code{fit.sgs} also returns the following elements:
-  \item{shift.start}{ index of each sample that starts a new segment}
+ In addition to those specifying the dynamics of stasis and punctuation, parameters include \code{shift1}, the index of the first sample in the punctuation segment, 
+ and \code{shift2}, the index of the first sample after the return to stasis.
+ 
+Function \code{opt.sgs} returns a \code{paleoTSfit} object.  Function \code{fit.sgs} does the same, but with the following additional elements:
   \item{all.logl}{ log-likelihoods for all tested partitions of the series into segments}
   \item{GG}{ matrix of indices of initial samples of each tested segment configuration; each column of \code{GG} corresponds to the elements of \code{all.logl}}
 }
 
 \references{ 
-Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601.  \cr
-Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanations be preferred?  \emph{Paleobiology} \bold{34}:360--377.  \cr
+Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{ 32}:578--601.  \cr
+Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanations be preferred?  \emph{Paleobiology} \bold{ 34}:360--377.  \cr
 	}
 	
 \author{ Gene Hunt }
 
 
-\seealso{ \code{\link{sim.sgs}}, \code{\link{opt.GRW}}, \code{\link{fitGpunc}}  }
+\seealso{ \code{\link{sim.sgs}}, \code{\link{opt.GRW}}, \code{\link{fitGpunc}}, \code{\link{as.paleoTSfit}}  }
 
 \examples{
  x<- sim.sgs(ns=c(15, 10, 15), ms=0.5, vs=0.3)
  plot(x)
- # compare sampled punctuation to uniform models
- w1<- fit.sgs(x, minb=7, model="GRW")
- wu<- fit3models(x, silent=TRUE)
- aa<- akaike.wts(c(w1$AICc, wu$aicc))
- names(aa)[1]<- "Samp.Punc"
- cat("Akaike Weights:\n")
- print(round(aa,5))
+ # compare sampled punctuation to uniform unbiased random walk
+ w.sgs<- fit.sgs(x, minb=8, model="GRW")
+ w.urw<- opt.URW(x)
+ compareModels(w.urw, w.sgs)
+ 
 }
 
 \keyword{models}

@@ -15,7 +15,7 @@ Dorsal spine, pterygiophore, and pelvic score data from a fossil stickleback lin
 data(dorsal.spines)
 data(pterygiophores)
 data(pelvic.score)
-	 }
+}
 
 \format{
  \code{paleoTS} objects for time-series of stickleback data.
@@ -27,7 +27,7 @@ sample sizes (\code{nn}), and ages in Kyr (\code{tt}).
 }
 
 \source{
- Bell, M.A., M.P. Travis and D.M. Blouw 2006. Inferring natural selection in a fossil threespine stickleback. \emph{Paleobiology} \bold{32}:562-577.
+ Bell, M.A., M.P. Travis and D.M. Blouw 2006. Inferring natural selection in a fossil threespine stickleback. \emph{Paleobiology} \bold{ 32}:562-577.
 }
 
 \examples{
@@ -44,8 +44,7 @@ plot(ds2, pool=TRUE)
 # compare URW (drift) and OU (adaptive) models
 m.urw<- opt.joint.URW(ds2, pool=TRUE)
 m.ou<- opt.joint.OU(ds2, pool=TRUE)
-aw<- akaike.wts(c(m.urw$AICc, m.ou$AICc))
-cat ("Akaike wts: ", round(aw, 3),"\t", "[URW, OU]", "\n")
+compareModels(m.urw, m.ou)
 }
 
 \keyword{datasets}

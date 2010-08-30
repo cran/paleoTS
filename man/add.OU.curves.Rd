@@ -12,7 +12,7 @@ add.OU.curves(w, x, what = c("lines", "polygon"), tt.offset = 0, ...)
 }
 
 \arguments{
-  \item{w}{ output from the function \code{opt.alt.OU} }
+  \item{w}{ a paleoTSfit object output from the function \code{opt.joint.OU} }
   \item{x}{ a \code{paleoTS} pbject }
   \item{what}{ whether to draw \code{lines} or \code{polygon} for the model fit }
   \item{tt.offset}{ difference between starting age in \code{w} and \code{x} }

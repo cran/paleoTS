@@ -47,7 +47,7 @@ shift2gg(ss, ns)
 
 \references{ 
 Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology}\bold{32}:578--601.  \cr
-Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanations be preferred?  \emph{Paleobiology}\bold{34}:In press.  \cr
+Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanations be preferred?  \emph{Paleobiology}\bold{ 34}:360-377.  \cr
 }
 \author{ Gene Hunt }
 
