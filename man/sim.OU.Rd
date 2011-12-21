@@ -28,7 +28,7 @@ ou.V(vs, aa, tt)
 See Hansen (1997) for a description of this model in a macroevolutionary context.  This model also arises naturally in 
 microevolution as a finite population evolving in the vicinity of an optimum in the adaptive landscape; see Lande (1976) 
 and Estes & Arnold (2007). \cr
-Functions \code{ou.M} and \code{ou.V} are used internally by \code{sim.OU} and \code{add.OU.curves} to generate the 
+Functions \code{ou.M} and \code{ou.V} are used internally by \code{sim.OU} to generate the 
 means and variances of an OU process.
 }
 

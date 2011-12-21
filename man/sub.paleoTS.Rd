@@ -34,7 +34,7 @@ sub.paleoTS(y, ok = NULL, k = 0.1)
  ys3<- sub.paleoTS(y, k=0.1)				 # subsetting random 10%
  plot(ys1, add=TRUE, col="red")
  plot(ys2, add=TRUE, col="blue")
- plot(ys3, add=TRUE, cex=2, pt.ch=1)
+ plot(ys3, add=TRUE, col="green")
 }
 
 \keyword{models}

@@ -45,7 +45,7 @@ The \code{method} argument refers to different parameterizations of the model. S
  res1Joint<- fit3models(x1, method='Joint')
 
  ## example 2, longer & noisy directional walk
- ## joint parameterization often is better at correctly favoring URW under these conditions
+ ## joint parameterization often is better at correctly favoring GRW under these conditions
  x2<- sim.GRW(ns=20, ms=0.2, vs=0.1)  # step variance relatively low compared to sampling error == Noisy
  res2AD<- fit3models(x2, method='AD')
  res2Joint<- fit3models(x2, method='Joint')

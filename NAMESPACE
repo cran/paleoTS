@@ -1,0 +1,10 @@
+# Hand-edited namespace
+
+# Export all names
+exportPattern(".")
+S3method(plot, paleoTS)
+
+# Import all packages listed as Imports or Depends
+import(
+  mvtnorm
+)

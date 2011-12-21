@@ -7,8 +7,8 @@
   A class for storing information on evolutionary time-series data.
 }
 \usage{
-as.paleoTS(mm, vv, nn, tt, MM = NULL, genpars = NULL, label = "", start.age = NULL)
-read.paleoTS(file = NULL, hh = FALSE, oldest = "first", ...)
+as.paleoTS(mm, vv, nn, tt, MM = NULL, genpars = NULL, label = "", start.age = NULL, oldest="first", reset.time=FALSE)
+read.paleoTS(file = NULL, oldest = "first", reset.time=TRUE, ...)
 }
 
 \arguments{
@@ -21,15 +21,20 @@ read.paleoTS(file = NULL, hh = FALSE, oldest = "first", ...)
   \item{label}{ optional label describing time series data }
   \item{start.age}{ optional, indicating age of oldest sample (e.g., in millions of years ago) }
   \item{file}{ file with \code{paleoTS} data; if \code{NULL}, then opens \code{file.choose} dialog }
-  \item{hh}{ logical; if TRUE, file with paleoTS data has a header}
   \item{oldest}{ by default, samples are listed from oldest to youngest.  If file is in reverse order, use \code{oldest = "last"}}
+  \item{reset.time}{logical; if TRUE, then change time scale to start at t=0 and adjust \code{start.age} accordingly.}
   \item{\dots}{ further arguments passed to \code{read.table}}
 }
 \details{
-   Function \code{as.paleoTS()} combines time series data into an object of class \code{paleoTS}.  This function will usually not be used directly; \code{read.paleoTS()} is used to get the relevant data from text files, and \code{sim.GRW()} and \code{sim.Stasis()} are used to simulate paleontological time-series from generating parameters.
+   Function \code{as.paleoTS()} combines time series data into an object of class \code{paleoTS}.  This function will usually not be used directly; \code{read.paleoTS()} is more convenient for getting the relevant data from text files.
 \cr
-  If no file name is given for \code{read.paleoTS}, the user will be prompted to select a file using the \code{file.choose()} interactive prompt.  Samples are assumed to be ordered from oldest to youngest (if not, use \code{oldest="last"}), with ages indicating time elapsed from the beginning of the sequence, rather than geological age before the present.  If sample ages decrease through the sequence, as if given in millions of years ago, \code{tt} will automatically be converted to time elapsed from the beginning of the sequence. 
+  If no file name is given for \code{read.paleoTS}, the user will be prompted to select a file using the \code{file.choose()} interactive prompt.  Samples are assumed to be ordered from oldest to youngest (if not, use \code{oldest="last"}), with ages indicating time elapsed from the beginning of the sequence, rather than geological age before the present.  If sample ages decrease through the sequence, as if given in millions of years ago, \code{tt} will automatically be converted to time elapsed from the beginning of the sequence. Generally, setting \code{reset.time} = 0 is good practice.
 }
+
+\note{
+  The analysis estimates the contribution of sampling noise to the observed differences between samples.  It does this assuming that one is analyzing sample means, which have sampling variances equal to variance divided by sample size, \code{vv/nn}.  If one is interested in analyzing statistics other than the sample mean (medians, quantiles, or other statistics), use the the following procedure: set the statistic in question as the \code{mm} values, replace \code{vv} with a vector of the squared standard errors for each estimate, and set all values of \code{nn} to one.   
+}
+
 \value{
   \item{mm}{ vector of sample means }
   \item{vv}{ vector of sample variances }

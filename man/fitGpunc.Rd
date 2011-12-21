@@ -66,7 +66,7 @@ logL.joint.punc.omega(p, y, gg)
   \item{\dots}{ other output from call to \code{optim}}
 
 In addition, function \code{fitGpunc} also returns the following elements:
-  \item{shift.start}{ index of each sample that starts a new segment}
+  \item{shift.start}{ index of the last sample before a new segment}
   \item{all.logl}{ log-likelihoods for all tested partitions of the series into segments}
   \item{GG}{ matrix of indices of initial samples of each tested segment configuration; each column of \code{GG} corresponds to the elements of \code{all.logl}}
 }

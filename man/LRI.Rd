@@ -29,7 +29,7 @@ A named vector of three elements: \code{Intercept}, \code{slope} and \code{Gener
 }
 
 \references{
-Gingerich, P.D. 1993. Quantification and comparison of evolutionary rates. \emph{American Journal of Science} \bold{ 293-A}:453--478. 
+Gingerich, P.D. 1993. Quantification and comparison of evolutionary rates. \emph{American Journal of Science} \bold{ 293-A}:453--478. \cr
 Gingerich, P.D. 2009. Rates of evolution. \emph{Annual Review of Ecology Evolution and Systematics} \bold{ 40}:657--675. 
 }
 
@@ -49,11 +49,11 @@ This method was important in attempts to disentangle evolutionary tempo and mode
 }
 
 \examples{
-	xFast<- sim.GRW(ns=20, ms=0.1, vs=0.2)   # fast evolution
+	xFast<- sim.GRW(ns=20, ms=0.5, vs=0.2)   # fast evolution
 	xSlow<- sim.Stasis(ns=20, theta=10, omega=0)   # strict stasis! rates are actually zero
 	wFast<- LRI(xFast, draw=FALSE)
 	wSlow<- LRI(xSlow, draw=FALSE)
-	## LRI usually assigns faster generational rate to the Strict Stasis!
+	## LRI usually assigns faster generational rate to Strict Stasis!
 	print(wFast[3],4)
 	print(wSlow[3],4)
 }

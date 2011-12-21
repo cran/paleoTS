@@ -44,8 +44,8 @@ logL.sgs.omega(p, y, gg, model = "GRW")
  The log-likelihood functions return the log-likelihood of the model for a given set of parameter values (\code{p}), 
  assuming that the periods of Stasis have the same variance (\code{logL.punc.omega}) or different variances (\code{logL.punc}).
  
- In addition to those specifying the dynamics of stasis and punctuation, parameters include \code{shift1}, the index of the first sample in the punctuation segment, 
- and \code{shift2}, the index of the first sample after the return to stasis.
+ In addition to those specifying the dynamics of stasis and punctuation, parameters include \code{shift1}, the index of the last sample before the shit to GRW/URW, 
+ and \code{shift2}, the index of the last sample before the return to stasis.
  
 Function \code{opt.sgs} returns a \code{paleoTSfit} object.  Function \code{fit.sgs} does the same, but with the following additional elements:
   \item{all.logl}{ log-likelihoods for all tested partitions of the series into segments}

@@ -1,10 +1,28 @@
-
-
-as.paleoTS<- function (mm, vv, nn, tt, MM=NULL, genpars=NULL, label="", start.age=NULL)
+as.paleoTS<- function (mm, vv, nn, tt, MM=NULL, genpars=NULL, label=NULL, start.age=NULL, oldest="first", reset.time=FALSE)
 # converts vectors of observed mean, variances, N's, ages (time steps),
 # true means (for simulated series), and label to an object of class 'paleoTS'
 {
   y<- list(mm=mm,vv=vv,nn=nn,tt=tt,MM=MM,genpars=genpars,label=label, start.age=start.age)
+  
+  if (oldest=="last")  # if samples are listed with youngest first, then reverse order
+      {
+      # reverse order of samples	
+      oo<- length(y$mm):1
+      y$mm <- y$mm[oo]
+      y$vv <- y$vv[oo]
+      y$nn <- y$nn[oo]
+      y$tt <- y$tt[oo]	
+    }
+    
+  if(reset.time){
+  if (y$tt[1]!=0) {	# if starting sample not at t=0, make it so, and adjust start.age
+	sa<- y$tt[1]
+	if(!is.null(y$start.age) && sa!=y$start.age)	stop("Age of first sample does not match start.age")
+	y$tt<- sa - y$tt
+	y$start.age<- sa
+	}
+	}
+
   class(y)<- "paleoTS"
   return (y)
 }
@@ -18,38 +36,8 @@ as.paleoTSfit<- function(logL, parameters, modelName, method, K, n, se)
   return(y)	
 }
 
-plot.paleoTS<- function (x, nse=1, pt.ch=19, yl=NULL, pool=FALSE, true.means=FALSE, add=FALSE, ...)
-# plots paleoTS object, with nse*se error bars
-{
-  if (pool)	x<- pool.var(x, ret.paleoTS=TRUE)
-  se<- sqrt(x$vv/x$nn)
-  lci<- x$mm-(nse*se)
-  uci<- x$mm+(nse*se)
-  if (is.null(yl))
-     yl<-range(c(lci, uci))
 
-  if (!is.null(x$start.age))     {x$tt<- x$start.age - x$tt; xl<- rev(range(x$tt))}
-  else							xl<- range(x$tt)
-  
-  if (add)
-   {
-     lines (x$tt, x$mm, ...)
-     points (x$tt, x$mm, pch=pt.ch, ...)
-   }
-  else
-   {
-    plot (x$tt, x$mm, type="o", pch=pt.ch, xlab="Time", ylab="Trait Mean", ylim=yl, xlim=xl, ...)
-   }
-  segments (x$tt, lci, x$tt, uci, lty=1, ...)
-  mtext(x$label, cex=0.5, col='grey', font=3)
-  
-  if (true.means)
-  	lines (x$tt, x$MM, col="blue", lty=2)
-}
-
-
-
-read.paleoTS<- function (file=NULL, hh=FALSE, oldest="first", ...)
+read.paleoTS<- function (file=NULL, oldest="first", reset.time=TRUE, ...)
 # read in paleoTS data from a file
 # samples should be listed from oldest (first) to youngest (last)
 # if time is in ages BP (oldest with largest age), convert to forward moving time
@@ -58,36 +46,110 @@ read.paleoTS<- function (file=NULL, hh=FALSE, oldest="first", ...)
   if (is.null(file))
      {
       ff<- file.choose()
-      x<-read.table(ff, header=hh, ...)
+      x<-read.table(ff, ...)
       lab1<- ff
      }
 
   else
      {
-       x<-read.table(file=file, header=hh, ...)
+       x<-read.table(file=file, ...)
        lab1<-paste(getwd(), file)
      }
       
   # change to proper paleoTS object
-  xr<- as.paleoTS(mm=x[,2], vv=x[,3], nn=x[,1], tt=x[,4], label=lab1)
+  xr<- as.paleoTS(mm=x[,2], vv=x[,3], nn=x[,1], tt=x[,4], label=lab1, oldest=oldest, reset.time=TRUE)
 
 
-  if (oldest=="last")
-    {
-      # reverse order of samples	
-      oo<- length(xr$mm):1
-      xr$mm <- xr$mm[oo]
-      xr$vv <- xr$vv[oo]
-      xr$nn <- xr$nn[oo]
-      xr$tt <- xr$tt[oo]	
-    }
-  
-  if (xr$tt[1]>xr$tt[2])	# ages are in Ka/Ma etc, so numbers decrease
-  	{   xr$start.age<- xr$tt[1]
-  		xr$tt<- max(xr$tt)-xr$tt }			# change ages so oldest is 0
-  		
   return (xr)
 }
+
+modelCurves<- function(x, w, np=500)
+# returns list of model means, upper and lower 95% probability envelopes
+{
+  ee<- ii<- array(dim=np)  # set up arrays
+  mn<- w$modelName
+  mp<- w$par
+  x0<- ifelse(w$method=="AD", x$mm[1], w$par["anc"])
+  ttp<- seq(x$tt[1], x$tt[length(x$tt)], length.out=np)
+  #ttp<- x$tt
+  #ttp<- sort(c(seq(x$tt[1], x$tt[length(x$tt)], length.out=np), x$tt))
+  #print(ttp)
+  
+  # list of models implemented
+  okModels<- c("URW", "GRW", "Stasis", "OU", paste("Punc-", 1:100, sep=""))
+  if (mn %in% okModels){  
+	  if(mn=="URW"){ ee<- rep(x0, np); vv<- mp["vstep"]*ttp}  
+	  if(mn=="GRW"){ ee<- x0+mp["mstep"]*ttp; vv<- mp["vstep"]*ttp}
+	  if(mn=="Stasis"){ ee<- rep(mp["theta"], np); vv<- rep(mp["omega"],np) }
+	  if(mn=="OU"){ if(!is.null(x$start.age)) tto<- x$start.age-ttp
+	  				else	tto<- ttp
+	  				ee<- mp["theta"] * (1-exp(-mp["alpha"]*tto)) + mp["anc"]*exp(-mp["alpha"]*tto)
+	  				vv<- (mp["vstep"]/(2*mp["alpha"])) * (1-exp(-2*mp["alpha"]*tto)) }
+	  if(grepl("Punc", mn)){
+	  		# handle time shifts
+	  		sp<- w$par[grep("shift", names(w$par))]  # shift samples
+	  		st<- x$tt[sp]  # shift times
+	  		ng<- length(sp)+1
+	  		ggt<- cut(ttp, breaks=c(min(x$tt)-1, st, max(x$tt)+1), right=TRUE, labels=1:ng)
+	
+	
+	  		# extract needed paramaters
+	  		th<- w$par[grep("theta", names(w$par))]  # theta estimates
+	  		om<- w$par[grep("omega", names(w$par))]  # omega estimates
+	  		if(length(om)==1)	om<- rep(om, ng)	 # make into vector if needed
+			
+			# get ee and vv
+			ee<- th[ggt]
+			vv<- om[ggt]  		
+		}  
+	} else {ee<-NA; vv<- NA; warning(paste("modelFit argument not implemented for model", mn, "\n"))}
+	
+	
+  if (!is.null(x$start.age))	tto<- x$start.age - ttp  else tto<- ttp 
+  res<- list(tt=ttp, ee=ee, ll=ee-1.96*sqrt(vv), uu=ee+1.96*sqrt(vv))	
+  return(res)	
+}
+
+
+plot.paleoTS<- function (x, nse=1, pool=FALSE, add=FALSE, modelFit=NULL, pch=19, lwd=1.5, ...)
+# plots paleoTS object, with nse*se error bars
+{
+     
+  if (pool)	x<- pool.var(x, ret.paleoTS=TRUE)
+  se<- sqrt(x$vv/x$nn)
+  lci<- x$mm-(nse*se)
+  uci<- x$mm+(nse*se)
+  xx<- x
+  
+  if (!is.null(x$start.age))     {x$tt<- x$start.age - x$tt; xl<- rev(range(x$tt))}
+  else							xl<- range(x$tt)
+  
+  if (!is.null(modelFit))  
+  {
+   mlab<- paste(modelFit$modelName, "expectation [95% probability interval]")
+   mc<- modelCurves(xx, w=modelFit)
+   if(is.na(mc$ee[1]))	modelFit<- NULL   ## change back if modelFit not implemented for a model   	
+  }
+  		 
+  if(is.null(modelFit)) yl<- c(uci, lci)
+  else yl<- c(uci, lci, mc$ll, mc$uu)
+ 
+  if(!add)	plot(range(x$tt), ylim=range(yl), typ="n", pch=19, xlab="Time", ylab="Trait Mean", xlim=xl, ...)
+
+  if (!is.null(modelFit))  # add prob envelope, then expectation before data
+   {
+	if(!is.null(x$start.age))	mc$tt<- x$start.age - mc$tt
+	polygon(c(mc$tt, rev(mc$tt)), c(mc$uu, rev(mc$ll)), col='wheat2', border="white")
+	lines(mc$tt, mc$ee, col='tan', lwd=2)
+   }
+  lines (x$tt, x$mm, lwd=lwd, ...)
+  segments (x$tt, lci, x$tt, uci, lty=1, lwd=lwd, ...)
+  points (x$tt, x$mm, pch=pch, cex=1.2, ...)
+  mtext(x$label, cex=0.7, col='grey', font=3)
+  if(!is.null(modelFit)) mtext(mlab, side=4, cex=0.8, col='tan', font=2)
+
+}
+
 
 
 
@@ -1015,12 +1077,13 @@ logL.joint.OU<- function(p,x)
  VV2<- outer(VVd,VVd,pmin)
  VV<- VV*VV2
  diag(VV)<- VVd + x$vv/x$nn 	# add sampling variance
- detV<- det(VV)
- invV<- solve(VV)
+ #detV<- det(VV)
+ #invV<- solve(VV)
  
  # compute logL based on multivariate normal
  M<- ou.M(anc, theta, aa, x$tt)
- S<- -0.5*log(detV) - 0.5*n*log(2*pi) - ( t(x$mm-M)%*%invV%*%(x$mm-M) ) / (2)
+ #S<- -0.5*log(detV) - 0.5*n*log(2*pi) - ( t(x$mm-M)%*%invV%*%(x$mm-M) ) / (2)
+ S<- dmvnorm(t(x$mm), mean=M, sigma=VV, log=TRUE)
  return(S)		
 }
 
@@ -1034,13 +1097,15 @@ opt.joint.OU<- function (x, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hes
  
  ## get initial estimates
  w0<- mle.GRW(x)
- p0<- c(x$mm[1], w0[2]/10, x$mm[length(x$mm)], 0.05)
+ halft<- (x$tt[length(x$tt)]-x$tt[1])/4			# set half life to 1/4 of length of sequence
+ p0<- c(x$mm[1], w0[2]/10, x$mm[length(x$mm)], log(2)/halft)
  names(p0)<- c("anc","vstep","theta","alpha")
+ #print(p0)
  if (is.null(cl$ndeps))	cl$ndeps<- abs(p0/1e4)
  cl$ndeps[cl$ndeps==0]<- 1e-8
  
   
- if(meth=="L-BFGS-B")  w<- optim(p0, fn=logL.joint.OU, control=cl, method=meth, lower=c(NA,0,NA,0.0001), hessian=hess, x=x)
+ if(meth=="L-BFGS-B")  w<- optim(p0, fn=logL.joint.OU, control=cl, method=meth, lower=c(NA,1e-10,NA,1e-8), hessian=hess, x=x)
  else 				  w<- optim(p0, fn=logL.joint.OU, control=cl, method=meth, hessian=hess, x=x) 
 
  if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
@@ -1050,28 +1115,6 @@ opt.joint.OU<- function (x, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hes
  return (wc)
 }
 
-add.OU.curves<- function(w, x, what=c("lines", "polygon"), tt.offset=0, ...)
-# add expected OU trajectory to a plot
-# w is output from opt, x is paleoTS
-{
- tt2<- x$tt-min(x$tt)
- ee<- ou.M(w$par[1], w$par[3], w$par[4], tt2)
- vv<- ou.V(w$par[2], w$par[4], tt2)
- se<- sqrt(vv)
- 
- what<- match.arg(what)
- 
- if (what=="lines")
- {
-  lines(x$tt+tt.offset, ee, ...)
-  lines(x$tt+tt.offset, ee+2*se, ...)
-  lines(x$tt+tt.offset, ee-2*se, ...)
- }
- if(what=="polygon"){	
-  polygon(c(x$tt+tt.offset, rev(x$tt+tt.offset)), c(ee+2*se,rev(ee-2*se)), ...)
-  lines (x$tt+tt.offset, ee, col="black", lwd=1)
-  }
-}
 
 ##### start of punctuate functions
 
@@ -1148,6 +1191,7 @@ logL.punc<- function (p, y, gg)
   om<- p[(ng+1):(2*ng)]
   
   xl<- split4punc(y,gg)
+  print(xl[[1]]$mm)
   S<-0
   for (i in 1:ng)
     S<- S+ logL.Stasis(p=c(th[i], om[i]), xl[[i]])
@@ -1257,8 +1301,6 @@ opt.joint.punc<- function(y, gg, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B"
   }
   
   # add more information to results
-
-
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
   wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste('Punc', ng-1, sep='-'), method='Joint', K=K, n=length(y$mm), se=w$se)
@@ -1306,7 +1348,7 @@ shift2gg<- function (ss, ns)
 fitGpunc<- function(y, ng=2, minb=5, pool=TRUE, oshare=TRUE, method=c('AD', 'Joint'), silent=FALSE, hess=FALSE, ...)
 ## optimize punctuation models (with some min n per section)
 {
-  method<- match.arg(method) 
+ method<- match.arg(method) 
  
  if(ng==1)  # if only one grouping, same as stasis model
  {
@@ -1327,9 +1369,11 @@ fitGpunc<- function(y, ng=2, minb=5, pool=TRUE, oshare=TRUE, method=c('AD', 'Joi
  for (i in 1:nc)
   {
     if (!silent) 	cat (i, " ")
-    gg<- shift2gg(GG[,i], ns)
-    if(method=='AD')    		 w<- opt.punc(y, gg, oshare=oshare, pool=pool, hess=hess, ...)
-    else if (method=='Joint')    w<- opt.joint.punc(y, gg, oshare=oshare, pool=pool, hess=hess, ...)
+    # the different gg for AD and J is required for the interpretation of the "shift" parameters to be the same across parameterizations
+    ggA<- shift2gg(GG[,i], ns)
+    ggJ<- shift2gg(GG[,i]+1, ns)
+    if(method=='AD')    		 w<- opt.punc(y, ggA, oshare=oshare, pool=pool, hess=hess, ...)
+    else if (method=='Joint')    w<- opt.joint.punc(y, ggJ, oshare=oshare, pool=pool, hess=hess, ...)
     logl[i]<- w$logL
     wl[[i]]<- w
   }

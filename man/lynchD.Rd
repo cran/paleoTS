@@ -3,7 +3,7 @@
 
 \title{ Compute rate metric from Lynch (1990) }
 \description{
- This function computes D, the rate metric proposed by Lynch (1990).  This metric derives from the random walk model, with \code{D = Vstep/Vp}, where \code{Vstep} is the
+ This function computes D, the rate metric proposed by Lynch (1990).  This metric derives from the random walk model, with \code{D = Vstep/(2Vp)}, where \code{Vstep} is the
  step variance of the unbiased random walk, and \code{Vp} is the within sample variance, pooled among samples.  Under mutation - drift equilibrium, \code{D} is expected to range
  approximately between 5e-5 and 5e-3. 
 }
@@ -33,7 +33,7 @@ lynchD(y, gen.per.t = 1e+06, pool = TRUE, method=c('AD', 'Joint'), ...)
 }
 
 \references{ 
-	Lynch, M. 1990. The rate of morphological evolution in mammals from the standpoint of the neutral expectation. \emph{The American Naturalist} \bold{ 136}:727--741. 
+	Lynch, M. 1990. The rate of morphological evolution in mammals from the standpoint of the neutral expectation. \emph{The American Naturalist} \bold{ 136}:727--741. \cr
 	Hunt, G. 2008. Evolutionary patterns within fossil lineages: model-based assessment of modes, rates, punctuations and process..  \emph{In} R.K. Bambach and P.H. Kelley, eds.  From Evolution to Geobiology: Research Questions Driving Paleontology at the Start of a New Century:578--601. \cr}
 
 \author{ Gene Hunt }
