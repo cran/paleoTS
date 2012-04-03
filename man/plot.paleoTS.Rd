@@ -6,7 +6,7 @@
   Plots paleontological time series, showing trait means (with error bars) over time. 
 }
 \usage{
-\method{plot}{paleoTS}(x, nse = 1, pool = FALSE, add = FALSE, modelFit=NULL, pch=19, lwd=1.5, ...)
+\method{plot}{paleoTS}(x, nse = 1, pool = FALSE, add = FALSE, modelFit=NULL, pch=19, lwd=1.5, ylim=NULL, ...)
 }
 \arguments{
   \item{x}{ a \code{paleoTS} object }
@@ -16,10 +16,11 @@
   \item{modelFit}{ optional \code{paleoTSfit} object with model fit results to add to plot }
   \item{pch}{plotting symbol}
   \item{lwd}{line width for plotting}
+  \item{ylim}{y limit for plotting (optional)}
   \item{\dots}{ other arguments sent to \code{plot} }
 }
 \details{
- If \code{modelFite} is not NULL, then the expectations of that model, plus 95% probability intervals, are added to the plot.    
+ If \code{modelFit} is not NULL, then the expectations of that model, plus 95% probability intervals, are added to the plot.    
 }
 
 \value{

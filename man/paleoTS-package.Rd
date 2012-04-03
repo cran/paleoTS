@@ -12,7 +12,7 @@ This package facilitates analysis of paleontological sequences of trait values f
 \tabular{ll}{
 Package: \tab paleoTS\cr
 Type: \tab Package\cr
-Version: \tab 0.4-2\cr
+Version: \tab 0.4-3\cr
 Date: \tab 2011-12-22\cr
 License: \tab GPL 2\cr
 }

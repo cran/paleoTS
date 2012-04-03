@@ -63,7 +63,7 @@ Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanatio
 \seealso{ \code{\link{sim.sgs}}, \code{\link{opt.GRW}}, \code{\link{fitGpunc}}, \code{\link{as.paleoTSfit}}  }
 
 \examples{
- x<- sim.sgs(ns=c(15, 10, 15), ms=0.5, vs=0.3)
+ x<- sim.sgs(ns=c(10, 10, 10), ms=0.5, vs=0.3, omega=0.1)
  plot(x)
  # compare sampled punctuation to uniform unbiased random walk
  w.sgs<- fit.sgs(x, minb=8, model="GRW")

@@ -8,19 +8,24 @@
 }
 
 \usage{
-fit3models(y, pool = TRUE, silent = FALSE, method=c("AD", "Joint"))
+fit3models(y, silent = FALSE, method=c("AD", "Joint"), ...)
 }
 
 \arguments{
   \item{y}{ a \code{paleoTS} object }
-  \item{pool}{ logical, if TRUE, variances are pooled across samples }
   \item{silent}{ logical, if TRUE, results are not printed }
   \item{method}{ parameterization to use: see Details}
+  \item{\dots}{ further arguments, passed to optimization functions}
 }
 
 \details{
 The \code{method} argument refers to different parameterizations of the model. See the documentation under \code{\link{opt.joint.GRW}} for more information about the differences between these parameterizations.  
 }
+
+\note{
+For the \dots argument, only the arguments \code{pool} and \code{hess} will work; specifying \code{meth} in particular will cause an error.  If finer control is needed, the optimization functions should be used individually.
+}
+
 \value{
   If \code{silent=FALSE}, function \code{fit3models} prints and returns a dataframe with log-likelihoods, numbers of parameters, AICc scores and Akaike weights for the three models.
   If \code{silent=TRUE}, a list is returned with element 'modelFits' that has the same dataframe, plus an element 'parameters' with the sub-elements for all the parameter estimates.

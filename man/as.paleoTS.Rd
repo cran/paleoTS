@@ -7,7 +7,7 @@
   A class for storing information on evolutionary time-series data.
 }
 \usage{
-as.paleoTS(mm, vv, nn, tt, MM = NULL, genpars = NULL, label = "", start.age = NULL, oldest="first", reset.time=FALSE)
+as.paleoTS(mm, vv, nn, tt, MM = NULL, genpars = NULL, label = NULL, start.age = NULL, oldest=c("first", "last"), reset.time=FALSE)
 read.paleoTS(file = NULL, oldest = "first", reset.time=TRUE, ...)
 }
 
@@ -28,7 +28,7 @@ read.paleoTS(file = NULL, oldest = "first", reset.time=TRUE, ...)
 \details{
    Function \code{as.paleoTS()} combines time series data into an object of class \code{paleoTS}.  This function will usually not be used directly; \code{read.paleoTS()} is more convenient for getting the relevant data from text files.
 \cr
-  If no file name is given for \code{read.paleoTS}, the user will be prompted to select a file using the \code{file.choose()} interactive prompt.  Samples are assumed to be ordered from oldest to youngest (if not, use \code{oldest="last"}), with ages indicating time elapsed from the beginning of the sequence, rather than geological age before the present.  If sample ages decrease through the sequence, as if given in millions of years ago, \code{tt} will automatically be converted to time elapsed from the beginning of the sequence. Generally, setting \code{reset.time} = 0 is good practice.
+  If no file name is given for \code{read.paleoTS}, the user will be prompted to select a file using the \code{file.choose()} interactive prompt.  Samples are assumed to be ordered from oldest to youngest (if not, use \code{oldest="last"}), with ages indicating time elapsed from the beginning of the sequence, rather than geological age before the present.  If sample ages decrease through the sequence, as if given in millions of years ago, \code{tt} will automatically be converted to time elapsed from the beginning of the sequence. Generally, setting \code{reset.time} = TRUE is good practice.
 }
 
 \note{

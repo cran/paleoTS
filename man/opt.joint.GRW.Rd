@@ -50,8 +50,8 @@ opt.joint.OU(x, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = 
 \note{
 These optimizations are performed using a parameterization of the GRW, URW and Stasis models that differs from the functions \code{opt.GRW},
 \code{opt.URW}, and \code{opt.Stasis}.  Those functions models are fit from the \emph{differences} between adjacent samples, 
-removing the autocorrelation in the time-series.  In the joint parameterization implemented in functions \code{opt.alt.GRW}, \code{opt.alt.URW}, 
-\code{opt.alt.Stasis} and \code{opt.alt.OU}, models are fit using the actual sample values, with the autocorrelation among samples accounted for in 
+removing the autocorrelation in the time-series.  In the joint parameterization implemented in functions \code{opt.joint.GRW}, \code{opt.joint.URW}, 
+\code{opt.joint.Stasis} and \code{opt.joint.OU}, models are fit using the actual sample values, with the autocorrelation among samples accounted for in 
 the log-likelihood function.  For each model, the joint distribution of sample means is multivariate normal, with means 
 and variance-covariances determined by evolutionary parameters and sampling errors.  Note that the Orstein-Uhlenbeck model is at present only implemented 
 using the joint parameterization. \cr
@@ -64,7 +64,7 @@ distinguish true evolutionary patterns from sampling error, and is less prone to
 The general random walk (\code{GRW}) and unbiased random walk (\code{URW}) models require an additional parameter that specifies the phenotype at the start of 
 the sequence.  This parameter is called \code{anc} in the vector of returned parameter estimates, and in general is rather similar
 to the trait value of the first sample in the sequence.  This extra parameter is not necessary for the stasis model because the initial value does not 
-figure into the likelihood calculations (which are comletely determined by the position of optimum and the variance around this optimum).
+figure into the likelihood calculations (which are completely determined by the position of optimum and the variance around this optimum).
 }
 
 \section{Warning}{
