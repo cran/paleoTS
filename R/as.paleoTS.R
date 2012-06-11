@@ -1,6 +1,6 @@
 as.paleoTS <-
 function (mm, vv, nn, tt, MM = NULL, genpars = NULL, label = NULL, 
-    start.age = NULL, oldest = c("first", "last"), reset.time = FALSE) 
+    start.age = NULL, oldest = c("first", "last"), reset.time = TRUE) 
 {
     oldest<- match.arg(oldest)
     y <- list(mm = mm, vv = vv, nn = nn, tt = tt, MM = MM, genpars = genpars, 
@@ -19,7 +19,7 @@ function (mm, vv, nn, tt, MM = NULL, genpars = NULL, label = NULL,
         if (y$tt[1] != 0) {
             sa <- y$tt[1]
             if (!is.null(y$start.age) && sa != y$start.age) 
-                stop("Age of first sample does not match start.age")
+                stop("Age of first sample does not match start.age argument")
             if(timeDir == "decreasing")	y$tt <- sa - y$tt   # decreasing ages (e.g., Ma)  
             else					    y$tt <- y$tt - sa   # increasing ages (elapsed time)
             y$start.age<- sa	

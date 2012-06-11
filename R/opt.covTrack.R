@@ -20,6 +20,7 @@ function (y, z, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE)
     if (pool) y <- pool.var(y, ret.paleoTS = TRUE)
     if (is.null(cl$ndeps)) 
         cl$ndeps <- abs(p0/10000)
+    cl$ndeps[cl$ndeps==0]<- 1e-8  ## will fail o.w. if any p0=0
     if (meth == "L-BFGS-B") 
         w <- optim(p0, fn=logL.covTrack, method = meth, lower = c(NA, 0), control = cl, hessian = hess, y=y, z=z)
     else  w<- optim(p0, fn=logL.covTrack, method=meth, control=cl, hessian=hess, y=y, z=z)
@@ -29,4 +30,5 @@ function (y, z, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE)
     else w$se <- NULL
     
 	wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='TrackCovariate', method='AD', K=2, n=length(y$mm)-1, se=w$se)
+	return(wc)
 }

@@ -7,7 +7,7 @@
   A class for storing information on evolutionary time-series data.
 }
 \usage{
-as.paleoTS(mm, vv, nn, tt, MM = NULL, genpars = NULL, label = NULL, start.age = NULL, oldest=c("first", "last"), reset.time=FALSE)
+as.paleoTS(mm, vv, nn, tt, MM = NULL, genpars = NULL, label = NULL, start.age = NULL, oldest=c("first", "last"), reset.time=TRUE)
 read.paleoTS(file = NULL, oldest = "first", reset.time=TRUE, ...)
 }
 
@@ -45,6 +45,11 @@ read.paleoTS(file = NULL, oldest = "first", reset.time=TRUE, ...)
   \item{label}{ optional label describing time series data }
   \item{start.age}{ optional, indicating age of oldest sample (e.g., in millions of years ago) }
 }
+
+\section{Warning}{
+Some functions do assume that \code{reset.time=TRUE}, that is that time (\code{tt}) starts at zero and increases from there.  Do not change this argument unless you know what you are doing. 		
+}
+
 \references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. }
 \author{ Gene Hunt }
 

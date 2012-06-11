@@ -44,7 +44,7 @@ Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanatio
  plot(x)
  w.shift<- opt.GRW.shift(x, ng=2, model=1)
  print (w.shift$par)
- print (w.shift$shift.start)  # estimated first sample in second segment
+ print (w.shift$shift1)  # estimated first sample in second segment
 }
 
 \keyword{models}

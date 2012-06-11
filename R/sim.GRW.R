@@ -17,6 +17,6 @@ function (ns=20, ms=0, vs=0.1, vp=1, nn=rep(20,ns), tt=0:(ns-1))
  gp<- c(ms, vs)
  names(gp)<- c("mstep", "vstep")
  
- res<- as.paleoTS(mm=mm, vv=vv, nn=nn, tt=tt, MM=MM, genpars=gp, label="Created by sim.GRW()") 
+ res<- as.paleoTS(mm=mm, vv=vv, nn=nn, tt=tt, MM=MM, genpars=gp, label="Created by sim.GRW()", reset.time=FALSE) 
  return(res)
 }

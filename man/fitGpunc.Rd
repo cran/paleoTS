@@ -82,12 +82,10 @@ Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanatio
 
 \examples{
 x<- sim.punc(theta=c(0,5), ns=c(20,20), omega=c(0.5,0.5), vp=c(0.2,0.2))
-plot(x)
 w<- fitGpunc(x, ng=2, minb=7, pool=TRUE, oshare=TRUE)
 print (w$parameters)
-## add lines to show the solution
-segments(x$tt[1], w$parameters[1], x$tt[w$parameters[4]-1], w$parameters[1], lty=1, col="red", lwd=5)
-segments(x$tt[w$parameters[4]], w$parameters[2], x$tt[length(x$tt)], w$parameters[2], lty=1, col="red", lwd=5)
+## plot using modelFit argument to show the solution
+plot(x, modelFit=w)
 }
 
 \keyword{models}

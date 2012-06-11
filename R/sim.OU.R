@@ -23,7 +23,7 @@ function (ns=20, anc=0, theta=10, alpha=0.3, vs=0.1, vp=1, nn=rep(20, ns), tt=0:
     gp <- c(anc, theta, alpha, vs)
     names(gp) <- c("anc", "theta", "alpha", "vs")
     res <- as.paleoTS(mm = mm, vv = vv, nn = nn, tt = tt, MM = MM, 
-        genpars = gp, label = "Created by sim.OU()")
+        genpars = gp, label = "Created by sim.OU()", reset.time=FALSE)
 
     return(res)
 }
