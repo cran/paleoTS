@@ -7,7 +7,7 @@ Log-Rate, Log-Interval (LRI) method of Gingerich
 
 \description{
 Gingerich (1993) introduced a method that plots on log-log scale, the rate and interval for each pair of samples in an evolutionary sequence.  
-On this plot, the slope is interpreted as an indicator of evolutionary mode (-1 for stasis, 0.5 for random walk, 0 for directional), and the intercept is interpreted as a measur of the rate of evolution over one generation.
+On this plot, the slope is interpreted as an indicator of evolutionary mode (-1 for stasis, 0.5 for random walk, 0 for directional), and the intercept is interpreted as a measure of the rate of evolution over one generation.
 }
 
 \usage{
@@ -31,6 +31,7 @@ A named vector of three elements: \code{Intercept}, \code{slope} and \code{Gener
 \references{
 Gingerich, P.D. 1993. Quantification and comparison of evolutionary rates. \emph{American Journal of Science} \bold{ 293-A}:453--478. \cr
 Gingerich, P.D. 2009. Rates of evolution. \emph{Annual Review of Ecology Evolution and Systematics} \bold{ 40}:657--675. 
+Hunt, G. 2012. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 38}:351--373.  \cr
 }
 
 \author{
@@ -39,7 +40,7 @@ Gene Hunt
 
 \note{
 This method was important in attempts to disentangle evolutionary tempo and mode.  I view likelihood-based methods as more informative,
- and in particular the estimation of 'Generational Rates' using LRI is compromised by sampling error (see the example).
+ and in particular the estimation of 'Generational Rates' using LRI is compromised by sampling error (see Hunt [2012] and the example below).
 }
 
 

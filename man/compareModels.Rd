@@ -44,8 +44,8 @@ Gene Hunt
 
 \examples{
 	x<- sim.GRW(ns=40)
-	m1<- opt.URW(x)
-	m2<- opt.GRW(x)
+	m1<- fitSimple(x, model="URW")
+	m2<- fitSimple(x, model="GRW")
 	m3<- fitGpunc(x, ng=2, minb=10)
 	compareModels(m1,m2,m3)
 }

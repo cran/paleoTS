@@ -8,7 +8,9 @@
 Generates an evolutionary time-series according to an Orstein-Uhlenbeck (OU) model. }
 
 \usage{
-sim.OU(ns = 20, anc = 0, theta = 10, alpha = 0.3, vs = 0.1, vp = 1, nn = rep(20, ns), tt = 0:(ns-1))
+sim.OU(ns = 20, anc = 0, theta = 10, alpha = 0.3, vs = 0.1, vp = 1, 
+       nn = rep(20, ns), tt = 0:(ns-1))
+
 ou.M(anc, theta, aa, tt)
 ou.V(vs, aa, tt)
 }
@@ -33,8 +35,7 @@ means and variances of an OU process.
 }
 
 \value{
- A \code{paleoTS} object for \code{sim.OU}.  For \code{ou.M} and \code{ou.V}, a vector of means or variances, 
-respectively, are generated. 
+ A \code{paleoTS} object for \code{sim.OU}.  For \code{ou.M} and \code{ou.V}, a vector of means or variances, respectively, are generated. 
 }
 
 \references{ 

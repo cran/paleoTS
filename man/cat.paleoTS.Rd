@@ -14,7 +14,7 @@ dynamics.  They generally will not be used directly by users.
 \usage{
 cat.paleoTS(y)
 split4punc(y, gg, overlap=TRUE)
-shifts(ns, ng, minb=5)
+shifts(ns, ng, minb=7)
 shift2gg(ss, ns)
 }
 
@@ -54,7 +54,8 @@ Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanatio
 \seealso{ \code{\link{fitGpunc}}, \code{\link{sim.punc}}, \code{\link{opt.GRW.shift}} }
 
 \examples{
- # show all possible shift points for 20 samples divided into two semgments (assuming each has at least 6 samples)
+ # show all possible shift points for 20 samples divided into two semgments 
+ # (assuming each has at least 6 samples)
  GG<- shifts(ns=20, ng=2, minb=6)
  print (GG)
  # show resulting grouping vector from first of these

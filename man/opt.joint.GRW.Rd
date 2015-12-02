@@ -2,24 +2,26 @@
 \alias{opt.joint.GRW}
 \alias{opt.joint.URW}
 \alias{opt.joint.Stasis}
+\alias{opt.joint.StrictStasis}
 \alias{opt.joint.OU}
 
 \title{ Optimize evolutionary models (joint parameterization) }
 
 \description{
-Functions to find maximum likelihood solutions to general random walk (\code{opt.joint.GRW}), unbiased random walk (\code{opt.joint.URW}), stasis (\code{opt.joint.Stasis}) and OU models (\code{opt.joint.OU}).
+Functions to find maximum likelihood solutions to general random walk (\code{opt.joint.GRW}), unbiased random walk (\code{opt.joint.URW}), stasis (\code{opt.joint.Stasis}), strict stasis (\code{opt.joint.StrictStasis}) and OU models (\code{opt.joint.OU}).
 }
 
 \usage{
-opt.joint.GRW(x, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
-opt.joint.URW(x, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
-opt.joint.Stasis(x, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
-opt.joint.OU(x, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
+opt.joint.GRW(y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
+opt.joint.URW(y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
+opt.joint.Stasis(y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
+opt.joint.StrictStasis(y, pool = TRUE, cl = list(fnscale = -1), hess = FALSE) 
+opt.joint.OU(y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
 }
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{ a \code{paleoTS} object }
+  \item{y}{ a \code{paleoTS} object }
   \item{pool}{ logical indicating whether to pool variances across samples }
   \item{cl}{ control list, passed to function \code{optim} }
   \item{meth}{ optimization method, passed to function \code{optim} }
@@ -56,7 +58,7 @@ the log-likelihood function.  For each model, the joint distribution of sample m
 and variance-covariances determined by evolutionary parameters and sampling errors.  Note that the Orstein-Uhlenbeck model is at present only implemented 
 using the joint parameterization. \cr
 
-For details on this parameterization of the models, see the paper Hunt, et al (2008).  In general, 
+For details on this parameterization of the models, see Hunt, et al (2008).  In general, 
 the two different parameterizations yield similar results as to the relative support for different models.  In my experience, the two approaches tend to differ appreciably 
 only with relatively long sequences that have small differences between consecutive samples.  In these circumstances, the alternative parameterization is better able to 
 distinguish true evolutionary patterns from sampling error, and is less prone to falsely favoring the Stasis model. \cr

@@ -2,7 +2,11 @@
 \alias{opt.covTrack}
 \alias{opt.covTrack.Mult}
 \alias{logL.covTrack}
-\alias{logL.Mult.covTrack}
+\alias{logL.Mult.covTrack} 
+\alias{opt.joint.covTrack} 
+\alias{opt.joint.covTrack.Mult} 
+\alias{logL.joint.covTrack} 
+\alias{logL.Mult.joint.covTrack} 
 
 \title{
 Covariate-tracking model
@@ -13,9 +17,14 @@ Functions to fit a model in which a phenotpyic trait tracks changes in a measure
 }
 \usage{
 opt.covTrack(y, z, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
+opt.joint.covTrack(y, z, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE)
 opt.covTrack.Mult(yl, zl, cl = list(fnscale = -1), pool = TRUE, hess = FALSE)
+opt.joint.covTrack.Mult(yl, zl, cl=list(fnscale=-1), pool=TRUE, hess=FALSE)
+
 logL.covTrack(p, y, z)
+logL.joint.covTrack(p, y, z)
 logL.Mult.covTrack(p, yl, zl)
+logL.Mult.joint.covTrack(p, yl, zl)
 }
 
 \arguments{
@@ -31,9 +40,9 @@ logL.Mult.covTrack(p, yl, zl)
 }
 
 \details{
-These functions model the changes in a phenotpyic trait as linear functions of changes in a covariate, \code{z}.
-Each change in z (=dz) yields an expected change in the trait equal to \emph{b*dz}, with normally distributed residual variance \emph{evar}.
-If \code{z} is equal in length to the trait sequence, first differences are taken.  If \code{z} is of length one less than the trait sequence, it is assumed that the user has already taken the appropriate difference.
+These functions fit a model in trait evolution tracks a covariate (\emph{z}) over time.  There are two parameterizations: "Joint" and "AD"; all functions without "joint" in their names use the "AD" parameterization.  The "joint" parameterization assumes the trait values are a linear function of the covariate, whereas the "AD" parameterization assumes that \emph{changes} in the traits are a linear function of \emph{changes} in the covariate.
+
+For the "AD" parameterization, \code{z} can be equal in length to y, or have one fewer element.  If the former, first differences are taken.  If \code{z} is of length one less than the trait sequence, it is assumed that the user has already taken the appropriate difference.  For the "Joint" parameterization, \code{z} must be of the same length as \code{y}. 
 
 For the \code{Mult} versions of these, the function estimates the model assuming the \emph{same} relationship exists across all sequences.
 }
@@ -50,14 +59,17 @@ Hunt, et al. 2010. Climate-driven body-size trends in the ostracod fauna of the 
 Gene Hunt
 }
 
-\note{
-These functions use the "AD" parameterization.
+\section{Note}{
+	The convenience function \code{fitSimple} can also be called to fit this model.	
+}
+
+\section{Warning}{
+The "Joint" parameterization does not de-trend the series in any way, and so is vulnerable to type I error if both \code{y} and \code{z} are trended.  If so, an warning message is given.
 }
 
 
-
 \seealso{
-\code{\link{as.paleoTSfit}}, \code{\link{opt.GRW}}
+\code{\link{as.paleoTSfit}}, \code{\link{opt.GRW}}, \code{\link{fitSimple}}
 }
 
 \examples{

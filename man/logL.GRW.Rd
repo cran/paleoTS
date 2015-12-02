@@ -2,16 +2,18 @@
 \alias{logL.GRW}
 \alias{logL.URW}
 \alias{logL.Stasis}
+\alias{logL.StrictStasis}
 
 \title{ Compute log-likelihoods for random walk and stasis models }
 
 \description{
-  Returns log-likelihood for general random walk \code{logL.GRW}, unbiased random walk \code{logL.URW}, and stasis \code{logL.Stasis} models.
+  Returns log-likelihood for general random walk \code{logL.GRW}, unbiased random walk \code{logL.URW}, and stasis \code{logL.Stasis} models for the \code{AD} parameterization.
 }
 \usage{
 logL.GRW(p, y)
 logL.URW(p, y)
 logL.Stasis(p, y)
+logL.StrictStasis(p, y)
 }
 
 \arguments{
@@ -29,6 +31,9 @@ logL.Stasis(p, y)
 \references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. }
 \author{ Gene Hunt }
 
+\note{
+	The user will not generally need to call these functions directly; they are used by the optimization functions.
+}
 
 \seealso{ \code{\link{mle.GRW}}, \code{\link{opt.GRW}} }
 

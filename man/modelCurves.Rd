@@ -31,7 +31,7 @@ Gene Hunt
 }
 
 \note{
-If the \code{modelName} of \code{w} is not recognized, \code{ee} is set to NA and nothing is added to the plot.
+If the \code{modelName} of \code{w} is not recognized, \code{ee} is set to NA and nothing is added to the plot.  At present, the following models are implemented: GRW, URW, Stasis, unsampled punctuations (as by \code{fitGpunc}).
 }
 
 \examples{

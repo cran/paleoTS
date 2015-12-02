@@ -11,9 +11,12 @@
 }
 
 \usage{
-sim.punc(ns = c(10, 10), theta = c(0, 1), omega=rep(0,length(theta)), nn = rep(30, sum(ns)), tt = 0:(sum(ns)-1), vp = 1)
-sim.sgs(ns = c(20, 20, 20), theta = 0, omega = 1, ms = 1, vs = 0.1, nn=rep(30, sum(ns)), tt = 0:(sum(ns)-1), vp = 1)
-sim.GRW.shift(ns = c(10, 10), ms = c(0, 1), vs = c(0.5, 0.5), nn = rep(30, sum(ns)), tt = 0:(sum(ns)-1), vp = 1)
+sim.punc(ns = c(10, 10), theta = c(0, 1), omega=rep(0,length(theta)), 
+         nn = rep(30, sum(ns)), tt = 0:(sum(ns)-1), vp = 1)
+sim.sgs(ns = c(20, 20, 20), theta = 0, omega = 1, ms = 1, vs = 0.1, 
+        nn=rep(30, sum(ns)), tt = 0:(sum(ns)-1), vp = 1)
+sim.GRW.shift(ns = c(10, 10), ms = c(0, 1), vs = c(0.5, 0.5), 
+              nn = rep(30, sum(ns)), tt = 0:(sum(ns)-1), vp = 1)
 }
 
 \arguments{

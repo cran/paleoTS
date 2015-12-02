@@ -6,7 +6,7 @@
 \description{
  These functions compute information criteria (\code{IC}) or Akaike weights based on information scores (\code{akaike.wts}).
  \cr
- Function \code{IC} is used internally by the optimization functions and generally will not need to be called directly by the user.
+ Function \code{IC} is used internally and generally will not need to be called directly by the user.
 }
 \usage{
 IC(logL, K, n = NULL, method = c("AICc", "AIC", "BIC"))

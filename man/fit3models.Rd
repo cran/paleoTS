@@ -1,14 +1,18 @@
 \name{fit3models}
 \alias{fit3models}
+\alias{fit4models}
+\alias{fit9models}
 
-\title{Do model fits for three standard evolutionary models}
+\title{Do model fits for standard sets of evolutionary models}
 
 \description{
-  Functions fits three models to an evolutionary time series: (1) general random walk (=directional evolution), (2) unbiased random walk, and (3) stasis. 
+  \code{fit3models} fits to an evolutionary time series: (1) general random walk (=directional evolution), (2) unbiased random walk, and (3) stasis.  \code{fit4models} adds the model of Strict Stasis, and \code{fit9models} adds models with complex evolutionary dynamics from Hunt et al. (2015).
 }
 
 \usage{
-fit3models(y, silent = FALSE, method=c("AD", "Joint"), ...)
+fit3models(y, silent = FALSE, method=c("Joint", "AD"), ...)
+fit4models(y, silent = FALSE, method=c("Joint", "AD"), ...)
+fit9models(y, silent = FALSE, method=c("Joint", "AD"), ...)
 }
 
 \arguments{
@@ -34,12 +38,13 @@ For the \dots argument, only the arguments \code{pool} and \code{hess} will work
 \references{ 
 	Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. \cr
 	Hunt, G. 2008. Evolutionary patterns within fossil lineages: model-based assessment of modes, rates, punctuations and process..  \emph{In} R.K. Bambach and P.H. Kelley, eds.  From Evolution to Geobiology: Research Questions Driving Paleontology at the Start of a New Century:578--601. \cr
+	Hunt, G., M. J. Hopkins, and S. L. Lidgard 2015. Simple versus complex models of trait evolution and stasis as a response to environmental change.  \emph{PNAS} \bold{ 112}:4885--4890. \cr
 	}
 
 
 \author{ Gene Hunt }
 
-\seealso{ \code{\link{opt.GRW}}, \code{\link{opt.joint.GRW}} }
+\seealso{ \code{\link{opt.GRW}}, \code{\link{opt.joint.GRW}}, \code{\link{fitModeShift}} }
 
 \examples{
  ## show difference in parameterizations
@@ -51,7 +56,8 @@ For the \dots argument, only the arguments \code{pool} and \code{hess} will work
 
  ## example 2, longer & noisy directional walk
  ## joint parameterization often is better at correctly favoring GRW under these conditions
- x2<- sim.GRW(ns=20, ms=0.2, vs=0.1)  # step variance relatively low compared to sampling error == Noisy
+ ## step variance relatively low compared to sampling error == Noisy
+ x2<- sim.GRW(ns=20, ms=0.2, vs=0.1, vp=10)  
  res2AD<- fit3models(x2, method='AD')
  res2Joint<- fit3models(x2, method='Joint')
 

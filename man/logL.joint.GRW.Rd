@@ -2,24 +2,26 @@
 \alias{logL.joint.GRW}
 \alias{logL.joint.URW}
 \alias{logL.joint.Stasis}
+\alias{logL.joint.StrictStasis}
 \alias{logL.joint.OU}
 
 \title{ Log-likelihoods for evolutionary models (joint parameterization) }
 
 \description{
-Returns log-likelihood for general random walk (\code{logL.joint.GRW}), unbiased random walk (\code{logL.joint.URW}), stasis (\code{logL.joint.Stasis}) and OU (\code{logL.joint.OU}) models.
+Returns log-likelihood for general random walk (\code{logL.joint.GRW}), unbiased random walk (\code{logL.joint.URW}), stasis (\code{logL.joint.Stasis}) and OU (\code{logL.joint.OU}) models for the \code{Joint} parameterization.
 }
 
 \usage{
-logL.joint.GRW(p, x)
-logL.joint.URW(p, x)
-logL.joint.Stasis(p, x)
-logL.joint.OU(p, x)
+logL.joint.GRW(p, y)
+logL.joint.URW(p, y)
+logL.joint.Stasis(p, y)
+logL.joint.StrictStasis(p, y)
+logL.joint.OU(p, y)
 }
 
 \arguments{
   \item{p}{ a vector of parameters }
-  \item{x}{ a \code{paleoTS} object }
+  \item{y}{ a \code{paleoTS} object }
 }
 
 \details{
@@ -36,6 +38,9 @@ logL.joint.OU(p, x)
 	}
 \author{ Gene Hunt }
 
+\note{
+	The user will not generally need to call these functions directly; they are used by the optimization functions.
+}
 
 \section{Warning}{
 Because these functions parameterize the models differently, their log-likelihoods are not comparable to those that do not use the joint parameterization.

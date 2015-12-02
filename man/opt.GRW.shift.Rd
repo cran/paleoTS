@@ -9,7 +9,7 @@ shift at one or more points in the sequence.
 }
 
 \usage{
-opt.GRW.shift(y, ng = 2, minb = 5, model = 1, pool = TRUE, silent = FALSE)
+opt.GRW.shift(y, ng = 2, minb = 7, model = 1, pool = TRUE, silent = FALSE)
 }
 
 \arguments{
@@ -38,13 +38,15 @@ Hunt, G. 2008. Gradual or pulsed evolution: when should punctuational explanatio
 }
 \author{ Gene Hunt}
 
-\seealso{ \code{\link{sim.GRW.shift}}, \code{\link{opt.GRW}}, \code{\link{opt.RW.Mult}}, \code{\link{as.paleoTSfit}} }
+\seealso{ \code{\link{sim.GRW.shift}}, \code{\link{opt.GRW}}, \code{\link{fitMult}}, \code{\link{as.paleoTSfit}} }
 \examples{
  x<- sim.GRW.shift(ns=c(20,20), ms=c(0,1), vs=c(0.2, 0.2))
  plot(x)
- w.shift<- opt.GRW.shift(x, ng=2, model=1)
- print (w.shift$par)
- print (w.shift$shift1)  # estimated first sample in second segment
+ m.urw<- fitSimple(x, model="URW", method="AD")
+ m.shift<- opt.GRW.shift(x, model=1)	# only AD method is available for this model
+ compareModels(m.urw, m.shift)
+ shift.time<- x$tt[m.shift$parameters["shift1"]]
+ abline(v=shift.time, col="red", abline=3)
 }
 
 \keyword{models}

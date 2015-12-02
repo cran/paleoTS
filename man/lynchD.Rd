@@ -8,7 +8,7 @@
  approximately between 5e-5 and 5e-3. 
 }
 \usage{
-lynchD(y, gen.per.t = 1e+06, pool = TRUE, method=c('AD', 'Joint'), ...)
+lynchD(y, gen.per.t = 1e+06, pool = TRUE, method=c('Joint', 'AD'), ...)
 }
 \arguments{
   \item{y}{ a \code{paleoTS} object }
@@ -20,7 +20,7 @@ lynchD(y, gen.per.t = 1e+06, pool = TRUE, method=c('AD', 'Joint'), ...)
 \details{
  The \code{gen.per.t} argument indicates the number of organismal generations for each unit of time with which the time-series \code{y} was measured.  For example, is \code{y$tt} is measured in millions of years, and the species has annual generations, \code{gen.per.t} would be 1e6.
  For difference between the \code{method} choices, see Hunt (2008).
-\cr
+ 
  Estimation of \code{Vstep} is done on the original time scale of \code{y}, and then the values are converted to generational time scales using \code{gen.per.t}.  This is for numerical reasons, as it avoids computations on possible very low numbers. 
 }
 \value{
@@ -34,7 +34,9 @@ lynchD(y, gen.per.t = 1e+06, pool = TRUE, method=c('AD', 'Joint'), ...)
 
 \references{ 
 	Lynch, M. 1990. The rate of morphological evolution in mammals from the standpoint of the neutral expectation. \emph{The American Naturalist} \bold{ 136}:727--741. \cr
-	Hunt, G. 2008. Evolutionary patterns within fossil lineages: model-based assessment of modes, rates, punctuations and process..  \emph{In} R.K. Bambach and P.H. Kelley, eds.  From Evolution to Geobiology: Research Questions Driving Paleontology at the Start of a New Century:578--601. \cr}
+	Hunt, G. 2008. Evolutionary patterns within fossil lineages: model-based assessment of modes, rates, punctuations and process..  \emph{In} R.K. Bambach and P.H. Kelley, eds.  From Evolution to Geobiology: Research Questions Driving Paleontology at the Start of a New Century:578--601. \cr
+	Hunt, G. 2012. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 38}:351--373.  \cr	
+	}
 
 \author{ Gene Hunt }
 

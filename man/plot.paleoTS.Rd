@@ -6,12 +6,13 @@
   Plots paleontological time series, showing trait means (with error bars) over time. 
 }
 \usage{
-\method{plot}{paleoTS}(x, nse = 1, pool = FALSE, add = FALSE, modelFit=NULL, pch=19, lwd=1.5, ylim=NULL, ...)
+\method{plot}{paleoTS}(x, nse = 1, pool = FALSE, add = FALSE, modelFit=NULL, 
+                       pch=19, lwd=1.5, ylim=NULL, ...)
 }
 \arguments{
   \item{x}{ a \code{paleoTS} object }
   \item{nse}{ size of error bars, in standard errors }
-  \item{pool}{ logical, indicating if should pool variances among samples in computing standard errors }
+  \item{pool}{ logical, indicating if should pool variances among samples in computing standard errors for plotting }
   \item{add}{ logical, if \code{TRUE} data are added to existing plot }
   \item{modelFit}{ optional \code{paleoTSfit} object with model fit results to add to plot }
   \item{pch}{plotting symbol}
@@ -20,7 +21,7 @@
   \item{\dots}{ other arguments sent to \code{plot} }
 }
 \details{
- If \code{modelFit} is not NULL, then the expectations of that model, plus 95% probability intervals, are added to the plot.    
+ If \code{modelFit} is not NULL, then \code{modelCurves} will be used to generate and plot the expectations and 95 percent probability interval of that model.    
 }
 
 \value{
@@ -29,7 +30,7 @@
 
 \author{ Gene Hunt }
 
-\seealso{ \code{\link{as.paleoTS}} }
+\seealso{ \code{\link{as.paleoTS}}, \code{\link{modelCurves}} }
 
 \examples{
 y <- sim.GRW(50, 0, 1)

@@ -12,8 +12,11 @@
 }
 
 \usage{
-fit.sgs(y, minb = 5, oshare = TRUE, pool = TRUE, silent = FALSE, hess = FALSE, meth = "L-BFGS-B", model = "GRW")
-opt.sgs(y, gg, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE, oshare = TRUE, model = "GRW")
+fit.sgs(y, minb = 7, oshare = TRUE, pool = TRUE, silent = FALSE, hess = FALSE,
+        meth = "L-BFGS-B", model = "GRW")
+
+opt.sgs(y, gg, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE, 
+        oshare = TRUE, model = "GRW")
 logL.sgs(p, y, gg, model = "GRW")
 logL.sgs.omega(p, y, gg, model = "GRW")
 }
@@ -34,8 +37,8 @@ logL.sgs.omega(p, y, gg, model = "GRW")
 
 \details{
   These functions are used to fit a model with a sampled punctuation.
-  Formally, this is a three-segment model that starts as Stasis, transitions to a punctuation of directional evolution (general random walk) or
-  unconstrained (unbiased random walk). The name comes from an abbreviation of the three modes in the segments: \emph{S}tasis - \emph{G}eneral Random Walk - \emph{S}tasis,
+  Formally, this is a three-segment model that starts as stasis, transitions to a period of directional evolution (general random walk) or
+  unconstrained (unbiased random walk), and then returns to stasis. The name comes from an abbreviation of the three modes in the segments: \emph{S}tasis - \emph{G}eneral Random Walk - \emph{S}tasis,
   bearing in mind that the general random walk can be changed to an unbiased random walk.
   Users are likely only to use \code{fit.sgs}, which will calls the other functions in order to find the best parameter
   estimates and shift points for the segments.  

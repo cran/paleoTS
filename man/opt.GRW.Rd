@@ -2,6 +2,7 @@
 \alias{opt.GRW}
 \alias{opt.URW}
 \alias{opt.Stasis}
+\alias{opt.StrictStasis}
 
 \title{ Numerically find maximum likelihood solutions to evolutionary models }
 
@@ -13,6 +14,7 @@
 opt.GRW(y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
 opt.URW(y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", hess = FALSE)
 opt.Stasis(y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", hess = FALSE)
+opt.StrictStasis(y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", hess = FALSE)
 }
 
 
@@ -34,14 +36,17 @@ opt.Stasis(y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", hess = FALS
   A \code{paleoTSfit} object.
 }
 
-\references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. }
+\references{ 
+	Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601. \cr
+	Hunt, G., M. J. Hopkins, and S. L. Lidgard 2015. Simple versus complex models of trait evolution and stasis as a response to environmental change.  \emph{PNAS} \bold{ 112}:4885--4890. \cr
+	}
 \author{ Gene Hunt }
 
 \note{
   Standard errors computed from the Hessian matrix are reasonably accurate for \code{mstep} and \code{theta}, but not as useful for the vstep and omega because of the asymmetry of the log-likelihood surfaces. 
 }
 
-\seealso{\code{\link{logL.GRW}}, \code{\link{fit3models}}, \code{\link{opt.RW.Mult}}, \code{\link{sim.GRW}} , \code{\link{as.paleoTSfit}}}
+\seealso{\code{\link{logL.GRW}}, \code{\link{fit3models}}, \code{\link{fitMult}}, \code{\link{sim.GRW}} , \code{\link{as.paleoTSfit}}}
 
 \examples{
  ## generate data for a directional sequence
@@ -50,9 +55,10 @@ opt.Stasis(y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", hess = FALS
  m.rw<- opt.GRW(y)
  m.rwu<- opt.URW(y)
  m.sta<- opt.Stasis(y)
+ m.ss<- opt.StrictStasis(y)
 
- ## print log-likelihoods; easier to use function fit3models()
- compareModels(m.rw, m.rwu, m.sta)
+ ## print log-likelihoods; easier to use function fit4models()
+ compareModels(m.rw, m.rwu, m.sta, m.ss)
 }
 
 \keyword{models}

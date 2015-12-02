@@ -8,13 +8,14 @@
 }
 \usage{
 test.var.het(y, method = "Bartlett")
-pool.var(y, nn=NULL, ret.paleoTS=FALSE)
+pool.var(y, nn = NULL, minN = NULL, ret.paleoTS=FALSE)
 }
 
 \arguments{
   \item{y}{ a \code{paleoTS} object }
   \item{method}{ test to be used; currently only Bartlett's test is implemented   }
   \item{nn}{ if y is a vector of variances, nn is a vector of sample sizes }
+  \item{minN}{ minimum sample size; samples with n < minN have their variances replaced by the pooled variance across all samples.}
   \item{ret.paleoTS}{ logical, indicating if the function should return a new \code{paleoTS} object with variances replaced by pooled variance.}
 }
 \details{
@@ -37,11 +38,11 @@ Sokal, R. and F. J. Rohlf 1995.  Biometry, 3rd Ed.  }
 
 
 \examples{
-# generate simulated data with no real variance heterogeneity
-y <- sim.GRW(20, 0, 1)
-bart <- test.var.het(y)   # nonsignificant 95% of the time!
-ys<- pool.var(y, ret.paleoTS=TRUE)
-cat (ys$vv)		# note all variances now the same
+# look at stickleback data
+data(dorsal.spines)
+ds<- sub.paleoTS(dorsal.spines, ok=dorsal.spines$nn>=1)	# drop missing data
+ds2<- pool.var(ds, minN=5, ret.paleoTS=TRUE)
+plot(ds2)
 }
 \keyword{models}
 \keyword{ts}

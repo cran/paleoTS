@@ -18,7 +18,7 @@ sub.paleoTS(y, ok = NULL, k = 0.1)
   If \code{ok = NULL}, the subsetting is done by retaining a proportion \code{k} of the initial samples, chosen at random.  If \code{ok} is specified, those samples indicated will be retained.
 }
 \value{
- the subetted \code{paleoTS} object
+ the subsetted \code{paleoTS} object
 }
 \references{ Hunt, G. 2006. Fitting and comparing models of phyletic evolution: random walks and beyond.  \emph{Paleobiology} \bold{ 32}:578--601.  }
 

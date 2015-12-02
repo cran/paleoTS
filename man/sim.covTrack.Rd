@@ -9,7 +9,8 @@ Function to simulate a time-series of trait values in which each evolutionary in
 }
 
 \usage{
-sim.covTrack(ns = 20, b = 1, evar = 0.1, z, nn = rep(20, times = ns), tt = 0:(ns-1), vp = 1)
+sim.covTrack(ns = 20, b = 1, evar = 0.1, z, nn = rep(20, times = ns), 
+             tt = 0:(ns-1), vp = 1)
 }
 
 \arguments{
