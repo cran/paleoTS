@@ -1,14 +1,23 @@
 Package: paleoTS
-Type: Package
 Title: Analyze Paleontological Time-Series
-Version: 0.5-1
-Date: 2015-12-01
-Author: Gene Hunt
-Maintainer: Gene Hunt <hunte@si.edu>
-Imports: mnormt, doParallel, parallel, foreach, iterators
-Description: Facilitates analysis of paleontological sequences of trait values from an evolving lineage.  Functions are provided to fit, using maximum likelihood, evolutionary models including unbiased random walks, directional evolution, stasis, Ornstein-Uhlenbeck, punctuated change, and evolutionary models in which traits track some measured covariate.
-License: GPL (>= 2)
+Version: 0.5.2
+Authors@R: person("Gene", "Hunt", email = "hunte@si.edu", role = c("aut", "cre"))
+Description: Facilitates analysis of paleontological sequences of trait values.  
+    Functions are provided to fit, using maximum likelihood, simple 
+    evolutionary models (including unbiased random walks, directional 
+    evolution,stasis, Ornstein-Uhlenbeck, covariate-tracking) and 
+    complex models (punctuation, mode shifts).
+Depends: R (>= 3.4.0)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: mnormt, foreach, iterators, parallel, doParallel
+RoxygenNote: 6.1.1
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2015-12-01 16:16:31 UTC; eghunt
+Packaged: 2019-03-12 19:25:37 UTC; hunte
+Author: Gene Hunt [aut, cre]
+Maintainer: Gene Hunt <hunte@si.edu>
 Repository: CRAN
-Date/Publication: 2015-12-02 00:08:25
+Date/Publication: 2019-03-12 20:10:03 UTC
