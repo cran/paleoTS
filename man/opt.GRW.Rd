@@ -7,17 +7,37 @@
 \alias{opt.StrictStasis}
 \title{Fit evolutionary model using "AD" parameterization}
 \usage{
-opt.GRW(y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B",
-  hess = FALSE)
+opt.GRW(
+  y,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 
-opt.URW(y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B",
-  hess = FALSE)
+opt.URW(
+  y,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 
-opt.Stasis(y, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE)
+opt.Stasis(
+  y,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 
-opt.StrictStasis(y, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE)
+opt.StrictStasis(
+  y,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}
@@ -47,13 +67,13 @@ should be used instead.
 }
 \section{Functions}{
 \itemize{
-\item \code{opt.URW}: fit the URW model by the AD parameterization
+\item \code{opt.URW()}: fit the URW model by the AD parameterization
 
-\item \code{opt.Stasis}: fit the Stasis model by the AD parameterization
+\item \code{opt.Stasis()}: fit the Stasis model by the AD parameterization
 
-\item \code{opt.StrictStasis}: fit the Strict Stasis model by the AD parameterization
+\item \code{opt.StrictStasis()}: fit the Strict Stasis model by the AD parameterization
+
 }}
-
 \note{
 It is easier to use the convenience function \code{fitSimple}.
 }

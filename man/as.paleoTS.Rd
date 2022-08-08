@@ -4,8 +4,18 @@
 \alias{as.paleoTS}
 \title{Make a Paleontological Time-series object}
 \usage{
-as.paleoTS(mm, vv, nn, tt, MM = NULL, genpars = NULL, label = NULL,
-  start.age = NULL, oldest = c("first", "last"), reset.time = TRUE)
+as.paleoTS(
+  mm,
+  vv,
+  nn,
+  tt,
+  MM = NULL,
+  genpars = NULL,
+  label = NULL,
+  start.age = NULL,
+  oldest = c("first", "last"),
+  reset.time = TRUE
+)
 }
 \arguments{
 \item{mm}{vector of sample means}

@@ -4,8 +4,17 @@
 \alias{plot.paleoTS}
 \title{Plot a paleoTS object}
 \usage{
-\method{plot}{paleoTS}(x, nse = 1, pool = FALSE, add = FALSE,
-  modelFit = NULL, pch = 21, lwd = 1.5, ylim = NULL, ...)
+\method{plot}{paleoTS}(
+  x,
+  nse = 1,
+  pool = FALSE,
+  add = FALSE,
+  modelFit = NULL,
+  pch = 21,
+  lwd = 1.5,
+  ylim = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{a \code{paleoTS} object}

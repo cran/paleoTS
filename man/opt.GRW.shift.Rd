@@ -4,8 +4,7 @@
 \alias{opt.GRW.shift}
 \title{Fit random walk model with shift(s) in generating parameters}
 \usage{
-opt.GRW.shift(y, ng = 2, minb = 7, model = 1, pool = TRUE,
-  silent = FALSE)
+opt.GRW.shift(y, ng = 2, minb = 7, model = 1, pool = TRUE, silent = FALSE)
 }
 \arguments{
 \item{y}{a \code{paloeTS} object}

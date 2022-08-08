@@ -7,17 +7,31 @@
 \alias{opt.joint.StrictStasis}
 \title{Fit evolutionary models using the "Joint" parameterization}
 \usage{
-opt.joint.GRW(y, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE)
+opt.joint.GRW(
+  y,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 
-opt.joint.URW(y, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE)
+opt.joint.URW(
+  y,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 
-opt.joint.Stasis(y, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE)
+opt.joint.Stasis(
+  y,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 
-opt.joint.StrictStasis(y, pool = TRUE, cl = list(fnscale = -1),
-  hess = FALSE)
+opt.joint.StrictStasis(y, pool = TRUE, cl = list(fnscale = -1), hess = FALSE)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}
@@ -44,13 +58,13 @@ better performance than the "AD" approach, especially for noisy trends (Hunt, 20
 }
 \section{Functions}{
 \itemize{
-\item \code{opt.joint.URW}: fit the URW model by the Joint parameterization
+\item \code{opt.joint.URW()}: fit the URW model by the Joint parameterization
 
-\item \code{opt.joint.Stasis}: fit the Stasis model by the Joint parameterization
+\item \code{opt.joint.Stasis()}: fit the Stasis model by the Joint parameterization
 
-\item \code{opt.joint.StrictStasis}: fit the Strict Stasis model by the Joint parameterization
+\item \code{opt.joint.StrictStasis()}: fit the Strict Stasis model by the Joint parameterization
+
 }}
-
 \note{
 It is easier to use the convenience function \code{fitSimple}.
 }

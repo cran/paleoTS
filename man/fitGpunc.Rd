@@ -4,9 +4,18 @@
 \alias{fitGpunc}
 \title{Fit trait evolution model with punctuations estimated from the data}
 \usage{
-fitGpunc(y, ng = 2, minb = 7, pool = TRUE, oshare = TRUE,
-  method = c("Joint", "AD"), silent = FALSE, hess = FALSE,
-  parallel = FALSE, ...)
+fitGpunc(
+  y,
+  ng = 2,
+  minb = 7,
+  pool = TRUE,
+  oshare = TRUE,
+  method = c("Joint", "AD"),
+  silent = FALSE,
+  hess = FALSE,
+  parallel = FALSE,
+  ...
+)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}
@@ -45,7 +54,7 @@ The function uses \code{opt.punc} (if \code{method = "AD"}) or \code{opt.joint.p
 (if \code{method = "Joint"}) to do the fitting.
 }
 \note{
-Calculations can be speeded up by setting \code{parallel = TRUE}, which uses functions from
+Calculations can be sped up by setting \code{parallel = TRUE}, which uses functions from
 the \code{\link{doParallel}} package to run the bootstrap replicates in parallel, using
 one fewer than the number of detected cores.
 }

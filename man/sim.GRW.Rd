@@ -4,8 +4,7 @@
 \alias{sim.GRW}
 \title{Simulate random walk or directional time-series for trait evolution}
 \usage{
-sim.GRW(ns = 20, ms = 0, vs = 0.1, vp = 1, nn = rep(20, ns),
-  tt = 0:(ns - 1))
+sim.GRW(ns = 20, ms = 0, vs = 0.1, vp = 1, nn = rep(20, ns), tt = 0:(ns - 1))
 }
 \arguments{
 \item{ns}{number of populations in the sequence}

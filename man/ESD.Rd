@@ -4,8 +4,14 @@
 \alias{ESD}
 \title{Compute Expected Squared Divergence (ESD) for Evolutionary Models}
 \usage{
-ESD(y, dt, model = c("GRW", "URW", "Stasis", "allThree"),
-  method = c("Joint", "AD"), pool = TRUE, ...)
+ESD(
+  y,
+  dt,
+  model = c("GRW", "URW", "Stasis", "allThree"),
+  method = c("Joint", "AD"),
+  pool = TRUE,
+  ...
+)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}

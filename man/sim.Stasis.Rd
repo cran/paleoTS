@@ -4,8 +4,14 @@
 \alias{sim.Stasis}
 \title{Simulate Stasis time-series for trait evolution}
 \usage{
-sim.Stasis(ns = 20, theta = 0, omega = 0, vp = 1, nn = rep(20,
-  ns), tt = 0:(ns - 1))
+sim.Stasis(
+  ns = 20,
+  theta = 0,
+  omega = 0,
+  vp = 1,
+  nn = rep(20, ns),
+  tt = 0:(ns - 1)
+)
 }
 \arguments{
 \item{ns}{number of populations in the sequence}

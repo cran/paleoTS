@@ -4,9 +4,17 @@
 \alias{fitModeShift}
 \title{Fit model in which the mode of trait evolution shifts once}
 \usage{
-fitModeShift(y, minb = 7, pool = TRUE, order = c("Stasis-RW",
-  "RW-Stasis"), rw.model = c("URW", "GRW"), method = c("Joint", "AD"),
-  silent = FALSE, hess = FALSE, ...)
+fitModeShift(
+  y,
+  minb = 7,
+  pool = TRUE,
+  order = c("Stasis-RW", "RW-Stasis"),
+  rw.model = c("URW", "GRW"),
+  method = c("Joint", "AD"),
+  silent = FALSE,
+  hess = FALSE,
+  ...
+)
 }
 \arguments{
 \item{y}{\code{paleoTS} object}

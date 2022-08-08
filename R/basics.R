@@ -64,8 +64,8 @@ as.paleoTS<- function (mm, vv, nn, tt, MM = NULL, genpars = NULL, label = NULL,
   if (reset.time) {
     if (y$tt[1] != 0) {
       sa <- y$tt[1]
-      if (!is.null(y$start.age) && sa != y$start.age)
-        stop("Age of first sample does not match start.age argument")
+      #if (!is.null(y$start.age) && sa != y$start.age)
+      #  stop("Age of first sample does not match start.age argument")
       if(timeDir == "decreasing")	y$tt <- sa - y$tt   # decreasing ages (e.g., Ma)
       else					    y$tt <- y$tt - sa   # increasing ages (elapsed time)
       y$start.age<- sa
@@ -212,7 +212,7 @@ IC<- function(logL, K, n=NULL, method=c("AICc", "AIC", "BIC"))
 #'
 pool.var<- function (y, nn = NULL, minN = NULL, ret.paleoTS = FALSE)
 {
-  if (class(y) == "paleoTS") {
+  if (inherits(y, "paleoTS")) {
     if (all(y$nn == 1)) 	vp <- mean(y$vv)
     else vp <- sum(y$vv * (y$nn - 1))/sum(y$nn - 1)
   }

@@ -25,11 +25,11 @@ Analytical ML estimator for random walk and stasis models
 }
 \section{Functions}{
 \itemize{
-\item \code{mle.URW}: ML parameter estimates for URW model
+\item \code{mle.URW()}: ML parameter estimates for URW model
 
-\item \code{mle.Stasis}: ML parameter estimates for Stasis model
+\item \code{mle.Stasis()}: ML parameter estimates for Stasis model
+
 }}
-
 \note{
 These analytical solutions assume even spacing of samples and equal
 sampling variance in each, which will usually be violated in real data.

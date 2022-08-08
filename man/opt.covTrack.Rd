@@ -5,11 +5,23 @@
 \alias{opt.joint.covTrack}
 \title{Fit a model in which a trait tracks a covariate}
 \usage{
-opt.covTrack(y, z, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE)
+opt.covTrack(
+  y,
+  z,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 
-opt.joint.covTrack(y, z, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE)
+opt.joint.covTrack(
+  y,
+  z,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 }
 \arguments{
 \item{y}{a \code{paloeTS} object}
@@ -53,9 +65,9 @@ In this model, changes in a trait are linearly related to changes in
 }
 \section{Functions}{
 \itemize{
-\item \code{opt.joint.covTrack}: fits the covTrack model using the joint parameterization
-}}
+\item \code{opt.joint.covTrack()}: fits the covTrack model using the joint parameterization
 
+}}
 \section{Warning}{
  The Joint parameterization of this model can be fooled by
   temporal autocorrelation and, especially, trends in the trait and the

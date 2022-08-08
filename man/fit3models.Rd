@@ -32,9 +32,9 @@ unbiased random walk (URW), and Stasis models.  In addition to these three,
 }
 \section{Functions}{
 \itemize{
-\item \code{fit4models}: add model of "Strict Stasis" to the three models
-}}
+\item \code{fit4models()}: add model of "Strict Stasis" to the three models
 
+}}
 \examples{
 x <- sim.GRW(ns = 50, ms = 0.2)
 fit4models(x)

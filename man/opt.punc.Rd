@@ -5,11 +5,25 @@
 \alias{opt.joint.punc}
 \title{Fit a model of trait evolution with specified punctuation(s)}
 \usage{
-opt.punc(y, gg, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE, oshare)
+opt.punc(
+  y,
+  gg,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE,
+  oshare
+)
 
-opt.joint.punc(y, gg, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE, oshare)
+opt.joint.punc(
+  y,
+  gg,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE,
+  oshare
+)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}
@@ -39,9 +53,9 @@ each segment are given by the vector \code{theta} with variances given by the ve
 }
 \section{Functions}{
 \itemize{
-\item \code{opt.joint.punc}: fits the punctuation model using the joint parameterization
-}}
+\item \code{opt.joint.punc()}: fits the punctuation model using the joint parameterization
 
+}}
 \note{
 These functions would be used in the uncommon situation in which there
   is a prior hypothesis as to where the punctuation(s) take place.  Normally

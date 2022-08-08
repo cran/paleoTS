@@ -4,8 +4,16 @@
 \alias{sim.sgs}
 \title{Simulate protracted punctuation}
 \usage{
-sim.sgs(ns = c(20, 20, 20), theta = 0, omega = 1, ms = 1,
-  vs = 0.1, nn = rep(30, sum(ns)), tt = 0:(sum(ns) - 1), vp = 1)
+sim.sgs(
+  ns = c(20, 20, 20),
+  theta = 0,
+  omega = 1,
+  ms = 1,
+  vs = 0.1,
+  nn = rep(30, sum(ns)),
+  tt = 0:(sum(ns) - 1),
+  vp = 1
+)
 }
 \arguments{
 \item{ns}{vector with the number of samples in each segment}

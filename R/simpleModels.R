@@ -217,6 +217,7 @@ fit3models<- function (y, silent = FALSE, method = c("Joint", "AD"), ...)
   args<- list(...)
   check.var<- TRUE
   if(length(args)>0) if(args$pool==FALSE)	check.var<- FALSE
+  if(all(y$nn ==1)) check.var <- FALSE
   if (check.var){
     tv<- test.var.het(y)
     pv<- round(tv$p.value, 0)
@@ -247,6 +248,7 @@ fit4models<- function(y, silent = FALSE, method = c("Joint", "AD"), ...)
   args<- list(...)
   check.var<- TRUE
   if(length(args)>0) if(args$pool==FALSE)	check.var<- FALSE
+  if(all(y$nn ==1)) check.var <- FALSE
   if (check.var){
     tv<- test.var.het(y)
     pv<- round(tv$p.value, 0)
@@ -465,7 +467,7 @@ opt.GRW<- function (y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", he
     w<- try(optim(p0, fn=logL.GRW, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
 
   # if optim failed, set ndeps based on p0
-  if (class(w)=="try-error")
+  if(inherits(w, "try-error"))
   {
     cl$ndeps<- rep(1e-9, length(p0)) 	#p0/10000
     if (meth=="L-BFGS-B")
@@ -473,7 +475,7 @@ opt.GRW<- function (y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", he
     else
       w<- try(optim(p0, fn=logL.GRW, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
 
-    if (class(w)=="try-error")	# if still fails
+    if(inherits(w, "try-error"))	# if still fails
     {
       warning("opt.GRW failed ", immediate.=TRUE)
       w$par<- c(NA,NA)
@@ -510,7 +512,7 @@ opt.URW<- function (y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", he
     w<- try(optim(p0, fn=logL.URW, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
 
   # if optim failed, set ndeps based on p0
-  if (class(w)=="try-error")
+  if(inherits(w, "try-error"))
   {
     cl$ndeps<- rep(1e-9, length(p0)) 	#p0/10000
     if (meth=="L-BFGS-B")
@@ -518,7 +520,7 @@ opt.URW<- function (y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", he
     else
       w<- try(optim(p0, fn=logL.URW, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
 
-    if (class(w)=="try-error")	# if still fails
+    if(inherits(w, "try-error"))	# if still fails
     {
       warning("opt.URW failed ", immediate.=TRUE)
       w$par<- NA
@@ -556,7 +558,7 @@ opt.Stasis<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B
     w<- try(optim(p0, fn=logL.Stasis, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
 
   # if optim failed, set ndeps based on p0
-  if (class(w)=="try-error")
+  if(inherits(w, "try-error"))
   {
     cl$ndeps<- rep(1e-9, length(p0)) 	#p0/10000
     if (meth=="L-BFGS-B")
@@ -564,7 +566,7 @@ opt.Stasis<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B
     else
       w<- try(optim(p0, fn=logL.Stasis, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
 
-    if (class(w)=="try-error")	# if still fails
+    if(inherits(w, "try-error"))	# if still fails
     {
       warning("opt.Stasis failed ", immediate.=TRUE)
       w$par<- c(NA,NA)
@@ -596,7 +598,7 @@ opt.StrictStasis<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-
                                                                         0), control = cl, hessian = hess, y = y), silent = TRUE)
   else w <- try(optim(p0, fn = logL.StrictStasis, method = meth,
                       control = cl, hessian = hess, y = y), silent = TRUE)
-  if (class(w) == "try-error") {
+  if(inherits(w, "try-error")) {
     cl$ndeps <- rep(1e-09, length(p0))
     if (meth == "L-BFGS-B")
       w <- try(optim(p0, fn = logL.StrictStasis, method = meth,
@@ -604,7 +606,7 @@ opt.StrictStasis<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-
                      y = y), silent = TRUE)
     else w <- try(optim(p0, fn = logL.StrictStasis, method = meth,
                         control = cl, hessian = hess, y = y), silent = TRUE)
-    if (class(w) == "try-error") {
+    if(inherits(w, "try-error")) {
       warning("opt.StrictStasis failed ", immediate. = TRUE)
       w$par <- c(NA, NA)
       w$value <- NA

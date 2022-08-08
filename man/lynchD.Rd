@@ -4,8 +4,7 @@
 \alias{lynchD}
 \title{Compute Lynch's Delta rate metric}
 \usage{
-lynchD(y, gen.per.t = 1e+06, pool = TRUE, method = c("Joint", "AD"),
-  ...)
+lynchD(y, gen.per.t = 1e+06, pool = TRUE, method = c("Joint", "AD"), ...)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}

@@ -4,8 +4,13 @@
 \alias{opt.joint.OU}
 \title{Fit Ornstein-Uhlenbeck model using the "Joint" parameterization}
 \usage{
-opt.joint.OU(y, pool = TRUE, cl = list(fnscale = -1),
-  meth = "L-BFGS-B", hess = FALSE)
+opt.joint.OU(
+  y,
+  pool = TRUE,
+  cl = list(fnscale = -1),
+  meth = "L-BFGS-B",
+  hess = FALSE
+)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}

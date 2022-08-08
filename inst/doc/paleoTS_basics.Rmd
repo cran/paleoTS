@@ -118,7 +118,7 @@ This function fits the three most canonical models in the paleo literature: gene
 
 ## An Empirical Example: Bell's stickleback data
 
-Hunt et al. (2008) re-analyzed data Bell's (year) capturing three traits in a highly resolved sequence of fossil sticklebacks from an ancient lake. These observation capture an initially highly armored species invading the lake. The species becomes less armored over time, initially quickly but then at a decelerating rate. The pattern is similar to the expected exponential approach to a new optimum expected when a population climbs a peak in the adaptive landscape via an OU process. 
+Hunt et al. (2008) re-analyzed data Bell's (2006) capturing three traits in a highly resolved sequence of fossil sticklebacks from an ancient lake. These observation capture an initially highly armored species invading the lake. The species becomes less armored over time, initially quickly but then at a decelerating rate. The pattern is similar to the expected exponential approach to a new optimum expected when a population climbs a peak in the adaptive landscape via an OU process. 
 
 In the code below, we first omit levels with no measurable fossils, and then those before the invasion of the new species, so as to focus on the adaptive trajectory afterwards. Some of the samples have very low N, and so their variances are estimated imprecisely.  We use the \code{pool.var} function to replace the variances in these low N samples with the estimated pooled variance (average variance, weighted by sample size). 
 

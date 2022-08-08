@@ -4,8 +4,14 @@
 \alias{fitMult}
 \title{Fit the same simple model across multiple time-series}
 \usage{
-fitMult(yl, model = c("GRW", "URW", "Stasis", "covTrack"),
-  method = c("Joint", "AD"), pool = TRUE, zl = NULL, hess = FALSE)
+fitMult(
+  yl,
+  model = c("GRW", "URW", "Stasis", "covTrack"),
+  method = c("Joint", "AD"),
+  pool = TRUE,
+  zl = NULL,
+  hess = FALSE
+)
 }
 \arguments{
 \item{yl}{a list of \code{paleoTS} objects}

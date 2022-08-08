@@ -4,8 +4,14 @@
 \alias{sim.GRW.shift}
 \title{Simulate (general) random walk with shift(s) in generating parameters}
 \usage{
-sim.GRW.shift(ns = c(10, 10), ms = c(0, 1), vs = c(0.5, 0.5),
-  nn = rep(30, sum(ns)), tt = 0:(sum(ns) - 1), vp = 1)
+sim.GRW.shift(
+  ns = c(10, 10),
+  ms = c(0, 1),
+  vs = c(0.5, 0.5),
+  nn = rep(30, sum(ns)),
+  tt = 0:(sum(ns) - 1),
+  vp = 1
+)
 }
 \arguments{
 \item{ns}{vector of the number of samples in each segment}

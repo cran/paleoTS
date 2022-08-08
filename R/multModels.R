@@ -53,8 +53,8 @@ fitMult<- function(yl, model=c("GRW", "URW", "Stasis", "covTrack"), method=c("Jo
     if(method=="Joint")	w<- opt.joint.covTrack.Mult(yl, zl, pool=pool, hess=hess)
     if(method=="AD")	w<- opt.covTrack.Mult(yl, zl, pool=pool, hess=hess)
   }	else{
-    if(method=="AD")		w<- opt.Mult(yl, model=model, pool=pool)
-    if(method=="Joint")	w<- opt.joint.Mult(yl, model=model, pool=pool)
+    if(method=="AD")		w<- opt.Mult(yl, model=model, pool=pool, hess=hess)
+    if(method=="Joint")	w<- opt.joint.Mult(yl, model=model, pool=pool, hess=hess)
   }
 
   return(w)
@@ -75,7 +75,7 @@ logL.Mult.covTrack<- function (p, yl, zl)
 opt.covTrack.Mult<- function (yl, zl, cl=list(fnscale=-1), pool=TRUE, hess=FALSE)
   # y and z are lists of paleoTS, and covariates, respectively
 {
-  if (class(yl) == "paleoTS")
+  if(inherits(yl, "paleoTS"))
   { stop("opt.covTrack.Mult is only for multiple paleoTS sequences\n") }
   nseq <- length(yl)
   if (pool) {
@@ -131,7 +131,7 @@ logL.Mult.joint.covTrack<- function (p, yl, zl)
 opt.joint.covTrack.Mult<- function (yl, zl, cl=list(fnscale=-1), pool=TRUE, hess=FALSE)
   # y and z are lists of paleoTS, and covariates, respectively
 {
-  if (class(yl) == "paleoTS")
+  if(inherits(yl, "paleoTS"))
   { stop("opt.covTrack.Mult is only for multiple paleoTS sequences\n") }
   nseq <- length(yl)
   if (pool) {
@@ -193,7 +193,7 @@ opt.Mult<- function (yl, cl=list(fnscale=-1), model=c("GRW", "URW", "Stasis"), p
   # estimates single model across multiple sequences
   # pool=TRUE will pool variances _within_ sequences
 {
-  if (class(yl)=="paleoTS")
+  if(inherits(yl, "paleoTS"))
     stop("opt.RW.mult is only for multiple paleoTS sequences\n")
   nseq<- length(yl)
 
@@ -240,7 +240,7 @@ opt.joint.Mult<- function (yl, cl=list(fnscale=-1), model=c("GRW", "URW", "Stasi
   # estimates single model across multiple sequences
   # pool=TRUE will pool variances _within_ sequences
 {
-  if (class(yl)=="paleoTS" || class(yl[[1]]) != "paleoTS")
+  if(inherits(yl, "paleoTS") || !inherits(yl[[1]], "paleoTS"))
     stop("opt.joint.Mult() is only for a list of multiple paleoTS sequences\n")
   nseq<- length(yl)
 

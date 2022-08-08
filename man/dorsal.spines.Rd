@@ -4,7 +4,9 @@
 \name{dorsal.spines}
 \alias{dorsal.spines}
 \title{Time-series of dorsal spine data from a fossil stickleback lineage}
-\format{a \code{paleoTS} object of the mean number of dorsal spines (log-transformed)}
+\format{
+a \code{paleoTS} object of the mean number of dorsal spines (log-transformed)
+}
 \source{
 Bell, M.A., M.P. Travis and D.M. Blouw 2006. Inferring natural
 selection in a fossil threespine stickleback. \emph{Paleobiology} \bold{ 32}:562-577. \cr \cr

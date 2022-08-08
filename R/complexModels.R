@@ -302,15 +302,15 @@ shift2gg<- function (ss, ns)
 #' (if \code{method = "Joint"}) to do the fitting.
 #'
 #' @note
-#' Calculations can be speeded up by setting \code{parallel = TRUE}, which uses functions from
+#' Calculations can be sped up by setting \code{parallel = TRUE}, which uses functions from
 #' the \code{\link{doParallel}} package to run the bootstrap replicates in parallel, using
 #' one fewer than the number of detected cores.
 #'
 #' @return  a \code{paleoTSfit} object with the results of the model-fitting.
 #' @seealso \code{\link{fit9models}}, \code{\link{sim.punc}}
 #' @export
-#' @import foreach
-#' @import doParallel
+#' @importFrom foreach foreach %do% %dopar%
+#' @importFrom doParallel registerDoParallel
 #'
 #' @examples
 #' x <- sim.punc(ns = c(15, 15), theta = c(0,3), omega = c(0.1, 0.1))
@@ -320,6 +320,7 @@ fitGpunc<-function (y, ng = 2, minb = 7, pool = TRUE, oshare = TRUE, method = c(
    "AD"), silent = FALSE, hess = FALSE, parallel = FALSE, ...)
 {
    method <- match.arg(method)
+  if(pool==TRUE && all(y$nn == 1)) stop("pool = TRUE does not make sense when all sample sizes equal 1. Set pool = FALSE instead.")
 	if (pool){
 			tv<- test.var.het(y)
 			pv<- round(tv$p.value, 0)
@@ -554,7 +555,8 @@ opt.GRW.shift<- function(y, ng=2, minb=7, model=1, pool=TRUE, silent=FALSE)
 opt.RW.SameMs<- function (yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
   # estimates shared Ms model across multiple sequences
 {
-  if (class(yl)=="paleoTS")
+
+  if (inherits(yl, "paleoTS"))
     stop("Function opt.SameMs() is only meaningful for multiple sequences.\n")
   nseq<- length(yl)
 
@@ -598,7 +600,7 @@ opt.RW.SameMs<- function (yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", h
 opt.RW.SameVs<- function (yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
   # estimates shared Vs model across multiple sequences
 {
-  if (class(yl)=="paleoTS")
+  if (inherits(yl, "paleoTS"))
     stop("Function opt.SameVs() is only meaningful for multiple sequences.\n")
   nseq<- length(yl)
 
@@ -844,11 +846,13 @@ opt.sgs<- function(y,gg,cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE, oshare
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' x <- sim.sgs(ns = c(15, 15, 15))  # default values OK
 #' w <- fit.sgs(x, minb = 10)  # increase minb so example takes less time; not recommended!
 #' plot(x)
 #' abline(v = c(16, 31), lwd = 3)  # actual shifts
 #' abline(v = c(w$parameters[6:7]), lwd = 2, lty = 3, col = "red")  # inferred shifts
+#' }
 
 fit.sgs<- function(y, minb=7, oshare=TRUE, pool=TRUE, silent=FALSE, hess=FALSE, meth="L-BFGS-B", model="GRW")
 ## optimize for stasis-GRW-stasis dynamics (with some min n per section)
@@ -971,17 +975,16 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 
   # get initial parameter estimates
   small<- 1e-8
-  if(rw.model=="URW")  {p0rw<- mle.URW(sub.paleoTS(y, ok=gg==1)); K<- 5} # assumes shift point is free parameter
-  else				   {p0rw<- mle.GRW(sub.paleoTS(y, ok=gg==1)); K<- 6}
-  p0st<- mle.Stasis(sub.paleoTS(y, ok=gg==2))
+  if(rw.model=="URW")  {p0rw<- mle.URW(sub.paleoTS(y, ok=gg==1, reset.time=F)); K<- 5} # assumes shift point is free parameter
+  else				   {p0rw<- mle.GRW(sub.paleoTS(y, ok=gg==1, reset.time=F)); K<- 6}
+  p0st<- mle.Stasis(sub.paleoTS(y, ok=gg==2, reset.time=F))
   if(p0rw["vstep"] <= small)	p0rw["vstep"]<- 100*small
   if(p0st["omega"] <= small) 	p0st["omega"]<- 100*small
   p0anc<- y$mm[1]
   names(p0anc)<- "anc"
   p0<- c(p0anc, p0rw, p0st)
-  #print(p0)
 
-  #cl$parscale <-
+
   ll.urw<- c(NA,small,NA,small)
   ll.grw<- c(NA,NA,small,NA,small)
   if(rw.model=="URW")	{ ll<- ll.urw}
@@ -990,18 +993,18 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 
   if(rw.model=="URW")	{
   		w <- try(optim(p0, fn=logL.joint.URW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
-  		if(class(w)=="try-error"){
+  		if(inherits(w, "try-error")){
   				cl<- list(fnscale=-1, parscale=c(1,100,1,10))
   				w <- try(optim(p0, fn=logL.joint.URW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
-  				}
-  } else if(rw.model=="GRW"){
+  				}}
+   else if(rw.model=="GRW"){
   		w <- try(optim(p0, fn=logL.joint.GRW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y) , silent=TRUE)
-  		if(class(w)=="try-error"){
+  		if(inherits(w, "try-error"))
   				cl<- list(fnscale=-1, parscale=c(1,10,100,1,10))
  				w <- try(optim(p0, fn=logL.joint.GRW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y) , silent=TRUE)
- 				}}
+ 				}
   # add more information to results
-  if(class(w)=="try-error")	{
+  if(inherits(w, "try-error"))  	{
   		wc<- as.paleoTSfit(logL=NA, parameters=NA, modelName=paste(rw.model, "Stasis", sep='-'), method='Joint', K=K, n=length(y$mm), se=NULL)
   		return(wc)
   		}
@@ -1113,9 +1116,9 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 
   # get initial parameter estimates
   small<- 1e-8
-  if(rw.model=="URW")  {p0rw<- mle.URW(sub.paleoTS(y, ok=gg==2)); K<- 4} # assumes shift point is free parameter
-  else				   {p0rw<- mle.GRW(sub.paleoTS(y, ok=gg==2)); K<- 5}
-  p0st<- mle.Stasis(sub.paleoTS(y, ok=gg==1))
+  if(rw.model=="URW")  {p0rw<- mle.URW(sub.paleoTS(y, ok=gg==2, reset.time=F)); K<- 4} # assumes shift point is free parameter
+  else				   {p0rw<- mle.GRW(sub.paleoTS(y, ok=gg==2, reset.time=F)); K<- 5}
+  p0st<- mle.Stasis(sub.paleoTS(y, ok=gg==1, reset.time = F))
   if(p0rw["vstep"] <= small)	p0rw["vstep"]<- 100*small
   if(p0st["omega"] <= small) 	p0st["omega"]<- 100*small
   p0<- c(p0st, p0rw)
@@ -1131,19 +1134,19 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 
   if(rw.model=="URW")	{
   		w <- try(optim(p0, fn=logL.joint.Stasis.URW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
-  		if(class(w)=="try-error"){
+  		if(inherits(w, "try-error"))  {
   				cl<- list(fnscale=-1, parscale=c(1,10,100))
 		  		w <- try(optim(p0, fn=logL.joint.Stasis.URW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
   				}
   }else if(rw.model=="GRW")	{
   		w <- try(optim(p0, fn=logL.joint.Stasis.GRW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
-  		if(class(w)=="try-error"){
+  		if(inherits(w, "try-error"))  {
   				cl<- list(fnscale=-1, parscale=c(1,10,10,100))
 		  		w <- try(optim(p0, fn=logL.joint.Stasis.GRW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
  				}}
 
   # add more information to results
-  if(class(w)=="try-error")	{
+  if(inherits(w, "try-error"))  	{
   		wc<- as.paleoTSfit(logL=NA, parameters=NA, modelName=paste("Stasis", rw.model, sep='-'), method="Joint", K=K, n=length(y$mm), se=NULL)
   		return(wc)
   		}
@@ -1351,7 +1354,7 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 #'
 #' @details Simulations suggest that AICc can be overly liberal with complex
 #' models with mode shifts or punctuations (Hunt et al., 2015). This function
-#' implements an alternative of parametric boostrapping to compare the fit of a
+#' implements an alternative of parametric bootstrapping to compare the fit of a
 #' simple model with a complex model. It proceeds in five steps: \enumerate{
 #' \item Compute the observed gain in support from the simple to complex model
 #' as the likelihood ratio, \eqn{LR_obs = -2(logL_simple - logL_complex) } \item
@@ -1366,7 +1369,7 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 #' opt.GRW}, etc.). Argument \code{complexFit} must be a \code{paleoTS} object
 #' returned by \code{fitGpunc} or \code{fitModeShift}.
 #'
-#' Calculations can be speeded up by setting \code{parallel = TRUE}, which uses
+#' Calculations can be sped up by setting \code{parallel = TRUE}, which uses
 #' functions from the \code{\link{doParallel}} package to run the bootstrap
 #' replicates in parallel, using one fewer than the number of detected cores.
 #'
@@ -1529,6 +1532,7 @@ fit9models<- function(y, silent=FALSE, method=c("Joint", "AD"), ...)
   args<- list(...)
   check.var<- TRUE
   if(length(args)>0) if(args$pool==FALSE)	check.var<- FALSE
+  if(all(y$nn ==1)) check.var <- FALSE
   if (check.var){
     tv<- test.var.het(y)
     pv<- round(tv$p.value, 0)

@@ -4,8 +4,15 @@
 \alias{sim.covTrack}
 \title{Simulate trait evolution that tracks a covariate}
 \usage{
-sim.covTrack(ns = 20, b = 1, evar = 0.1, z, nn = rep(20, times =
-  ns), tt = 0:(ns - 1), vp = 1)
+sim.covTrack(
+  ns = 20,
+  b = 1,
+  evar = 0.1,
+  z,
+  nn = rep(20, times = ns),
+  tt = 0:(ns - 1),
+  vp = 1
+)
 }
 \arguments{
 \item{ns}{number of populations in a sequence}

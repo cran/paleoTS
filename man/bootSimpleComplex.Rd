@@ -5,8 +5,16 @@
 \title{Bootstrap test to see if a complex model is significantly better than a simple
 model.}
 \usage{
-bootSimpleComplex(y, simpleFit, complexFit, nboot = 99, minb = 7,
-  ret.full.distribution = FALSE, parallel = FALSE, ...)
+bootSimpleComplex(
+  y,
+  simpleFit,
+  complexFit,
+  nboot = 99,
+  minb = 7,
+  ret.full.distribution = FALSE,
+  parallel = FALSE,
+  ...
+)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}
@@ -42,7 +50,7 @@ model.
 \details{
 Simulations suggest that AICc can be overly liberal with complex
 models with mode shifts or punctuations (Hunt et al., 2015). This function
-implements an alternative of parametric boostrapping to compare the fit of a
+implements an alternative of parametric bootstrapping to compare the fit of a
 simple model with a complex model. It proceeds in five steps: \enumerate{
 \item Compute the observed gain in support from the simple to complex model
 as the likelihood ratio, \eqn{LR_obs = -2(logL_simple - logL_complex) } \item
@@ -57,7 +65,7 @@ function \code{fitSimple} or similar functions (e.g., \code{opt.joint.GRW,
 opt.GRW}, etc.). Argument \code{complexFit} must be a \code{paleoTS} object
 returned by \code{fitGpunc} or \code{fitModeShift}.
 
-Calculations can be speeded up by setting \code{parallel = TRUE}, which uses
+Calculations can be sped up by setting \code{parallel = TRUE}, which uses
 functions from the \code{\link{doParallel}} package to run the bootstrap
 replicates in parallel, using one fewer than the number of detected cores.
 }

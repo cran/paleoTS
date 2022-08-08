@@ -4,8 +4,16 @@
 \alias{sim.OU}
 \title{Simulate an Ornstein-Uhlenbeck time-series}
 \usage{
-sim.OU(ns = 20, anc = 0, theta = 10, alpha = 0.3, vstep = 0.1,
-  vp = 1, nn = rep(20, ns), tt = 0:(ns - 1))
+sim.OU(
+  ns = 20,
+  anc = 0,
+  theta = 10,
+  alpha = 0.3,
+  vstep = 0.1,
+  vp = 1,
+  nn = rep(20, ns),
+  tt = 0:(ns - 1)
+)
 }
 \arguments{
 \item{ns}{number of populations in the sequence}

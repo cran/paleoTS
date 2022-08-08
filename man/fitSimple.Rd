@@ -4,9 +4,14 @@
 \alias{fitSimple}
 \title{Fit simple models of trait evolution}
 \usage{
-fitSimple(y, model = c("GRW", "URW", "Stasis", "StrictStasis", "OU",
-  "covTrack"), method = c("Joint", "AD"), pool = TRUE, z = NULL,
-  hess = FALSE)
+fitSimple(
+  y,
+  model = c("GRW", "URW", "Stasis", "StrictStasis", "OU", "covTrack"),
+  method = c("Joint", "AD"),
+  pool = TRUE,
+  z = NULL,
+  hess = FALSE
+)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}

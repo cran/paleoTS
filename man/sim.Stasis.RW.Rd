@@ -4,9 +4,17 @@
 \alias{sim.Stasis.RW}
 \title{Simulate trait evolution with a mode shift}
 \usage{
-sim.Stasis.RW(ns = c(20, 20), order = c("Stasis-RW", "RW-Stasis"),
-  anc = 0, omega = 1, ms = 0, vs = 1, vp = 1, nn = 30,
-  tt = NULL)
+sim.Stasis.RW(
+  ns = c(20, 20),
+  order = c("Stasis-RW", "RW-Stasis"),
+  anc = 0,
+  omega = 1,
+  ms = 0,
+  vs = 1,
+  vp = 1,
+  nn = 30,
+  tt = NULL
+)
 }
 \arguments{
 \item{ns}{vector of the number of samples in each segment}

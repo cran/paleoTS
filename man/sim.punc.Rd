@@ -4,9 +4,14 @@
 \alias{sim.punc}
 \title{Simulate a punctuated time-series}
 \usage{
-sim.punc(ns = c(10, 10), theta = c(0, 1), omega = rep(0,
-  length(theta)), nn = rep(30, sum(ns)), tt = 0:(sum(ns) - 1),
-  vp = 1)
+sim.punc(
+  ns = c(10, 10),
+  theta = c(0, 1),
+  omega = rep(0, length(theta)),
+  nn = rep(30, sum(ns)),
+  tt = 0:(sum(ns) - 1),
+  vp = 1
+)
 }
 \arguments{
 \item{ns}{vector of the number of samples in each segment}

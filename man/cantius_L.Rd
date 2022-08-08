@@ -4,7 +4,9 @@
 \name{cantius_L}
 \alias{cantius_L}
 \title{Time-series of the length of lower first molar for the Cantius lineage}
-\format{a \code{paleoTS} object with the data}
+\format{
+a \code{paleoTS} object with the data
+}
 \source{
 Clyde, W. C. and P. D. Gingerich (1994). Rates of evolution
 in the dentition of early Eocene Cantius: comparison of size and shape.
