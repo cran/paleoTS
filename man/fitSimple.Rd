@@ -6,8 +6,8 @@
 \usage{
 fitSimple(
   y,
-  model = c("GRW", "URW", "Stasis", "StrictStasis", "OU", "covTrack"),
-  method = c("Joint", "AD"),
+  model = c("GRW", "URW", "Stasis", "StrictStasis", "OU", "ACDC", "covTrack"),
+  method = c("Joint", "AD", "SSM"),
   pool = TRUE,
   z = NULL,
   hess = FALSE
@@ -16,10 +16,10 @@ fitSimple(
 \arguments{
 \item{y}{a \code{paleoTS} object}
 
-\item{model}{the model to be fit, one of \code{"GRW", "URW", "Stasis", "OU",
+\item{model}{the model to be fit, one of \code{"GRW", "URW", "Stasis", "OU", "ACDC",
 "covTrack"}}
 
-\item{method}{parameterization to use: \code{Joint} or \code{AD}; see Details}
+\item{method}{parameterization to use: \code{Joint}, \code{AD} or \code{SSM}; see Details}
 
 \item{pool}{if TRUE, sample variances are substituted with their pooled
 estimate}
@@ -59,6 +59,11 @@ nearby peak in the adaptive landscape. The optimal trait value is \code{theta},
 \code{alpha} indicates the strength of attraction to that peak (= strength of
 stabilizing selection around \code{theta}), \code{vstep} measures the random walk component (from genetic drift) and \code{anc} is the trait value
 at the start of the sequence.
+ \item  \strong{ACDC}: Accelerating or decelerating evolution
+model (Blomberg et al. 2003). This model is that of a population undergoing a
+random walk with a step variance that increases or decreases over time. The initial step variance is \code{vstep0},
+and the parameter \code{r} controls its rate of increase (if positive) or decrease (if negative) over time.
+When \code{r} < 0, the is equivalent to the "Early burst" model of Harmon et al.
 \item  \strong{covTrack}: Covariate-tracking (Hunt et al. 2010). The trait tracks
 a covariate with slope \code{b1}, consistent with an adaptive response. \code{evar} is the
 residual variance, and, under \code{method = "Joint"}, \code{b0} is the intercept of the
@@ -94,6 +99,9 @@ phenotypic evolution in a fossil stickleback lineage. \emph{Evolution} 62(3):
 700-710. \cr Sheets, H. D., and C. Mitchell. 2010. Why the null matters:
 statistical tests, random walks and evolution. \emph{Genetica} 112–
 113:105–125. \cr
+Blomberg, S. P., T. Garland, and A. R. Ives. 2003. Testing for phylogenetic signal in comparative data: behavioural traits are more labile.
+\emph{Evolution} 57(4):717-745.\cr
+Harmon, L. J. et al. 2010. Early bursts of body size and shape evolution are rare in comparative data. \emph{Evolution} 64(8):2385-2396.\cr
 }
 \seealso{
 \code{\link{opt.GRW}}, \code{\link{opt.joint.GRW}},

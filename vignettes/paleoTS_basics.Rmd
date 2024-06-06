@@ -39,7 +39,7 @@ Models in `paleoTS` are fit via maximum-likelihood, using numerical optimization
 
 ## Getting data into `paleoTS`
 
-The easiest way to import your own data into `paleoTS` is through the `read.paleoTS` function, which reads a text file with four columns corresponding to the means, variances, sample sizes, and ages of samples populations (in that order). This function converts the input into an object of class `paleoTS` that is the required input for most functions. See that function's help page for options and more information.
+The easiest way to import your own data into `paleoTS` is through the `read.paleoTS` function, which reads a text file with four columns corresponding to the means, variances, sample sizes, and ages of samples populations (in that order). This function converts the input into an object of class `paleoTS` that is the required input for most functions. Alternatively, you can use the function `as.paleoTS` to create a `paleoTS` object directly within R. See those functions' help pages for options and more information.
 
 Here, we'll generate a time-series by simulation, and then plot it:
 
@@ -60,8 +60,8 @@ Users will not generally modify any of this directly; rather this information is
 
 ```{r}
 x.sub <- sub.paleoTS(x, ok = 10:15)  # select only populations 10 through 15
-plot(x)
-plot(x.sub, add = TRUE, col = "red")
+plot(x, add.label = FALSE)
+plot(x.sub, add = TRUE, add.label = FALSE, col = "red")
 ```
 
 ### Fitting models

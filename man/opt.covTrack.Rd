@@ -80,7 +80,7 @@ set.seed(13)
 z <- c(1, 2, 2, 4, 0, 8, 2, 3, 1, 9, 4, 3)
 x <- sim.covTrack(ns = 12, z = z, b = 0.5, evar = 0.2)
 w.urw <- opt.URW(x)
-w.cov <- opt.covTrack(x, z = z)
+w.cov <- opt.covTrack(x, z)
 compareModels(w.urw, w.cov)
 }
 \references{

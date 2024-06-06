@@ -18,8 +18,8 @@
 #'  points by minimizing the sum of absolute deviations. If generations are one
 #'  year long and time is measured in Myr, \code{gen.per.t}= 1e6.
 #'@note This method was important in early attempts to disentangle
-#'  evolutionary tempo and mode. I view likelihood-based methods as more
-#'  informative, and in particular the estimation of 'Generational Rates' using
+#'  evolutionary tempo and mode. Likelihood-based methods have a more sound
+#'  statistical basis, and in particular the estimation of 'Generational Rates' using
 #'  LRI is compromised by sampling error; see Hunt (2012) and the example below.
 #'@references
 #'  Gingerich, P.D. 1993. Quantification and comparison of
@@ -34,7 +34,7 @@
 #' lri.Fast <- LRI(xFast, draw = FALSE)
 #' lri.Slow <- LRI(xSlow, draw = FALSE)
 #' print(lri.Fast[3], 4)
-#' print(lri.Slow[3], 4)  # LRI thinks strict stasis rates are faster!
+#' print(lri.Slow[3], 4)  # LRI thinks strict stasis rates are MUCH faster!
 LRI<- function(y, gen.per.t=1e6, draw=TRUE)
 {
   n<- length(y$mm)

@@ -20,7 +20,7 @@ Convert time-series to standard deviation units
 }
 \details{
 The standardization expresses each sample mean as the deviation
-  from the overall mean, divided by the pooled within-sample variance. Sample
+  from the overall mean, divided by the pooled within-sample standard deviation. Sample
   variances are also divided by the pooled sample variance. \cr \cr Essentially,
   this converts paleontological time-series data into standard deviation
   units, similar to the computation of evolutionary rates in haldanes.  This

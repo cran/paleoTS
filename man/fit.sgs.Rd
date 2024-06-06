@@ -42,13 +42,11 @@ it is captured by multiple transitional populations.  Trait evolution starts in 
 shifts to a general random walk, and then shifts back into stasis.
 }
 \examples{
-\dontrun{
-x <- sim.sgs(ns = c(15, 15, 15))  # default values OK
-w <- fit.sgs(x, minb = 10)  # increase minb so example takes less time; not recommended!
+x <- sim.sgs(ns = c(10, 10, 10))  # default values OK
+w <- fit.sgs(x, minb = 8)  # increase minb so example takes less time; not recommended!
 plot(x)
 abline(v = c(16, 31), lwd = 3)  # actual shifts
 abline(v = c(w$parameters[6:7]), lwd = 2, lty = 3, col = "red")  # inferred shifts
-}
 }
 \seealso{
 \code{\link{fitGpunc}}

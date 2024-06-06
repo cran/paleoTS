@@ -85,9 +85,9 @@ sim.Stasis <- function(ns = 20, theta = 0, omega = 0, vp = 1, nn = rep(20,ns), t
 #' Fit simple models of trait evolution
 #'
 #' @param y a \code{paleoTS} object
-#' @param model the model to be fit, one of \code{"GRW", "URW", "Stasis", "OU",
+#' @param model the model to be fit, one of \code{"GRW", "URW", "Stasis", "OU", "ACDC",
 #'   "covTrack"}
-#' @param method parameterization to use: \code{Joint} or \code{AD}; see Details
+#' @param method parameterization to use: \code{Joint}, \code{AD} or \code{SSM}; see Details
 #' @param pool if TRUE, sample variances are substituted with their pooled
 #'   estimate
 #' @param z a vector of a covariate, used only for the "covTrack" model
@@ -120,6 +120,11 @@ sim.Stasis <- function(ns = 20, theta = 0, omega = 0, vp = 1, nn = rep(20,ns), t
 #' \code{alpha} indicates the strength of attraction to that peak (= strength of
 #' stabilizing selection around \code{theta}), \code{vstep} measures the random walk component (from genetic drift) and \code{anc} is the trait value
 #' at the start of the sequence.
+#'  \item  \strong{ACDC}: Accelerating or decelerating evolution
+#' model (Blomberg et al. 2003). This model is that of a population undergoing a
+#' random walk with a step variance that increases or decreases over time. The initial step variance is \code{vstep0},
+#' and the parameter \code{r} controls its rate of increase (if positive) or decrease (if negative) over time.
+#' When \code{r} < 0, the is equivalent to the "Early burst" model of Harmon et al.
 #' \item  \strong{covTrack}: Covariate-tracking (Hunt et al. 2010). The trait tracks
 #' a covariate with slope \code{b1}, consistent with an adaptive response. \code{evar} is the
 #' residual variance, and, under \code{method = "Joint"}, \code{b0} is the intercept of the
@@ -144,6 +149,9 @@ sim.Stasis <- function(ns = 20, theta = 0, omega = 0, vp = 1, nn = rep(20,ns), t
 #' 700-710. \cr Sheets, H. D., and C. Mitchell. 2010. Why the null matters:
 #' statistical tests, random walks and evolution. \emph{Genetica} 112–
 #' 113:105–125. \cr
+#' Blomberg, S. P., T. Garland, and A. R. Ives. 2003. Testing for phylogenetic signal in comparative data: behavioural traits are more labile.
+#' \emph{Evolution} 57(4):717-745.\cr
+#' Harmon, L. J. et al. 2010. Early bursts of body size and shape evolution are rare in comparative data. \emph{Evolution} 64(8):2385-2396.\cr
 #'
 #' @seealso \code{\link{opt.GRW}}, \code{\link{opt.joint.GRW}},
 #'   \code{\link{opt.joint.OU}}, \code{\link{opt.covTrack}}
@@ -153,8 +161,8 @@ sim.Stasis <- function(ns = 20, theta = 0, omega = 0, vp = 1, nn = rep(20,ns), t
 #' w2 <- fitSimple(y, model = "URW")
 #' w3 <- fitSimple(y, model = "Stasis")
 #' compareModels(w1, w2, w3)
-fitSimple<- function(y, model = c("GRW", "URW", "Stasis", "StrictStasis", "OU", "covTrack"),
-                     method = c("Joint", "AD"), pool = TRUE, z = NULL, hess = FALSE)
+fitSimple<- function(y, model = c("GRW", "URW", "Stasis", "StrictStasis", "OU", "ACDC", "covTrack"),
+                     method = c("Joint", "AD", "SSM"), pool = TRUE, z = NULL, hess = FALSE)
 {
   model<- match.arg(model)
   method<- match.arg(method)
@@ -172,6 +180,7 @@ fitSimple<- function(y, model = c("GRW", "URW", "Stasis", "StrictStasis", "OU", 
     if(model=="Stasis")			w<- opt.joint.Stasis(y, pool=pool, hess=hess)
     if(model=="StrictStasis")	w<- opt.joint.StrictStasis(y, pool=pool, hess=hess)
     if(model=="OU")				w<- opt.joint.OU(y, pool=pool, hess=hess)
+    if(model=="ACDC")  stop("Joint method not available for ACDC model in paleoTS. It is available in package {evoTS} or using the SSM method.")
     if(model=="covTrack")	{
       if(is.null(z))	stop("Covariate [z] needed for covTrack model.")
       w<- opt.joint.covTrack(y, z, pool=pool, hess=hess)}
@@ -181,10 +190,20 @@ fitSimple<- function(y, model = c("GRW", "URW", "Stasis", "StrictStasis", "OU", 
     if(model=="URW")			w<- opt.URW(y, pool=pool, hess=hess)
     if(model=="Stasis")			w<- opt.Stasis(y, pool=pool, hess=hess)
     if(model=="StrictStasis")	w<- opt.StrictStasis(y, pool=pool, hess=hess)
-    if(model=="OU")				stop("AD method not available for OU model.  Consider using Joint method.")
+    if(model=="OU")				stop("AD method not available for OU model.  Consider using Joint or SSM method.")
+    if(model=="ACDC")  stop("AD method not available for ACDC model. Consider using SSM method or package evoTS for Joint method.")
     if(model=="covTrack")	{
       if(is.null(z))	stop("Covariate [z] needed for covTrack model.")
       w<- opt.covTrack(y, z, pool=pool, hess=hess) }
+  }
+  if (method=="SSM"){
+    if(model == "GRW") w <- opt.ssm.GRW(y, pool = pool, hess = hess)
+    if(model == "URW") w <- opt.ssm.URW(y, pool = pool, hess = hess)
+    if(model == "Stasis") w <- opt.ssm.Stasis(y, pool = pool, hess = hess)
+    if(model == "StrictStasis") w <- opt.ssm.StrictStasis(y, pool = pool, hess = hess)
+    if(model == "OU") w <- opt.ssm.OU(y, pool = pool, hess = hess)
+    if(model == "ACDC") w <- opt.ssm.ACDC(y, pool = pool, hess = hess)
+    if(model == "covTrack")     stop("SSM method not available for covTrack model.  Consider using Joint or AD method.")
   }
 
   return(w)
@@ -196,7 +215,7 @@ fitSimple<- function(y, model = c("GRW", "URW", "Stasis", "StrictStasis", "OU", 
 #'
 #' @param y a \code{paleoTS} object
 #' @param silent if TRUE, results are returned as a list and not printed
-#' @param method "Joint" or "AD", see \code{\link{fitSimple}}
+#' @param method "Joint", "AD", or "SSM"; see \code{\link{fitSimple}}
 #' @param ... other arguments passed to model fitting functions
 #'
 #' @details Function \code{fit3models} fits the general (biased) random walk (GRW),
@@ -212,12 +231,11 @@ fitSimple<- function(y, model = c("GRW", "URW", "Stasis", "StrictStasis", "OU", 
 #' @examples
 #' x <- sim.GRW(ns = 50, ms = 0.2)
 #' fit4models(x)
-fit3models<- function (y, silent = FALSE, method = c("Joint", "AD"), ...)
+fit3models<- function (y, silent = FALSE, method = c("Joint", "AD", "SSM"), ...)
 {
   args<- list(...)
   check.var<- TRUE
-  if(length(args)>0) if(args$pool==FALSE)	check.var<- FALSE
-  if(all(y$nn ==1)) check.var <- FALSE
+  if(length(args)>0) if(args$pool==FALSE) if(all(y$nn == 1))	check.var<- FALSE
   if (check.var){
     tv<- test.var.het(y)
     pv<- round(tv$p.value, 0)
@@ -236,6 +254,11 @@ fit3models<- function (y, silent = FALSE, method = c("Joint", "AD"), ...)
     m2 <- opt.joint.URW(y, ...)
     m3 <- opt.joint.Stasis(y, ...)
   }
+  else if (method == "SSM"){
+    m1 <- opt.ssm.GRW(y, ...)
+    m2 <- opt.ssm.URW(y, ...)
+    m3 <- opt.ssm.Stasis(y, ...)
+  }
   mc <- compareModels(m1, m2, m3, silent = silent)
   invisible(mc)
 }
@@ -243,12 +266,11 @@ fit3models<- function (y, silent = FALSE, method = c("Joint", "AD"), ...)
 
 #' @describeIn fit3models add model of "Strict Stasis" to the three models
 #' @export
-fit4models<- function(y, silent = FALSE, method = c("Joint", "AD"), ...)
+fit4models<- function(y, silent = FALSE, method = c("Joint", "AD", "SSM"), ...)
 {
   args<- list(...)
   check.var<- TRUE
   if(length(args)>0) if(args$pool==FALSE)	check.var<- FALSE
-  if(all(y$nn ==1)) check.var <- FALSE
   if (check.var){
     tv<- test.var.het(y)
     pv<- round(tv$p.value, 0)
@@ -269,6 +291,12 @@ fit4models<- function(y, silent = FALSE, method = c("Joint", "AD"), ...)
     m3 <- opt.joint.Stasis(y, ...)
     m4 <- opt.joint.StrictStasis(y, ...)
   }
+  else if (method == "SSM") {
+    m1 <- opt.ssm.GRW(y, ...)
+    m2 <- opt.ssm.URW(y, ...)
+    m3 <- opt.ssm.Stasis(y, ...)
+    m4 <- opt.ssm.StrictStasis(y, ...)
+  }
 
   mc <- compareModels(m1, m2, m3, m4, silent = silent)
   invisible(mc)
@@ -288,6 +316,10 @@ fit4models<- function(y, silent = FALSE, method = c("Joint", "AD"), ...)
 #' They are used here mostly to generate initial parameter estimates for
 #' numerical optimization; they not likely to be called directly by the user.
 #' @seealso \code{\link{fitSimple}}
+#' @examples
+#' y <- sim.GRW(ms = 1, vs = 1)
+#' w <- mle.GRW(y)
+#' print(w)
 
 mle.GRW<- function(y)
 {
@@ -432,7 +464,7 @@ logL.StrictStasis<- function(p, y)
 #' time series in order to remove temporal autocorrelation.  This is referred to as
 #' the "Ancestor-Descendant" or "AD" parameterization by Hunt [2008], and it is a REML
 #' approach (like phylogenetic independent contrasts).  A full ML approach, called
-#' "Joint" was found to have somewhat better performance (Hunt, 2008) and generally
+#' "Joint" was found to have generally better performance (Hunt, 2008) and generally
 #' should be used instead.
 #' @note  It is easier to use the convenience function \code{fitSimple}.
 #' @seealso \code{\link{fitSimple}}, \code{\link{opt.joint.GRW}}
@@ -454,39 +486,23 @@ opt.GRW<- function (y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", he
 {
   # get initial parameter estimates
   p0<- mle.GRW(y)
-  if (p0[2] <= 0)	p0[2]<- 1e-7
+  if (p0[2] <= 1e-5)	p0[2]<- 1e-5
   names(p0)<- c("mstep", "vstep")
-  if (is.null(cl$ndeps))	cl$ndeps<- abs(p0/1e4)
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
   # pool variance, if needed
   if (pool)	y<- pool.var(y, ret.paleoTS=TRUE)
 
   if (meth=="L-BFGS-B")
-    w<- try(optim(p0, fn=logL.GRW, method=meth, lower=c(NA,0), control=cl, hessian=hess, y=y), silent=TRUE)
-  else
-    w<- try(optim(p0, fn=logL.GRW, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
+    w <- optim(p0, fn=logL.GRW, method=meth, lower=c(NA,1e-6), control=cl, hessian=hess, y=y)
+  else w<- optim(p0, fn=logL.GRW, method=meth, control=cl, hessian=hess, y=y)
 
-  # if optim failed, set ndeps based on p0
-  if(inherits(w, "try-error"))
-  {
-    cl$ndeps<- rep(1e-9, length(p0)) 	#p0/10000
-    if (meth=="L-BFGS-B")
-      w<- try(optim(p0, fn=logL.GRW, method=meth, lower=c(NA,0), control=cl, hessian=hess, y=y), silent=TRUE)
-    else
-      w<- try(optim(p0, fn=logL.GRW, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
-
-    if(inherits(w, "try-error"))	# if still fails
-    {
-      warning("opt.GRW failed ", immediate.=TRUE)
-      w$par<- c(NA,NA)
-      w$value<- NA
-    }
-  }
 
   # add more information to results (p0, SE, K, n, IC scores)
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='GRW', method='AD', K=2, n=length(y$mm)-1, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='GRW', method='AD',
+                     K=2, n=length(y$mm)-1, se=w$se, convergence = w$convergence, logLFunction = "logL.GRW")
 
   return (wc)
 }
@@ -499,39 +515,23 @@ opt.URW<- function (y, pool = TRUE, cl = list(fnscale=-1), meth = "L-BFGS-B", he
 {
   # get initial parameter estimates
   p0<- mle.URW(y)
-  if (p0 <= 0)	p0<- 1e-7
+  if (p0 <= 1e-5)	p0<- 1e-5
   names(p0)<- "vstep"
-  if (is.null(cl$ndeps))		cl$ndeps<- p0/1e4
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
   # pool variance, if needed
   if (pool)	y<- pool.var(y, ret.paleoTS=TRUE)
 
   if (meth=="L-BFGS-B")
-    w<- try(optim(p0, fn=logL.URW, method=meth, lower=0, control=cl, hessian=hess, y=y), silent=TRUE)
-  else
-    w<- try(optim(p0, fn=logL.URW, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
+    w<- optim(p0, fn=logL.URW, method=meth, lower=1e-6, control=cl, hessian=hess, y=y)
+  else  w<- optim(p0, fn=logL.URW, method=meth, control=cl, hessian=hess, y=y)
 
-  # if optim failed, set ndeps based on p0
-  if(inherits(w, "try-error"))
-  {
-    cl$ndeps<- rep(1e-9, length(p0)) 	#p0/10000
-    if (meth=="L-BFGS-B")
-      w<- try(optim(p0, fn=logL.URW, method=meth, lower=0, control=cl, hessian=hess, y=y), silent=TRUE)
-    else
-      w<- try(optim(p0, fn=logL.URW, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
-
-    if(inherits(w, "try-error"))	# if still fails
-    {
-      warning("opt.URW failed ", immediate.=TRUE)
-      w$par<- NA
-      w$value<- NA
-    }
-  }
 
   # add more information to results (p0, SE, K, n, IC scores)
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='URW', method='AD', K=1, n=length(y$mm)-1, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='URW', method='AD',
+                     K=1, n=length(y$mm)-1, se=w$se, convergence = w$convergence, logLFunction = "logL.URW")
 
   return (wc)
 }
@@ -545,39 +545,24 @@ opt.Stasis<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B
 {
   # get initial parameter estimates
   p0<- mle.Stasis(y)
-  if (p0[2] <= 0 || is.na(p0[2]))	p0[2]<- 1e-7
+  if (p0[2] <= 1e-5 || is.na(p0[2]))	p0[2]<- 1e-5
   names(p0)<- c("theta", "omega")
-  if (is.null(cl$ndeps))		cl$ndeps<- abs(p0/1e4)
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
   # pool variance, if needed
   if (pool)	y<- pool.var(y, ret.paleoTS=TRUE)
 
   if (meth=="L-BFGS-B")
-    w<- try(optim(p0, fn=logL.Stasis, method=meth, lower=c(NA,0), control=cl, hessian=hess, y=y), silent=TRUE)
+    w<- optim(p0, fn=logL.Stasis, method=meth, lower=c(NA,1e-6), control=cl, hessian=hess, y=y)
   else
-    w<- try(optim(p0, fn=logL.Stasis, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
+    w<- optim(p0, fn=logL.Stasis, method=meth, control=cl, hessian=hess, y=y)
 
-  # if optim failed, set ndeps based on p0
-  if(inherits(w, "try-error"))
-  {
-    cl$ndeps<- rep(1e-9, length(p0)) 	#p0/10000
-    if (meth=="L-BFGS-B")
-      w<- try(optim(p0, fn=logL.Stasis, method=meth, lower=c(NA,0), control=cl, hessian=hess, y=y), silent=TRUE)
-    else
-      w<- try(optim(p0, fn=logL.Stasis, method=meth, control=cl, hessian=hess, y=y), silent=TRUE)
-
-    if(inherits(w, "try-error"))	# if still fails
-    {
-      warning("opt.Stasis failed ", immediate.=TRUE)
-      w$par<- c(NA,NA)
-      w$value<- NA
-    }
-  }
 
   # add more information to results (p0, SE, K, n, IC scores)
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='Stasis', method='AD', K=2, n=length(y$mm)-1, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='Stasis', method='AD',
+                     K=2, n=length(y$mm)-1, se=w$se, convergence = w$convergence, logLFunction = "logL.Stasis")
 
   return (wc)
 }
@@ -585,38 +570,26 @@ opt.Stasis<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B
 
 #' @describeIn opt.GRW  fit the Strict Stasis model by the AD parameterization
 #' @export
-opt.StrictStasis<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS-B", hess = FALSE)
+opt.StrictStasis<- function (y, pool = TRUE, cl = list(fnscale = -1), hess = FALSE)
 {
   p0 <- mean(y$mm)
   names(p0) <- c("theta")
-  if (is.null(cl$ndeps))
-    cl$ndeps <- min(abs(p0/10000), 1e-7)
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
+
+  # pool variance, if needed
   if (pool)
     y <- pool.var(y, ret.paleoTS = TRUE)
-  if (meth == "L-BFGS-B")
-    w <- try(optim(p0, fn = logL.StrictStasis, method = meth, lower = c(NA,
-                                                                        0), control = cl, hessian = hess, y = y), silent = TRUE)
-  else w <- try(optim(p0, fn = logL.StrictStasis, method = meth,
-                      control = cl, hessian = hess, y = y), silent = TRUE)
-  if(inherits(w, "try-error")) {
-    cl$ndeps <- rep(1e-09, length(p0))
-    if (meth == "L-BFGS-B")
-      w <- try(optim(p0, fn = logL.StrictStasis, method = meth,
-                     lower = c(NA, 0), control = cl, hessian = hess,
-                     y = y), silent = TRUE)
-    else w <- try(optim(p0, fn = logL.StrictStasis, method = meth,
-                        control = cl, hessian = hess, y = y), silent = TRUE)
-    if(inherits(w, "try-error")) {
-      warning("opt.StrictStasis failed ", immediate. = TRUE)
-      w$par <- c(NA, NA)
-      w$value <- NA
-    }
-  }
+
+
+  w <- optim(p0, fn = logL.StrictStasis, control = cl, method = "Brent", lower=min(y$mm), upper=max(y$mm),
+             hessian = hess, y = y)
+
+  # add information
   if (hess)
     w$se <- sqrt(diag(-1 * solve(w$hessian)))
   else w$se <- NULL
   wc <- as.paleoTSfit(logL = w$value, parameters = w$par, modelName = "StrictStasis",
-                      method = "AD", K = 1, n = length(y$mm) - 1, se = w$se)
+                      method = "AD", K = 1, n = length(y$mm) - 1, se = w$se, convergence = w$convergence, logLFunction = "logL.StrictStasis")
   return(wc)
 }
 
@@ -710,7 +683,7 @@ logL.joint.StrictStasis<- function (p, y)
 #' Fit evolutionary models using the "Joint" parameterization
 #'
 #' @param y a \code{paleoTS} object
-#' @param pool if TRUE, sample variances are substituted with their pooled estimate
+#' @param pool if \code{TRUE}, sample variances are substituted with their pooled estimate
 #' @param cl optional control list, passed to \code{optim()}
 #' @param meth optimization algorithm, passed to \code{optim()}
 #' @param hess if TRUE, return standard errors of parameter estimates from the
@@ -724,8 +697,8 @@ logL.joint.StrictStasis<- function (p, y)
 #' @seealso \code{\link{fitSimple}}, \code{\link{opt.GRW}}
 #'
 #' @references
-#' #' Hunt, G., M. J. Hopkins and S. Lidgard. 2015. Simple versus complex models of trait evolution
-#' and stasis as a response to environmental change. PNAS 112(16): 4885-4890.
+#' Hunt, G., M. J. Hopkins and S. Lidgard. 2015. Simple versus complex models of trait evolution
+#' and stasis as a response to environmental change. \emph{Proc. Natl. Acad. Sci. USA} 112(16): 4885-4890.
 #'
 #' @examples
 #' x <- sim.GRW(ns = 20, ms = 1)  # strong trend
@@ -744,17 +717,19 @@ opt.joint.GRW<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFG
   p0<- array(dim=3)
   p0[1]<- y$mm[1]
   p0[2:3]<- mle.GRW(y)
-  if (p0[3]<=0)	p0[3]<- 1e-7
+  if (p0[3]<=1e-5)	p0[3]<- 1e-5
   names(p0)<- c("anc", "mstep", "vstep")
-  if (is.null(cl$ndeps))	cl$ndeps<- abs(p0/1e4)
-  cl$ndeps[cl$ndeps==0]<- 1e-8
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
-  if (meth=="L-BFGS-B")	w<- optim(p0, fn=logL.joint.GRW, control=cl, method=meth, lower=c(NA,NA,0), hessian=hess, y=y)
+
+  if (meth=="L-BFGS-B")	w<- optim(p0, fn=logL.joint.GRW, control=cl, method=meth, lower=c(NA,NA,1e-6), hessian=hess, y=y)
   else 					w<- optim(p0, fn=logL.joint.GRW, control=cl, method=meth, hessian=hess, y=y)
 
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='GRW', method='Joint', K=3, n=length(y$mm), se=w$se)
+
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='GRW', method='Joint',
+                     K=3, n=length(y$mm), se=w$se, convergence = w$convergence, logLFunction = "logL.joint.GRW")
 
   return (wc)
 }
@@ -771,17 +746,21 @@ opt.joint.URW<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFG
   ## get initial estimates
   p0<- array(dim=2)
   p0[1]<- y$mm[1]
-  p0[2]<- min(c(mle.URW(y), 1e-7)) ## handles negative vstep estimates
-  names(p0)<- c("anc","vstep")
-  if (is.null(cl$ndeps))	cl$ndeps<- abs(p0/1e4)
-  cl$ndeps[cl$ndeps==0]<- 1e-8
+  p0[2]<- mle.URW(y)
+  if(p0[2] <= 1e-5) p0[2] <- 1e-5
 
-  if (meth=="L-BFGS-B")	w<- optim(p0, fn=logL.joint.URW, control=cl, method=meth, lower=c(NA,0), hessian=hess, y=y)
+  names(p0)<- c("anc","vstep")
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
+
+
+  if (meth=="L-BFGS-B")	w<- optim(p0, fn=logL.joint.URW, control=cl, method=meth, lower=c(NA,1e-6), hessian=hess, y=y)
   else					w<- optim(p0, fn=logL.joint.URW, control=cl, method=meth, hessian=hess, y=y)
 
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='URW', method='Joint', K=2, n=length(y$mm), se=w$se)
+
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='URW', method='Joint',
+                     K=2, n=length(y$mm), se=w$se, convergence = w$convergence, logLFunction = "logL.joint.URW")
 
   return (wc)
 }
@@ -797,16 +776,17 @@ opt.joint.Stasis<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-
 
   ## get initial estimates
   p0<- mle.Stasis(y)
-  if(p0[2]<=0 || is.na(p0[2]))	p0[2]<- 1e-7
-  if (is.null(cl$ndeps))	cl$ndeps<- abs(p0/1e4)
-  cl$ndeps[cl$ndeps==0]<- 1e-9
+  if(p0[2]<= 1e-5 || is.na(p0[2]))	p0[2]<- 1e-5
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
-  if(meth=="L-BFGS-B")  w<- optim(p0, fn=logL.joint.Stasis, control=cl, method=meth, lower=c(NA,0), hessian=hess, y=y)
+  if(meth=="L-BFGS-B")  w<- optim(p0, fn=logL.joint.Stasis, control=cl, method=meth, lower=c(NA,1e-6), hessian=hess, y=y)
   else				  w<- optim(p0, fn=logL.joint.Stasis, control=cl, method=meth, hessian=hess, y=y)
 
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='Stasis', method='Joint', K=2, n=length(y$mm), se=w$se)
+
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='Stasis', method='Joint',
+                     K=2, n=length(y$mm), se=w$se, convergence = w$convergence, logLFunction = "logL.joint.Stasis")
 
   return (wc)
 
@@ -826,7 +806,10 @@ opt.joint.StrictStasis<- function (y, pool = TRUE, cl = list(fnscale = -1), hess
   names(w$par)<- "theta"
   if (hess)
     w$se <- sqrt(diag(-1 * solve(w$hessian)))
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName="StrictStasis", method="Joint", K=1, n=length(y$mm), se=w$se)
+
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName="StrictStasis", method="Joint",
+                     K=1, n=length(y$mm), se=w$se, convergence = w$convergence, logLFunction = "logL.joint.StrictStasis")
+
   return(wc)
 }
 
@@ -860,7 +843,7 @@ ou.V<- function(vs, aa, tt)        (vs/(2*aa))*(1 - exp(-2*aa*tt))
 #' 700-710.
 #' @examples
 #' x1 <- sim.OU(alpha = 0.8)  # strong alpha
-#' x2 <- sim.OU(alpha = 0.1)  # wearker alpha
+#' x2 <- sim.OU(alpha = 0.1)  # weaker alpha
 #' plot(x1)
 #' plot(x2, add = TRUE, col = "blue")
 #'
@@ -965,20 +948,20 @@ opt.joint.OU<- function (y, pool = TRUE, cl = list(fnscale = -1), meth = "L-BFGS
 
   ## get initial estimates
   w0<- mle.GRW(y)
+  if(w0[2] <= 1e-5) w0[2] <- 1e-5
   halft<- (y$tt[length(y$tt)]-y$tt[1])/4			# set half life to 1/4 of length of sequence
   p0<- c(y$mm[1], w0[2]/10, y$mm[length(y$mm)], log(2)/halft)
   names(p0)<- c("anc","vstep","theta","alpha")
-  #print(p0)
-  if (is.null(cl$ndeps))	cl$ndeps<- abs(p0/1e4)
-  cl$ndeps[cl$ndeps==0]<- 1e-8
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
-
-  if(meth=="L-BFGS-B")  w<- optim(p0, fn=logL.joint.OU, control=cl, method=meth, lower=c(NA,1e-10,NA,1e-8), hessian=hess, y=y)
+  if(meth=="L-BFGS-B")  w<- optim(p0, fn=logL.joint.OU, control=cl, method=meth, lower=c(NA,1e-8,NA,1e-8), hessian=hess, y=y)
   else 				  w<- optim(p0, fn=logL.joint.OU, control=cl, method=meth, hessian=hess, y=y)
 
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='OU', method='Joint', K=4, n=length(y$mm), se=w$se)
+
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='OU', method='Joint',
+                     K=4, n=length(y$mm), se=w$se, convergence = w$convergence, logLFunction = "logL.joint.OU")
 
   return (wc)
 }
@@ -1025,7 +1008,7 @@ sim.covTrack<- function (ns=20, b=1, evar=0.1, z, nn=rep(20, times=ns), tt=0:(ns
   if(length(z)==ns)
   {
     z<- diff(z)
-    warning("Covariate z is same length of sequence (ns); using first difference of z as the covariate.")
+    warning("Covariate z is same length of sequence (ns); using first difference of z as the covariate.\n")
   }
 
   MM <- array(dim = ns)
@@ -1037,7 +1020,7 @@ sim.covTrack<- function (ns=20, b=1, evar=0.1, z, nn=rep(20, times=ns), tt=0:(ns
   mm <- MM + rnorm(ns, 0, sqrt(vp/nn))  # add sampling error
   vv <- rep(vp, ns)
   gp <- c(b, evar)
-  names(gp) <- c("slope.b", "evar")
+  names(gp) <- c("b", "evar")
   res <- as.paleoTS(mm = mm, vv = vv, nn = nn, tt = tt, MM = MM,
                     genpars = gp, label = "Created by sim.covTrack()")
 
@@ -1115,7 +1098,7 @@ logL.covTrack<- function(p, y, z)
 #' z <- c(1, 2, 2, 4, 0, 8, 2, 3, 1, 9, 4, 3)
 #' x <- sim.covTrack(ns = 12, z = z, b = 0.5, evar = 0.2)
 #' w.urw <- opt.URW(x)
-#' w.cov <- opt.covTrack(x, z = z)
+#' w.cov <- opt.covTrack(x, z)
 #' compareModels(w.urw, w.cov)
 opt.covTrack<- function (y, z, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE)
 {
@@ -1124,30 +1107,32 @@ opt.covTrack<- function (y, z, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", 
   if(length(z)==length(y$mm))
   {
     z<- diff(z)
-    warning("Covariate z is same length of sequence (ns); using first difference of z as the covariate.")
+    cat("Covariate z is same length of sequence (ns); using first difference of z as the covariate.")
   }
   if (length(z) != ns-1)  stop("Covariate length [", length(z), "] does not match the sequence length [", ns, "]\n" )
 
 
-  # get initial estimates by regression
-  reg<- stats::lm(diff(y$mm) ~ z-1)
-  p0<- c(stats::coef(reg), var(stats::resid(reg)))
-  names(p0) <- c("b", "evar")
-
-  # pool variances if needed and do optimization
+  # pool variances if needed
   if (pool) y <- pool.var(y, ret.paleoTS = TRUE)
-  if (is.null(cl$ndeps))
-    cl$ndeps <- abs(p0/10000)
-  cl$ndeps[cl$ndeps==0]<- 1e-8  ## will fail o.w. if any p0=0
+
+  # get initial estimates by regression
+  reg<- stats::lm(diff(y$mm) ~ z - 1)
+  p0<- c(stats::coef(reg), var(stats::resid(reg)))
+  #p0 <- c(0,0)
+  names(p0) <- c("b", "evar")
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0, z = z)
+
+
   if (meth == "L-BFGS-B")
-    w <- optim(p0, fn=logL.covTrack, method = meth, lower = c(NA, 0), control = cl, hessian = hess, y=y, z=z)
+    w <- optim(p0, fn=logL.covTrack, method = meth, lower = c(NA, 1e-6), control = cl, hessian = hess, y=y, z=z)
   else  w<- optim(p0, fn=logL.covTrack, method=meth, control=cl, hessian=hess, y=y, z=z)
 
 
   if (hess)  w$se <- sqrt(diag(-1 * solve(w$hessian)))
   else w$se <- NULL
 
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='TrackCovariate', method='AD', K=2, n=length(y$mm)-1, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='TrackCovariate', method='AD',
+                     K=2, n=length(y$mm)-1, se=w$se, convergence = w$convergence, logLFunction = "logL.covTrack")
   return(wc)
 }
 
@@ -1181,25 +1166,25 @@ opt.joint.covTrack<- function (y, z, pool=TRUE, cl=list(fnscale=-1), meth="L-BFG
            consider using the AD parameterization instead.")
   if(abs(r.trait) > 0.6 && abs(r.cov > 0.6))	warning(mess)
 
+  # pool variances if needed and do optimization
+  if (pool) y <- pool.var(y, ret.paleoTS = TRUE)
 
   # get initial estimates by regression
   reg<- stats::lm(y$mm ~ z)
   p0<- c(stats::coef(reg), var(stats::resid(reg)))
   names(p0) <- c("b0", "b1", "evar")
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0, z)
 
-  # pool variances if needed and do optimization
-  if (pool) y <- pool.var(y, ret.paleoTS = TRUE)
-  if (is.null(cl$ndeps))
-    cl$ndeps <- rep(1e-8, length(p0))
   if (meth == "L-BFGS-B")
-    w <- optim(p0, fn=logL.joint.covTrack, method = meth, lower = c(NA,NA,0), control = cl, hessian = hess, y=y, z=z)
+    w <- optim(p0, fn=logL.joint.covTrack, method = meth, lower = c(NA,NA,1e-6), control = cl, hessian = hess, y=y, z=z)
   else  w<- optim(p0, fn=logL.joint.covTrack, method=meth, control=cl, hessian=hess, y=y, z=z)
 
 
   if (hess)  w$se <- sqrt(diag(-1 * solve(w$hessian)))
   else w$se <- NULL
 
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='TrackCovariate', method='Joint', K=3, n=length(y$mm), se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='TrackCovariate', method='Joint',
+                     K=3, n=length(y$mm), se=w$se, convergence = w$convergence, logLFunction = "logL.joint.covTrack")
   return(wc)
 }
 

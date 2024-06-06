@@ -36,7 +36,7 @@ opt.joint.StrictStasis(y, pool = TRUE, cl = list(fnscale = -1), hess = FALSE)
 \arguments{
 \item{y}{a \code{paleoTS} object}
 
-\item{pool}{if TRUE, sample variances are substituted with their pooled estimate}
+\item{pool}{if \code{TRUE}, sample variances are substituted with their pooled estimate}
 
 \item{cl}{optional control list, passed to \code{optim()}}
 
@@ -76,8 +76,8 @@ w.urw <- opt.joint.URW(x)
 compareModels(w.grw, w.urw)
 }
 \references{
-#' Hunt, G., M. J. Hopkins and S. Lidgard. 2015. Simple versus complex models of trait evolution
-and stasis as a response to environmental change. PNAS 112(16): 4885-4890.
+Hunt, G., M. J. Hopkins and S. Lidgard. 2015. Simple versus complex models of trait evolution
+and stasis as a response to environmental change. \emph{Proc. Natl. Acad. Sci. USA} 112(16): 4885-4890.
 }
 \seealso{
 \code{\link{fitSimple}}, \code{\link{opt.GRW}}

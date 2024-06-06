@@ -25,3 +25,9 @@ Compute Information Criteria
 This function is used internally by the model-fitting functions. It
   will not generally be called directly by the user.
 }
+\examples{
+ic1 <- IC(logL = 0, K = 2, method = "AIC") # plain AIC
+ic2 <- IC(logL = 0, K = 2, n = 10, method = "AICc")
+ic3 <- IC(logL = 0, K = 2, n = 1000, method = "AICc") # converges to AIC with increasing n
+print(rbind(ic1, ic2, ic3))
+}

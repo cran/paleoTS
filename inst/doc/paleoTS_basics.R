@@ -17,8 +17,8 @@ print(str(x))
 
 ## -----------------------------------------------------------------------------
 x.sub <- sub.paleoTS(x, ok = 10:15)  # select only populations 10 through 15
-plot(x)
-plot(x.sub, add = TRUE, col = "red")
+plot(x, add.label = FALSE)
+plot(x.sub, add = TRUE, add.label = FALSE, col = "red")
 
 ## -----------------------------------------------------------------------------
  library(mnormt)  # should omit this later

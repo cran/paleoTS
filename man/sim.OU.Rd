@@ -49,7 +49,7 @@ This function simulates an Ornstein-Uhlenbeck (OU) process. In
 }
 \examples{
 x1 <- sim.OU(alpha = 0.8)  # strong alpha
-x2 <- sim.OU(alpha = 0.1)  # wearker alpha
+x2 <- sim.OU(alpha = 0.1)  # weaker alpha
 plot(x1)
 plot(x2, add = TRUE, col = "blue")
 

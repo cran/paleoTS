@@ -5,16 +5,16 @@
 \alias{fit4models}
 \title{Fit a set of standard evolutionary models}
 \usage{
-fit3models(y, silent = FALSE, method = c("Joint", "AD"), ...)
+fit3models(y, silent = FALSE, method = c("Joint", "AD", "SSM"), ...)
 
-fit4models(y, silent = FALSE, method = c("Joint", "AD"), ...)
+fit4models(y, silent = FALSE, method = c("Joint", "AD", "SSM"), ...)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}
 
 \item{silent}{if TRUE, results are returned as a list and not printed}
 
-\item{method}{"Joint" or "AD", see \code{\link{fitSimple}}}
+\item{method}{"Joint", "AD", or "SSM"; see \code{\link{fitSimple}}}
 
 \item{...}{other arguments passed to model fitting functions}
 }

@@ -11,8 +11,12 @@
   add = FALSE,
   modelFit = NULL,
   pch = 21,
+  pt.bg = "white",
   lwd = 1.5,
   ylim = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  add.label = TRUE,
   ...
 )
 }
@@ -31,9 +35,18 @@ for the purposes of displaying error bars; defaults to \code{FALSE}}
 
 \item{pch}{plotting symbol, defaults to 19}
 
+\item{pt.bg}{color fill for points, defaults to white}
+
 \item{lwd}{line width, defaults to 1.5}
 
 \item{ylim}{optional, y-limits of the plot}
+
+\item{xlab}{optional, label for x-axis}
+
+\item{ylab}{optional, label for y-axis}
+
+\item{add.label}{logical, if \code{TRUE}, writes \code{label} from \code{x}
+at the top of the plot}
 
 \item{...}{other arguments passed to plotting functions}
 }
@@ -47,4 +60,5 @@ Plot a paleoTS object
 x <- sim.GRW(ns = 30)
 w <- fitSimple(x, model = "GRW", method = "Joint")
 plot(x, modelFit = w)
+plot(x, xlab = "Time [Myr]", ylab = "Body length [mm]", pch = 22, pt.bg = "blue")
 }

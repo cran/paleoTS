@@ -31,8 +31,8 @@ Following Gingerich (1993), a robust line is fit through the
 }
 \note{
 This method was important in early attempts to disentangle
- evolutionary tempo and mode. I view likelihood-based methods as more
- informative, and in particular the estimation of 'Generational Rates' using
+ evolutionary tempo and mode. Likelihood-based methods have a more sound
+ statistical basis, and in particular the estimation of 'Generational Rates' using
  LRI is compromised by sampling error; see Hunt (2012) and the example below.
 }
 \examples{
@@ -42,7 +42,7 @@ xSlow <- sim.Stasis(ns = 20, omega = 0)        # strict stasis (zero rates)
 lri.Fast <- LRI(xFast, draw = FALSE)
 lri.Slow <- LRI(xSlow, draw = FALSE)
 print(lri.Fast[3], 4)
-print(lri.Slow[3], 4)  # LRI thinks strict stasis rates are faster!
+print(lri.Slow[3], 4)  # LRI thinks strict stasis rates are MUCH faster!
 }
 \references{
 Gingerich, P.D. 1993. Quantification and comparison of

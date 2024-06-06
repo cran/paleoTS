@@ -4,7 +4,18 @@
 \alias{as.paleoTSfit}
 \title{Create a \code{paleoTSfit} object}
 \usage{
-as.paleoTSfit(logL, parameters, modelName, method, K, n, se)
+as.paleoTSfit(
+  logL,
+  parameters,
+  modelName,
+  method,
+  K,
+  n,
+  se,
+  convergence = NULL,
+  logLFunction = NULL,
+  ...
+)
 }
 \arguments{
 \item{logL}{model log-likelihood}
@@ -20,6 +31,12 @@ as.paleoTSfit(logL, parameters, modelName, method, K, n, se)
 \item{n}{sample size}
 
 \item{se}{standard errors of parameter estimates}
+
+\item{convergence}{code indicating optimization convergence}
+
+\item{logLFunction}{name of the log-likelihood function}
+
+\item{...}{optional additional elements added by some functions}
 }
 \value{
 a \code{paleoTSfit} object
@@ -30,4 +47,10 @@ Create a \code{paleoTSfit} object
 \note{
 All model-fitting functions use this function to package the resulting
   data-model fits. Users will not need to call this function.
+}
+\examples{
+#  fake example; users won't need to use this unless they make their own model-fitting functions
+w <- as.paleoTSfit(logL = 10, parameters = 2, modelName = "StrictStasis",
+                   method = "Joint", K = 1, n = 25, se = NULL)
+
 }

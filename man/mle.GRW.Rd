@@ -36,6 +36,11 @@ sampling variance in each, which will usually be violated in real data.
 They are used here mostly to generate initial parameter estimates for
 numerical optimization; they not likely to be called directly by the user.
 }
+\examples{
+y <- sim.GRW(ms = 1, vs = 1)
+w <- mle.GRW(y)
+print(w)
+}
 \seealso{
 \code{\link{fitSimple}}
 }

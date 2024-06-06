@@ -75,7 +75,7 @@ logL.Mult.covTrack<- function (p, yl, zl)
 opt.covTrack.Mult<- function (yl, zl, cl=list(fnscale=-1), pool=TRUE, hess=FALSE)
   # y and z are lists of paleoTS, and covariates, respectively
 {
-  if(inherits(yl, "paleoTS"))
+  if (inherits(yl,"paleoTS"))
   { stop("opt.covTrack.Mult is only for multiple paleoTS sequences\n") }
   nseq <- length(yl)
   if (pool) {
@@ -104,7 +104,9 @@ opt.covTrack.Mult<- function (yl, zl, cl=list(fnscale=-1), pool=TRUE, hess=FALSE
     regMat[i,]<- c(stats::coef(w), aa$Sum[2]/aa$Df[2])  # estimates of b0, b1, and evar
   }
   p0<- apply(regMat, 2, stats::median)  # initial estimates are median of separate regressions
-  w<- optim(p0, fn=logL.Mult.covTrack, control=cl, method="L-BFGS-B", lower=c(NA,0), hessian=hess, yl=yl, zl=zl)
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(yl[[1]], p0)
+
+  w<- optim(p0, fn=logL.Mult.covTrack, control=cl, method="L-BFGS-B", lower=c(NA,1e-6), hessian=hess, yl=yl, zl=zl)
 
   if (hess) 	w$se<- sqrt(diag(-1 * solve(w$hessian)))
   else		w$se<- NULL
@@ -112,7 +114,8 @@ opt.covTrack.Mult<- function (yl, zl, cl=list(fnscale=-1), pool=TRUE, hess=FALSE
   ff<- function(x) length(x$mm)-1
   n<- sum(sapply(yl, ff))
 
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='trackCovariate.Mult', method='AD', K=2, n=n, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='covTrack.Mult',
+                     method='AD', K=2, n=n, se=w$se, convergence=w$convergence, logLFunction="logL.Mult.covTrack")
   return(wc)
 }
 
@@ -131,7 +134,7 @@ logL.Mult.joint.covTrack<- function (p, yl, zl)
 opt.joint.covTrack.Mult<- function (yl, zl, cl=list(fnscale=-1), pool=TRUE, hess=FALSE)
   # y and z are lists of paleoTS, and covariates, respectively
 {
-  if(inherits(yl, "paleoTS"))
+  if (inherits(yl, "paleoTS"))
   { stop("opt.covTrack.Mult is only for multiple paleoTS sequences\n") }
   nseq <- length(yl)
   if (pool) {
@@ -154,7 +157,9 @@ opt.joint.covTrack.Mult<- function (yl, zl, cl=list(fnscale=-1), pool=TRUE, hess
     regMat[i,]<- c(stats::coef(w), aa$Sum[2]/aa$Df[2])  # estimates of b0, b1, and evar
   }
   p0<- apply(regMat, 2, stats::median)  # initial estimates are median of separate regressions
-  w<- optim(p0, fn=logL.Mult.joint.covTrack, control=cl, method="L-BFGS-B", lower=c(NA,NA,0), hessian=hess, yl=yl, zl=zl)
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(yl[[1]], p0)
+
+  w<- optim(p0, fn=logL.Mult.joint.covTrack, control=cl, method="L-BFGS-B", lower=c(NA,NA,1e-6), hessian=hess, yl=yl, zl=zl)
 
   if (hess) 	w$se<- sqrt(diag(-1 * solve(w$hessian)))
   else		w$se<- NULL
@@ -162,7 +167,8 @@ opt.joint.covTrack.Mult<- function (yl, zl, cl=list(fnscale=-1), pool=TRUE, hess
   ff<- function(x) length(x$mm)
   n<- sum(sapply(yl, ff))
 
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='trackCovariate.Mult', method='Joint', K=3, n=n, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName='covTrack.Mult', method='Joint',
+                     K=3, n=n, se=w$se, convergence=w$convergence, logLFunction="logL.Mult.joint.covTrack")
   return(wc)
 }
 
@@ -193,7 +199,7 @@ opt.Mult<- function (yl, cl=list(fnscale=-1), model=c("GRW", "URW", "Stasis"), p
   # estimates single model across multiple sequences
   # pool=TRUE will pool variances _within_ sequences
 {
-  if(inherits(yl, "paleoTS"))
+  if (inherits(yl, "paleoTS"))
     stop("opt.RW.mult is only for multiple paleoTS sequences\n")
   nseq<- length(yl)
 
@@ -203,22 +209,22 @@ opt.Mult<- function (yl, cl=list(fnscale=-1), model=c("GRW", "URW", "Stasis"), p
 
   model<- match.arg(model)
   if (model=="GRW"){
-    ll<- c(NA,0)
+    ll<- c(NA,1e-6)
     pp<- sapply(yl, mle.GRW)
     p0<- apply(pp, 1, stats::median)	}
   else if (model=="URW")
-  { ll<- 0
+  { ll<- 1e-6
   pp<- sapply(yl, mle.URW)
   p0<- stats::median(pp)
   names(p0)<- "vstep"}
   else if(model=="Stasis")
-  {  ll<- c(rep(NA, nseq), 0)
+  {  ll<- c(rep(NA, nseq), 1e-6)
   pp<- sapply(yl, mle.Stasis)
   p0<- c(pp[1,], stats::median(pp[2,]))
   names(p0)<- c(paste("theta", 1:nseq, sep=""), "omega")
   }
   K<- length(p0)
-  if (is.null(cl$ndeps))	cl$ndeps<- rep(1e-8, length(p0))
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(yl[[1]], p0)
 
   if (meth=="L-BFGS-B")
     w<- try(optim(p0, fn=logL.Mult, method=meth, lower=ll, control=cl, hessian=hess, yl=yl, model=model), silent=TRUE)
@@ -230,7 +236,8 @@ opt.Mult<- function (yl, cl=list(fnscale=-1), model=c("GRW", "URW", "Stasis"), p
   n<- sum(nn) - nseq
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste(model,'.Mult', sep=''), method="AD", K=K, n=n, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste(model,'.Mult', sep=''),
+                     method="AD", K=K, n=n, se=w$se, convergence=w$convergence, logLFunction="logL.Mult")
 
   return (wc)
 }
@@ -240,7 +247,7 @@ opt.joint.Mult<- function (yl, cl=list(fnscale=-1), model=c("GRW", "URW", "Stasi
   # estimates single model across multiple sequences
   # pool=TRUE will pool variances _within_ sequences
 {
-  if(inherits(yl, "paleoTS") || !inherits(yl[[1]], "paleoTS"))
+  if (inherits(yl, "paleoTS") || !inherits(yl[[1]],"paleoTS"))
     stop("opt.joint.Mult() is only for a list of multiple paleoTS sequences\n")
   nseq<- length(yl)
 
@@ -250,41 +257,42 @@ opt.joint.Mult<- function (yl, cl=list(fnscale=-1), model=c("GRW", "URW", "Stasi
 
   model<- match.arg(model)
   if (model=="GRW"){
-    ll<- c(rep(NA, nseq), NA,0)
+    ll<- c(rep(NA, nseq), NA,1e-6)
     anc0<- sapply(yl, FUN=function(x) x$mm[1])
     P0<- sapply(yl, FUN=mle.GRW)
     p0<- c(anc0, apply(P0, 1, stats::median))
-    if(p0[nseq+2]<=0)	p0[nseq+2]<- 1e-7
+    if(p0[nseq+2]<=0)	p0[nseq+2]<- 1e-5
     names(p0)<- c(paste("anc", 1:nseq, sep=""), "mstep", "vstep")
     K<- nseq+2	 	}
   else if (model=="URW"){
-    ll<- c(rep(NA, nseq),0)
+    ll<- c(rep(NA, nseq),1e-6)
     anc0<- sapply(yl, FUN=function(x) x$mm[1])
     P0<- sapply(yl, FUN=mle.URW)
     p0<- c(anc0, stats::median(P0))
-    if(p0[nseq+1]<=0)	p0[nseq+1]<- 1e-7
+    if(p0[nseq+1]<=0)	p0[nseq+1]<- 1e-5
     names(p0)<- c(paste("anc", 1:nseq, sep=""), "vstep")
     K<- nseq+1	 	}
   else if (model=="Stasis"){
-    ll<- c(rep(NA, nseq),0)
+    ll<- c(rep(NA, nseq),1e-6)
     P0<- sapply(yl, FUN=mle.Stasis)
     p0<- c(P0[1,], stats::median(P0[2,]))
-    if(p0[nseq+1]<=0)	p0[nseq+1]<- 1e-7
+    if(p0[nseq+1]<=0)	p0[nseq+1]<- 1e-5
     names(p0)<- c(paste("theta", 1:nseq, sep=""), "omega")
     K<- nseq+1	 	}
 
-  if(is.null(cl$ndeps)) cl$ndeps<- rep(1e-8, length(p0))
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(yl[[1]], p0)
 
   if (meth=="L-BFGS-B")
-    w<- try(optim(p0, fn=logL.joint.Mult, method=meth, lower=ll, control=cl, hessian=hess, yl=yl, model=model), silent=TRUE)
-  else     w<- try(optim(p0, fn=logL.joint.Mult, method=meth, control=cl, hessian=hess, yl=yl, model=model), silent=TRUE)
+    w<- optim(p0, fn=logL.joint.Mult, method=meth, lower=ll, control=cl, hessian=hess, yl=yl, model=model)
+  else     w<- optim(p0, fn=logL.joint.Mult, method=meth, control=cl, hessian=hess, yl=yl, model=model)
 
   # add more information to results (p0, SE, K, n, IC scores)
   n<- sum(sapply(yl, FUN=function(x)length(x$mm)))
 
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste(model,'.Mult', sep=''), method='Joint', K=K, n=n, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste(model,'.Mult', sep=''), method='Joint',
+                     K=K, n=n, se=w$se, convergence=w$convergence, logLFunction="logL.joint.Mult")
 
   return (wc)
 }

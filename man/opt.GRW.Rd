@@ -31,13 +31,7 @@ opt.Stasis(
   hess = FALSE
 )
 
-opt.StrictStasis(
-  y,
-  pool = TRUE,
-  cl = list(fnscale = -1),
-  meth = "L-BFGS-B",
-  hess = FALSE
-)
+opt.StrictStasis(y, pool = TRUE, cl = list(fnscale = -1), hess = FALSE)
 }
 \arguments{
 \item{y}{a \code{paleoTS} object}
@@ -62,7 +56,7 @@ These functions use differences between consecutive populations in the
 time series in order to remove temporal autocorrelation.  This is referred to as
 the "Ancestor-Descendant" or "AD" parameterization by Hunt [2008], and it is a REML
 approach (like phylogenetic independent contrasts).  A full ML approach, called
-"Joint" was found to have somewhat better performance (Hunt, 2008) and generally
+"Joint" was found to have generally better performance (Hunt, 2008) and generally
 should be used instead.
 }
 \section{Functions}{

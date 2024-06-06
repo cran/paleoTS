@@ -1,23 +1,47 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-paleoTS
-=======
 
-paleoTS allows the user to analyze paleontological time-series implementing many common models that are considered by paleontologists when looking at trait changes in a species over time, including random walks, directional change, Ornstein-Uhlenbeck models of adaptation, and stasis. In addition, more complex models are available that allow for punctuated change, and for shifts in dynamics within a time-series.
+# paleoTS
 
-Example
--------
+<!-- badges: start -->
+<!-- badges: end -->
 
-As a simple example, we simulate directional change, and then fit three common models used in the literature to these data:
+The goal of paleoTS is to allow the user to simulate and fit time-series
+models commonly used to understand trait evolution in paleontology.
+Models include random walks, stasis, directional trends, OU,
+covariate-tracking, punctuations and more. Model fitting is done via
+maximum likelihood.
+
+## Example
+
+This is a simple example in which a time-series is generated, plotted,
+and then fit with three common models in paleobiology. The generating
+model is a general (also called biased) random walk, with a pretty
+strong trend parameter. Usually, this model receives just about all of
+the available model support with these generating parameters.
 
 ``` r
- library(paleoTS)
- x <- sim.GRW(ns = 20, ms = 1, vs = 0.3)
- fit3models(x)
-#> 
-#> Comparing 3 models [n = 20, method = Joint]
-#> 
-#>             logL K      AICc    dAICc Akaike.wt
-#> GRW    -15.10736 3  37.71472  0.00000         1
-#> URW    -28.45691 2  61.61970 23.90498         0
-#> Stasis -61.93319 2 128.57227 90.85754         0
+library(paleoTS)
+y <- sim.GRW(ns = 40, ms = 0.3)
+plot(y)
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />
+
+``` r
+fit3models(y)
+#> 
+#> Comparing 3 models [n = 40, method = Joint]
+#> 
+#>              logL K      AICc     dAICc Akaike.wt
+#> GRW     -26.71456 3  60.09579   0.00000     0.998
+#> URW     -34.09895 2  72.52223  12.42644     0.002
+#> Stasis -106.97466 2 218.27365 158.17785     0.000
+```
+
+Take a look at the vignette “paleoTS_basics” for more of an introduction
+to this package.
+
+## Installation
+
+paleoTS should be installed from CRAN.

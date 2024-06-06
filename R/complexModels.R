@@ -152,7 +152,7 @@ logL.punc.omega<- function(p,y,gg)
 #' compareModels(w.sta, w.punc)
 opt.punc<- function(y, gg, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE, oshare)
 {
-  if (pool) {y<- pool.var(y, ret.paleoTS=TRUE) } # pool variances in sequences
+  if (pool) y<- pool.var(y, ret.paleoTS=TRUE)  # pool variances in sequences
 
   ng<- max(gg)
   mg<- tapply(y$mm, gg, mean)
@@ -161,23 +161,25 @@ opt.punc<- function(y, gg, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess
   if(oshare)		{ p0<- c(mg, mean(mv)); K<- ng + 1; pn<- c(pn, "omega")}
   else				  { p0 <- c(mg, mv); K <- 2*ng; pn<- c(pn, paste("omega", 1:ng, sep=""))}
   names(p0)<- pn
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
-  cl$ndeps <- p0/100
   if (oshare)
   {
-   if (meth == "L-BFGS-B") w <- optim(p0, fn=logL.punc.omega, gg=gg, method = meth, lower = c(rep(NA,ng), 0), control=cl, hessian=hess, y=y)
+   if (meth == "L-BFGS-B") w <- optim(p0, fn=logL.punc.omega, gg=gg, method = meth, lower = c(rep(NA,ng), 1e-6), control=cl, hessian=hess, y=y)
    else w <- optim(p0, fn=logL.punc.omega, gg=gg, method = meth, control = cl, hessian=hess, y=y)
   }
   else
   {
-   if (meth == "L-BFGS-B")  w <- optim(p0, fn=logL.punc, gg=gg, method = meth, lower = c(rep(NA,ng), rep(0,ng)), control=cl, hessian=hess, y=y)
+   if (meth == "L-BFGS-B")  w <- optim(p0, fn=logL.punc, gg=gg, method = meth, lower = c(rep(NA,ng), rep(1e-6,ng)), control=cl, hessian=hess, y=y)
    else w <- optim(p0, fn = logL.punc, gg=gg, method = meth, control = cl, hessian = hess, y = y)
   }
 
   # add more information to results
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste('Punc', ng-1, sep='-'), method='AD', K=K, n=length(y$mm)-1, se=w$se)
+  if(oshare) loglF <- "logL.punc.omega" else loglF <- "logL.punc"
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste('Punc', ng-1, sep='-'), method='AD',
+                     K=K, n=length(y$mm)-1, se=w$se, convergence = w$convergence, logLFunction = loglF)
 
   return(wc)
 }
@@ -219,7 +221,7 @@ logL.joint.punc.omega<- function(p,y,gg)
 #' @export
 opt.joint.punc<- function(y, gg, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE, oshare)
 {
-  if (pool) {y<- pool.var(y, ret.paleoTS=TRUE) } # pool variances in sequences
+  if (pool) y<- pool.var(y, ret.paleoTS=TRUE)  # pool variances in sequences
   if(y$tt[1] != 0)	stop("Initial time must be 0.  Use as.paleoTS() or read.paleoTS() to correctly process ages.")
 
   ng<- max(gg)
@@ -229,23 +231,26 @@ opt.joint.punc<- function(y, gg, pool=TRUE, cl=list(fnscale=-1), meth="L-BFGS-B"
   if(oshare)		{ p0<- c(mg, mean(mv)); K<- ng + 1; pn<- c(pn, "omega")}
   else				{ p0 <- c(mg, mv); K <- 2*ng; pn<- c(pn, paste("omega", 1:ng, sep=""))}
   names(p0)<- pn
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
-  cl$ndeps <- p0/100
   if (oshare)
   {
-   if (meth == "L-BFGS-B") w <- optim(p0, fn=logL.joint.punc.omega, gg=gg, method = meth, lower = c(rep(NA,ng), 0), control=cl, hessian=hess, y=y)
+   if (meth == "L-BFGS-B") w <- optim(p0, fn=logL.joint.punc.omega, gg=gg, method = meth, lower = c(rep(NA,ng), 1e-6), control=cl, hessian=hess, y=y)
    else w <- optim(p0, fn=logL.joint.punc.omega, gg=gg, method = meth, control = cl, hessian=hess, y=y)
   }
   else
   {
-   if (meth == "L-BFGS-B")  w <- optim(p0, fn=logL.joint.punc, gg=gg, method = meth, lower = c(rep(NA,ng), rep(0,ng)), control=cl, hessian=hess, y=y)
+   if (meth == "L-BFGS-B")  w <- optim(p0, fn=logL.joint.punc, gg=gg, method = meth, lower = c(rep(NA,ng), rep(1e-6,ng)), control=cl, hessian=hess, y=y)
    else w <- optim(p0, fn = logL.joint.punc, gg=gg, method = meth, control = cl, hessian = hess, y = y)
   }
 
   # add more information to results
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste('Punc', ng-1, sep='-'), method='Joint', K=K, n=length(y$mm), se=w$se)
+  if(oshare) loglF <- "logL.joint.punc.omega" else loglF <- "logL.joint.punc"
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste('Punc', ng-1, sep='-'), method='Joint',
+                     K=K, n=length(y$mm), se=w$se, convergence = w$convergence, logLFunction = loglF)
+
 
   return(wc)
 }
@@ -302,7 +307,7 @@ shift2gg<- function (ss, ns)
 #' (if \code{method = "Joint"}) to do the fitting.
 #'
 #' @note
-#' Calculations can be sped up by setting \code{parallel = TRUE}, which uses functions from
+#' Calculations can be speeded up by setting \code{parallel = TRUE}, which uses functions from
 #' the \code{\link{doParallel}} package to run the bootstrap replicates in parallel, using
 #' one fewer than the number of detected cores.
 #'
@@ -320,7 +325,6 @@ fitGpunc<-function (y, ng = 2, minb = 7, pool = TRUE, oshare = TRUE, method = c(
    "AD"), silent = FALSE, hess = FALSE, parallel = FALSE, ...)
 {
    method <- match.arg(method)
-  if(pool==TRUE && all(y$nn == 1)) stop("pool = TRUE does not make sense when all sample sizes equal 1. Set pool = FALSE instead.")
 	if (pool){
 			tv<- test.var.het(y)
 			pv<- round(tv$p.value, 0)
@@ -384,14 +388,17 @@ fitGpunc<-function (y, ng = 2, minb = 7, pool = TRUE, oshare = TRUE, method = c(
    winner <- which.max(logl)
    wt <- wl[[winner]]
 
-   # need to reformulate paleoTS object with altered K bc shifts now count as free parameters
-   ww <- as.paleoTSfit(logL = wt$logL, parameters = wt$parameters, modelName = wt$modelName,
-                       method = wt$method, K = wt$K + ng - 1, n = wt$n, se = wt$se)
-   ss <- GG[, winner]
-   names(ss) <- paste("shift", 1:(ng - 1), sep = "")
-   ww$parameters <- append(ww$parameters, ss)
-   ww$all.logl <- logl
-   ww$GG <- GG
+
+  # need to reformulate paleoTS object with altered K bc shifts now count as free parameters
+   if(ng > 1){
+     ww <- as.paleoTSfit(logL = wt$logL, parameters = wt$parameters, modelName = wt$modelName,
+                       method = wt$method, K = wt$K + ng - 1, n = wt$n, se = wt$se, convergence = wt$convergence, logLFunction = wt$logLFunction)
+     ss <- GG[, winner]
+     names(ss) <- paste("shift", 1:(ng - 1), sep = "")
+     ww$parameters <- append(ww$parameters, ss)
+     ww$all.logl <- logl
+     ww$GG <- GG
+   }
    return(ww)
 }
 
@@ -497,6 +504,7 @@ opt.GRW.shift<- function(y, ng=2, minb=7, model=1, pool=TRUE, silent=FALSE)
 #			3  urw (diff Vs)
 #			4  grw (diff Ms, diff Vs)
 {
+ if(!model %in% 1:4) stop("Model must be 1, 2, 3, or 4.  See this function's help page\n")
  ns<- length(y$mm)
  GG<- shifts(ns, ng, minb=minb)
 
@@ -532,7 +540,12 @@ opt.GRW.shift<- function(y, ng=2, minb=7, model=1, pool=TRUE, silent=FALSE)
        }
 
       ifelse(model==3, mn<- 'URW-shift', mn<- 'GRW-shift')
-      w<- as.paleoTSfit(logL=totS, parameters=totpar, modelName=paste(mn, ng-1, sep='-'), method='AD', K=kk, n=ns-1, se=NULL)
+      if(model > 2)  wc <- wli[[1]]$convergence
+      if(model == 3) logLF <- "special"
+      if(model == 4) logLF <- "special"
+
+      w<- as.paleoTSfit(logL=totS, parameters=totpar, modelName=paste(mn, ng-1, sep='-'),
+                        method='AD', K=kk, n=ns-1, se=NULL, convergence=wc, logLFunction=logLF)
      }
 
     logl[i]<- w$logL
@@ -555,7 +568,6 @@ opt.GRW.shift<- function(y, ng=2, minb=7, model=1, pool=TRUE, silent=FALSE)
 opt.RW.SameMs<- function (yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", hess=FALSE)
   # estimates shared Ms model across multiple sequences
 {
-
   if (inherits(yl, "paleoTS"))
     stop("Function opt.SameMs() is only meaningful for multiple sequences.\n")
   nseq<- length(yl)
@@ -571,15 +583,15 @@ opt.RW.SameMs<- function (yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", h
   {
     gg<- mle.GRW(yl[[i]])
     p0m[i]<- gg[1]
-    if (gg[2] <= 0)	gg[2]<- 1e-7	# handle negative initial estimates
+    if (gg[2] <= 1e-5)	gg[2]<- 1e-5	# handle negative initial estimates
     p0v[i]<- gg[2]
   }
   p0<- c(stats::median(p0m), p0v)  # shared Ms, followed by separate Vs for each sequence
   names(p0)<- c("mstep", paste("vstep", 1:nseq, sep=""))
-  if (is.null(cl$ndeps))	cl$ndeps<- rep(1e-8, length(p0))
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(yl[[1]], p0)
 
   # optimize logL
-  ll<- c(NA, rep(0,nseq))
+  ll<- c(NA, rep(1e-6,nseq))
   if (meth=="L-BFGS-B")
     w<- try(optim(p0, fn=logL.SameMs, method=meth, lower=ll, control=cl, hessian=hess, yl=yl), silent=TRUE)
   else
@@ -591,7 +603,8 @@ opt.RW.SameMs<- function (yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", h
 
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName="sameMs.Mult", method='AD', K=nseq+1, n=n, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName="sameMs.Mult", method='AD',
+                     K=nseq+1, n=n, se=w$se, convergence=w$convergence, logLFunction="logL.SameMs")
 
   return (wc)
 }
@@ -615,15 +628,15 @@ opt.RW.SameVs<- function (yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", h
   {
     gg<- mle.GRW(yl[[i]])
     p0m[i]<- gg[1]
-    if (gg[2] <= 0)	gg[2]<- 1e-7	# handle negative initial estimates
+    if (gg[2] <= 1e-5)	gg[2]<- 1e-5	# handle negative initial estimates
     p0v[i]<- gg[2]
   }
   p0<- c(p0m, stats::median(p0v))  # separate Ms, followed by shared Vs for each sequence
   names(p0)<- c(paste("mstep", 1:nseq, sep=""), "vstep")
-  if (is.null(cl$ndeps))	cl$ndeps<- rep(1e-8, length(p0))
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(yl[[1]], p0)
 
   # optimize logL
-  ll<- c(rep(NA,nseq), 0)
+  ll<- c(rep(NA,nseq), 1e-6)
   if (meth=="L-BFGS-B")
     w<- optim(p0, fn=logL.SameVs, method=meth, lower=ll, control=cl, hessian=hess, yl=yl)
   else
@@ -635,7 +648,8 @@ opt.RW.SameVs<- function (yl, cl=list(fnscale=-1), pool=TRUE, meth="L-BFGS-B", h
 
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName="sameVs.Mult", method='AD', K=nseq+1, n=n, se=w$se)
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName="sameVs.Mult", method='AD',
+                     K=nseq+1, n=n, se=w$se, convergence=w$convergence, logLFunction="logL.SameVs")
 
   return (wc)
 }
@@ -787,22 +801,24 @@ opt.sgs<- function(y,gg,cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE, oshare
  yl<- split4punc(y, gg)
  hat<- mle.GRW(yl[[2]])
  if (hat[1] == 0)	hat[1]<- 1e-3
- if (hat[2] < 1e-4)	hat[2]<- 1e-4
+ if (hat[2] < 1e-5)	hat[2]<- 1e-5
  if (model=="URW")	p0<- c(hat[2], mean(yl[[1]]$mm), mean(yl[[3]]$mm))
  else 				p0<- c(hat, mean(yl[[1]]$mm), mean(yl[[3]]$mm))
 
+
  if (oshare)
  	{ p0<- append(p0, mean(var(yl[[1]]$mm), var(yl[[3]]$mm)))
- 	  if (model=="GRW")		{ K<-7; pn<- c("ms","vs","theta1","theta2","omega"); lw<- c(NA,0,NA,NA,0) }
- 	  else					{ K<-6; pn<- c("vs","theta1","theta2","omega"); lw<- c(0,NA,NA,0) }	}
+ 	  if (model=="GRW")		{ K<-7; pn<- c("mstep","vstep","theta1","theta2","omega"); lw<- c(NA,1e-6,NA,NA,1e-6) }
+ 	  else					{ K<-6; pn<- c("vstep","theta1","theta2","omega"); lw<- c(1e-6,NA,NA,1e-6) }	}
  else
  	{ p0<- append(p0, c(var(yl[[1]]$mm), var(yl[[3]]$mm)) )
- 	  if (model=="GRW")	{ K<- 8; pn<- c("ms","vs","theta1","theta2","omega1","omega2"); lw<- c(NA,0,NA,NA,0,0) }
- 	  else 				{ K<- 7; pn<- c("vs","theta1","theta2","omega1","omega2"); lw<- c(0,NA,NA,0,0) }
+ 	  if (model=="GRW")	{ K<- 8; pn<- c("mstep","vstep","theta1","theta2","omega1","omega2"); lw<- c(NA,1e-6,NA,NA,1e-6,1e-6) }
+ 	  else 				{ K<- 7; pn<- c("vstep","theta1","theta2","omega1","omega2"); lw<- c(1e-6,NA,NA,1e-6,1e-6) }
  	}
 
- cl$ndeps <- p0/100
+
  names(p0)<- pn
+ if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
  if (oshare)
   {
@@ -818,8 +834,9 @@ opt.sgs<- function(y,gg,cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE, oshare
   # add more information to results
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else 			w$se<- NULL
-
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste('SGS', model, sep='-'), method='AD', K=K, n=length(y$mm)-1, se=w$se)
+  if(oshare) logLF <- "logL.sgs.omega" else logLF <- "logL.sgs"
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste('SGS', model, sep='-'), method='AD',
+                     K=K, n=length(y$mm)-1, se=w$se, convergence=w$convergence, logLFunction=logLF)
   return(wc)
 }
 
@@ -846,14 +863,11 @@ opt.sgs<- function(y,gg,cl=list(fnscale=-1), meth="L-BFGS-B", hess=FALSE, oshare
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' x <- sim.sgs(ns = c(15, 15, 15))  # default values OK
-#' w <- fit.sgs(x, minb = 10)  # increase minb so example takes less time; not recommended!
+#' x <- sim.sgs(ns = c(10, 10, 10))  # default values OK
+#' w <- fit.sgs(x, minb = 8)  # increase minb so example takes less time; not recommended!
 #' plot(x)
 #' abline(v = c(16, 31), lwd = 3)  # actual shifts
 #' abline(v = c(w$parameters[6:7]), lwd = 2, lty = 3, col = "red")  # inferred shifts
-#' }
-
 fit.sgs<- function(y, minb=7, oshare=TRUE, pool=TRUE, silent=FALSE, hess=FALSE, meth="L-BFGS-B", model="GRW")
 ## optimize for stasis-GRW-stasis dynamics (with some min n per section)
 {
@@ -974,7 +988,7 @@ logL.joint.URW.Stasis<- function(p, y, gg)
   rw.model<- match.arg(rw.model)
 
   # get initial parameter estimates
-  small<- 1e-8
+  small<- 1e-6
   if(rw.model=="URW")  {p0rw<- mle.URW(sub.paleoTS(y, ok=gg==1, reset.time=F)); K<- 5} # assumes shift point is free parameter
   else				   {p0rw<- mle.GRW(sub.paleoTS(y, ok=gg==1, reset.time=F)); K<- 6}
   p0st<- mle.Stasis(sub.paleoTS(y, ok=gg==2, reset.time=F))
@@ -983,7 +997,7 @@ logL.joint.URW.Stasis<- function(p, y, gg)
   p0anc<- y$mm[1]
   names(p0anc)<- "anc"
   p0<- c(p0anc, p0rw, p0st)
-
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
   ll.urw<- c(NA,small,NA,small)
   ll.grw<- c(NA,NA,small,NA,small)
@@ -992,25 +1006,17 @@ logL.joint.URW.Stasis<- function(p, y, gg)
   if(meth!="L-BFGS-B")	ll<- NULL  # sets so to determine meth
 
   if(rw.model=="URW")	{
-  		w <- try(optim(p0, fn=logL.joint.URW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
-  		if(inherits(w, "try-error")){
-  				cl<- list(fnscale=-1, parscale=c(1,100,1,10))
-  				w <- try(optim(p0, fn=logL.joint.URW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
-  				}}
-   else if(rw.model=="GRW"){
-  		w <- try(optim(p0, fn=logL.joint.GRW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y) , silent=TRUE)
-  		if(inherits(w, "try-error"))
-  				cl<- list(fnscale=-1, parscale=c(1,10,100,1,10))
- 				w <- try(optim(p0, fn=logL.joint.GRW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y) , silent=TRUE)
+  		w <- optim(p0, fn=logL.joint.URW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y)
+  } else if(rw.model=="GRW"){
+  		w <- optim(p0, fn=logL.joint.GRW.Stasis, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y)
  				}
+
   # add more information to results
-  if(inherits(w, "try-error"))  	{
-  		wc<- as.paleoTSfit(logL=NA, parameters=NA, modelName=paste(rw.model, "Stasis", sep='-'), method='Joint', K=K, n=length(y$mm), se=NULL)
-  		return(wc)
-  		}
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste(rw.model, "Stasis", sep='-'), method='Joint', K=K, n=length(y$mm), se=w$se)
+  ifelse(rw.model == "GRW", logLF <- "logL.joint.GRW.Stasis", logLF <- "logL.joint.URW.Stasis")
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste(rw.model, "Stasis", sep='-'), method='Joint',
+                     K=K, n=length(y$mm), se=w$se, convergence=w$convergence, logLFunction=logLF)
 
   return(wc)
  }
@@ -1029,11 +1035,10 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 
 
    # add more information to results
-  if (hess)	{	se1<- sqrt(diag(-1*solve(w1$hessian)))
-  				se2<- sqrt(diag(-1*solve(w2$hessian)))
-  				se<- c(se1, se2)  }
-  else			se<- NULL
-  wc<- as.paleoTSfit(logL=w1$logL+w2$logL, parameters=c(w1$par, w2$par), modelName=paste(rw.model, "Stasis", sep='-'), method='AD', K=K, n=length(y$mm)-1, se=se)
+    if (hess)	{
+  	se<- c(w1$se, w2$se)  }  else			se<- NULL
+  wc<- as.paleoTSfit(logL=w1$logL+w2$logL, parameters=c(w1$par, w2$par), modelName=paste(rw.model, "Stasis", sep='-'), method='AD',
+                     K=K, n=length(y$mm)-1, se=se, convergence=w1$convergence, logLFunction="special")
 
   return(wc)
  }
@@ -1115,14 +1120,14 @@ logL.joint.URW.Stasis<- function(p, y, gg)
   rw.model<- match.arg(rw.model)
 
   # get initial parameter estimates
-  small<- 1e-8
+  small<- 1e-6
   if(rw.model=="URW")  {p0rw<- mle.URW(sub.paleoTS(y, ok=gg==2, reset.time=F)); K<- 4} # assumes shift point is free parameter
   else				   {p0rw<- mle.GRW(sub.paleoTS(y, ok=gg==2, reset.time=F)); K<- 5}
   p0st<- mle.Stasis(sub.paleoTS(y, ok=gg==1, reset.time = F))
   if(p0rw["vstep"] <= small)	p0rw["vstep"]<- 100*small
   if(p0st["omega"] <= small) 	p0st["omega"]<- 100*small
   p0<- c(p0st, p0rw)
-  #cat(p0, "\n\n")
+  if(is.null(cl$parscale)) cl$parscale <- getAllParscale(y, p0)
 
 
   ll.urw<- c(NA,small,small)
@@ -1133,27 +1138,17 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 
 
   if(rw.model=="URW")	{
-  		w <- try(optim(p0, fn=logL.joint.Stasis.URW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
-  		if(inherits(w, "try-error"))  {
-  				cl<- list(fnscale=-1, parscale=c(1,10,100))
-		  		w <- try(optim(p0, fn=logL.joint.Stasis.URW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
-  				}
+  		w <- optim(p0, fn=logL.joint.Stasis.URW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y)
   }else if(rw.model=="GRW")	{
-  		w <- try(optim(p0, fn=logL.joint.Stasis.GRW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
-  		if(inherits(w, "try-error"))  {
-  				cl<- list(fnscale=-1, parscale=c(1,10,10,100))
-		  		w <- try(optim(p0, fn=logL.joint.Stasis.GRW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y), silent=TRUE)
- 				}}
+  		w <- optim(p0, fn=logL.joint.Stasis.GRW, gg=gg, method = meth, lower = ll, control=cl, hessian=hess, y=y)
+ 				}
 
   # add more information to results
-  if(inherits(w, "try-error"))  	{
-  		wc<- as.paleoTSfit(logL=NA, parameters=NA, modelName=paste("Stasis", rw.model, sep='-'), method="Joint", K=K, n=length(y$mm), se=NULL)
-  		return(wc)
-  		}
-
   if (hess)		w$se<- sqrt(diag(-1*solve(w$hessian)))
   else			w$se<- NULL
-  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste("Stasis", rw.model, sep='-'), method='Joint', K=K, n=length(y$mm), se=w$se)
+  ifelse(rw.model=="GRW", logLF<- "logL.joint.Stasis.GRW", logLF<- "logL.joint.Stasis.URW")
+  wc<- as.paleoTSfit(logL=w$value, parameters=w$par, modelName=paste("Stasis", rw.model, sep='-'), method='Joint',
+                     K=K, n=length(y$mm), se=w$se, convergence=w$convergence, logLFunction=logLF)
 
   return(wc)
  }
@@ -1173,11 +1168,11 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 
 
    # add more information to results
-  if (hess)	{	se1<- sqrt(diag(-1*solve(w1$hessian)))
-  				se2<- sqrt(diag(-1*solve(w2$hessian)))
-  				se<- c(se1, se2)  }
+  if (hess)	{
+  	se<- c(w1$se, w2$se)  }
   else			se<- NULL
-  wc<- as.paleoTSfit(logL=w1$logL+w2$logL, parameters=c(w1$par, w2$par), modelName=paste("Stasis", rw.model, sep='-'), method='AD', K=K, n=length(y$mm)-1, se=se)
+  wc<- as.paleoTSfit(logL=w1$logL+w2$logL, parameters=c(w1$par, w2$par), modelName=paste("Stasis", rw.model, sep='-'), method='AD',
+                     K=K, n=length(y$mm)-1, se=se, convergence=w2$convergence, logLFunction="special")
 
   return(wc)
  }
@@ -1289,7 +1284,7 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 #' abline(v = x$tt[15], lwd = 3)  # actual shift point
 #' abline(v = x$tt[w$par["shift1"]], lty = 3, lwd = 2, col = "red") # inferred shift
 #'
- fitModeShift<- function(y, minb=7, pool=TRUE, order=c("Stasis-RW", "RW-Stasis"), rw.model=c("URW","GRW"), method=c('Joint', 'AD'), silent=FALSE, hess=FALSE,...)
+ fitModeShift<- function(y, minb=7, pool=TRUE, order=c("Stasis-RW", "RW-Stasis"), rw.model=c("URW","GRW"), method=c('Joint', 'AD'), silent=FALSE, hess=FALSE, ...)
 ## optimize models (with some min n per segment) that shift from GRW/URW to Stasis, or vice versa
 {
  method<- match.arg(method)
@@ -1354,7 +1349,7 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 #'
 #' @details Simulations suggest that AICc can be overly liberal with complex
 #' models with mode shifts or punctuations (Hunt et al., 2015). This function
-#' implements an alternative of parametric bootstrapping to compare the fit of a
+#' implements an alternative of parametric boostrapping to compare the fit of a
 #' simple model with a complex model. It proceeds in five steps: \enumerate{
 #' \item Compute the observed gain in support from the simple to complex model
 #' as the likelihood ratio, \eqn{LR_obs = -2(logL_simple - logL_complex) } \item
@@ -1369,7 +1364,7 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 #' opt.GRW}, etc.). Argument \code{complexFit} must be a \code{paleoTS} object
 #' returned by \code{fitGpunc} or \code{fitModeShift}.
 #'
-#' Calculations can be sped up by setting \code{parallel = TRUE}, which uses
+#' Calculations can be speeded up by setting \code{parallel = TRUE}, which uses
 #' functions from the \code{\link{doParallel}} package to run the bootstrap
 #' replicates in parallel, using one fewer than the number of detected cores.
 #'
@@ -1532,7 +1527,6 @@ fit9models<- function(y, silent=FALSE, method=c("Joint", "AD"), ...)
   args<- list(...)
   check.var<- TRUE
   if(length(args)>0) if(args$pool==FALSE)	check.var<- FALSE
-  if(all(y$nn ==1)) check.var <- FALSE
   if (check.var){
     tv<- test.var.het(y)
     pv<- round(tv$p.value, 0)

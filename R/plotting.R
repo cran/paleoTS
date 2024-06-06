@@ -1,7 +1,6 @@
 # plotting functions #
 
 
-
 #' Plot a paleoTS object
 #'
 #' @param x a \code{paleoTS} object
@@ -12,8 +11,13 @@
 #' @param add logical, if \code{TRUE}, adds to existing plot
 #' @param modelFit optional model fit from fitting functions
 #' @param pch plotting symbol, defaults to 19
+#' @param pt.bg color fill for points, defaults to white
 #' @param lwd line width, defaults to 1.5
 #' @param ylim optional, y-limits of the plot
+#' @param xlab optional, label for x-axis
+#' @param ylab optional, label for y-axis
+#' @param add.label logical, if \code{TRUE}, writes \code{label} from \code{x}
+#' at the top of the plot
 #' @param ... other arguments passed to plotting functions
 #'
 #' @return none.
@@ -24,8 +28,10 @@
 #' x <- sim.GRW(ns = 30)
 #' w <- fitSimple(x, model = "GRW", method = "Joint")
 #' plot(x, modelFit = w)
+#' plot(x, xlab = "Time [Myr]", ylab = "Body length [mm]", pch = 22, pt.bg = "blue")
 plot.paleoTS<- function (x, nse = 1, pool = FALSE, add = FALSE, modelFit = NULL,
-                         pch = 21, lwd = 1.5, ylim=NULL, ...)
+                         pch = 21, pt.bg = "white", lwd = 1.5, ylim=NULL, xlab = NULL, ylab = NULL,
+                         add.label = TRUE, ...)
 {
   if (pool)
     x <- pool.var(x, ret.paleoTS = TRUE)
@@ -44,13 +50,18 @@ plot.paleoTS<- function (x, nse = 1, pool = FALSE, add = FALSE, modelFit = NULL,
     if (is.na(mc$ee[1]))
       modelFit <- NULL
   }
+
+  # handle axis labels
+  if(is.null(xlab)) xlab <- "Time"
+  if(is.null(ylab)) ylab <- "Trait"
+
   if (is.null(modelFit))
     yl <- c(uci, lci)
   else yl <- c(uci, lci, mc$ll, mc$uu)
   if(is.null(ylim)) ylim<- range(yl)
   if (!add)
     plot(range(x$tt), ylim=ylim, typ = "n", pch = 19,
-         xlab = "Time", ylab = "Trait Mean", xlim = xl, ...)
+         xlab = xlab, ylab = ylab, xlim = xl, ...)
   if (!is.null(modelFit)) {
     if (!is.null(x$start.age)){
       if(x$timeDir == "decreasing") mc$tt <- x$start.age - mc$tt
@@ -62,8 +73,8 @@ plot.paleoTS<- function (x, nse = 1, pool = FALSE, add = FALSE, modelFit = NULL,
   }
   lines(x$tt, x$mm, lwd = lwd, ...)
   segments(x$tt, lci, x$tt, uci, lty = 1, lwd = lwd, ...)
-  points(x$tt, x$mm, pch = pch, cex = 1.2, bg = "white", ...)
-  mtext(x$label, cex = 0.7, col = "grey", font = 3)
+  points(x$tt, x$mm, pch = pch, cex = 1.2, bg = pt.bg, ...)
+  if(add.label) mtext(x$label, cex = 0.7, col = "grey", font = 3)
   if (!is.null(modelFit))
     mtext(mlab, side = 4, cex = 0.8, col = "darkgrey", font = 2)
 }

@@ -1,0 +1,11 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "Fitting and comparing models of phyletic evolution: random walks and beyond",
+  author   = "Hunt, G.",
+  journal  = "Paleobiology",
+  year     = 2006,
+  volume   = 32,
+  number   = 4,
+  pages    = 578-601,
+  doi      = "10.1666/05070.1"
+)
