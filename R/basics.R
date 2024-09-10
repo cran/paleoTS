@@ -380,7 +380,7 @@ test.var.het<- function (y, method = "Bartlett")
   # test for variance heterogeneity among samples in a paleoTS object
 {
 
-  if(all(y$vv == 0)) stop("All sample variances are zero.")
+  if(any(y$vv == 0)) stop("At least one sample variances is zero; consider pool.var() to replace zero variances.")
   if(all(y$nn == 1)) stop("All samples have nn = 1.")
   vp<- pool.var(y)
   NN<- sum(y$nn)

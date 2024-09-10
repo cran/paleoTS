@@ -307,8 +307,8 @@ shift2gg<- function (ss, ns)
 #' (if \code{method = "Joint"}) to do the fitting.
 #'
 #' @note
-#' Calculations can be speeded up by setting \code{parallel = TRUE}, which uses functions from
-#' the \code{\link{doParallel}} package to run the bootstrap replicates in parallel, using
+#' Calculations can be speeded up by setting \code{parallel = TRUE}, which uses
+#' package \code{doParallel} to run the bootstrap replicates in parallel, using
 #' one fewer than the number of detected cores.
 #'
 #' @return  a \code{paleoTSfit} object with the results of the model-fitting.
@@ -1352,7 +1352,7 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 #' implements an alternative of parametric boostrapping to compare the fit of a
 #' simple model with a complex model. It proceeds in five steps: \enumerate{
 #' \item Compute the observed gain in support from the simple to complex model
-#' as the likelihood ratio, \eqn{LR_obs = -2(logL_simple - logL_complex) } \item
+#' as the likelihood ratio, \eqn{LR_{obs} = -2(logL_{simple} - logL_{complex}) } \item
 #' Simulate trait evolution under the specified simple model \code{nboot} times
 #' \item Fit to each simulated sequence the specified simple and complex models
 #' \item Measure the gain in support from simple to complex as the bootstrap
@@ -1365,8 +1365,8 @@ logL.joint.URW.Stasis<- function(p, y, gg)
 #' returned by \code{fitGpunc} or \code{fitModeShift}.
 #'
 #' Calculations can be speeded up by setting \code{parallel = TRUE}, which uses
-#' functions from the \code{\link{doParallel}} package to run the bootstrap
-#' replicates in parallel, using one fewer than the number of detected cores.
+#' package \code{doParallel} to run the bootstrap replicates in parallel, using
+#' one fewer than the number of detected cores.
 #'
 #' @return A list of the observed likelihood ratio statistic, \code{LRobs}, the
 #'   P-value of the test, and the number of bootstrap replicates. If

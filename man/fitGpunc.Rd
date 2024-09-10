@@ -54,8 +54,8 @@ The function uses \code{opt.punc} (if \code{method = "AD"}) or \code{opt.joint.p
 (if \code{method = "Joint"}) to do the fitting.
 }
 \note{
-Calculations can be speeded up by setting \code{parallel = TRUE}, which uses functions from
-the \code{\link{doParallel}} package to run the bootstrap replicates in parallel, using
+Calculations can be speeded up by setting \code{parallel = TRUE}, which uses
+package \code{doParallel} to run the bootstrap replicates in parallel, using
 one fewer than the number of detected cores.
 }
 \examples{

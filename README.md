@@ -34,9 +34,9 @@ fit3models(y)
 #> Comparing 3 models [n = 40, method = Joint]
 #> 
 #>              logL K      AICc     dAICc Akaike.wt
-#> GRW     -26.71456 3  60.09579   0.00000     0.998
-#> URW     -34.09895 2  72.52223  12.42644     0.002
-#> Stasis -106.97466 2 218.27365 158.17785     0.000
+#> GRW     -26.86719 3  60.40106   0.00000         1
+#> URW     -37.85943 2  80.04318  19.64213         0
+#> Stasis -113.33758 2 230.99949 170.59844         0
 ```
 
 Take a look at the vignette “paleoTS_basics” for more of an introduction

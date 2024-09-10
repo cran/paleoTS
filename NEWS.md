@@ -1,3 +1,14 @@
+# paleoTS 0.6-2
+
+## Bug fix
+* corrected a bug, reported by N. Hohmann, in test.var.het() so that it gracefully handles a situation 
+where some sample variances are zero.
+
+## Minor changes
+* Added a warning message to fit3models() and fit4models() that cautions against interpreting model support
+for very short sequences.
+
+
 # paleoTS 0.6.1
 
 ## Major changes

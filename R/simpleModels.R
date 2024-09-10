@@ -243,6 +243,8 @@ fit3models<- function (y, silent = FALSE, method = c("Joint", "AD", "SSM"), ...)
     if(pv <= 0.05)	warning(wm)
   }
 
+  if(length(y$mm) <= 5) warning("Model comparisons are not reliable for very short sequences.")
+
   method <- match.arg(method)
   if (method == "AD") {
     m1 <- opt.GRW(y, ...)
@@ -277,6 +279,7 @@ fit4models<- function(y, silent = FALSE, method = c("Joint", "AD", "SSM"), ...)
     wm<- paste("Sample variances not equal (P = ", pv,  "); consider using argument pool=FALSE", collapse="")
     if(pv <= 0.05)	warning(wm)
   }
+  if(length(y$mm) <= 5) warning("Model comparisons are not reliable for very short sequences.")
 
   method <- match.arg(method)
   if (method == "AD") {
